@@ -9,7 +9,6 @@ using System.Xml.Serialization;
 namespace MIDIparser.Models
 {
     [Serializable]
-    [XmlRoot("DancerEvents")]
     [XmlInclude(typeof(MusicEventBase))]
     [XmlInclude(typeof(MusicMovementEvent))]
     public class DancerEvents

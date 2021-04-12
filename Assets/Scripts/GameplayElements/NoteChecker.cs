@@ -22,4 +22,47 @@ public class NoteChecker : MonoBehaviour
         (other.gameObject.GetComponent("IMoveEvent") as IMoveEvent).OnMoveEventMissed();
     }
 
+    void Update()
+    {
+        if (Input.GetKey(KeyCode.DownArrow))
+        {
+            foreach(IMoveEvent moveEvent in moveEventsInChecker)
+            {
+                if(moveEvent.GetEventTypeID() == MoveTypeEnum.Down)
+                {
+                    moveEvent.OnCorrectButtonInCollision();
+                }
+            }
+        }
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            foreach (IMoveEvent moveEvent in moveEventsInChecker)
+            {
+                if (moveEvent.GetEventTypeID() == MoveTypeEnum.Left)
+                {
+                    moveEvent.OnCorrectButtonInCollision();
+                }
+            }
+        }
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+            foreach (IMoveEvent moveEvent in moveEventsInChecker)
+            {
+                if (moveEvent.GetEventTypeID() == MoveTypeEnum.Right)
+                {
+                    moveEvent.OnCorrectButtonInCollision();
+                }
+            }
+        }
+        if (Input.GetKey(KeyCode.UpArrow))
+        {
+            foreach (IMoveEvent moveEvent in moveEventsInChecker)
+            {
+                if (moveEvent.GetEventTypeID() == MoveTypeEnum.Up)
+                {
+                    moveEvent.OnCorrectButtonInCollision();
+                }
+            }
+        }
+    }
 }

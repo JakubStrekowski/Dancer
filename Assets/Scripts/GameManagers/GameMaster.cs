@@ -6,10 +6,10 @@ using UnityEngine.SceneManagement;
 public class GameMaster : MonoBehaviour
 {
     public MusicLoader musicLoader;
+    public AudioClip nextMusic;
     private static GameMaster _instance;
 
     public static GameMaster Instance { get { return _instance; } }
-
 
     private void Awake()
     {
@@ -26,6 +26,7 @@ public class GameMaster : MonoBehaviour
         musicLoader = new MusicLoader();
         //TODO set another stage in loader
         musicLoader.LoadMusicMoves();
+        GetAudioClip();
     }
 
     // Start is called before the first frame update
@@ -33,5 +34,14 @@ public class GameMaster : MonoBehaviour
     {
     }
 
-    
+
+    public void GetAudioClip()
+    {
+        StartCoroutine(musicLoader.GetAudioClipFromFile("Test", Callback));
+    }
+
+    public void Callback(AudioClip ac)
+    {
+        nextMusic = ac;
+    }
 }
