@@ -16,14 +16,15 @@ public class GameManager : MonoBehaviour
     private AudioClip currentSong;
     private readonly int MAX_LOAD_TRIES = 5;
 
-    private readonly float ADDITIONAL_START_TIME = 6f;
-    private readonly float SPAWN_DISTANCE = 10;
-    private readonly float CONST_SPEED_MODIFIER = 0.40f;
+    private readonly float DISTANCE_TO_CHECKER = 20f;
+    private readonly float BASE_SPEED = 4; //with this speed event will reach checker in 5 second
+    private float timeToReachChecker = 5f;
+    private float tickPerSecond = 1680f;
 
     List<GameObject> moveEvents;
     private float currentMusicTime = 0.0f;
 
-    private float speedDiffficulty = 1.0f;
+    private float speedDiffficulty = 1.0f; //scaling BASE_SPEED to make lever harder
     public float moveSpeed = 10;
 
     public MoveFactory moveFactory;
@@ -37,7 +38,8 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        moveSpeed = SPAWN_DISTANCE * CONST_SPEED_MODIFIER * speedDiffficulty;
+        moveSpeed = BASE_SPEED * speedDiffficulty;
+        timeToReachChecker = DISTANCE_TO_CHECKER / moveSpeed;
         //TODO set another stage in loader
         moveEvents = moveFactory.GenerateGameMovesFromXml(GameMaster.Instance.musicLoader.DancerSongParsed.dancerEvents);
 
@@ -47,38 +49,48 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (songState == ESongStates.Loading) return;
-        if (songState == ESongStates.ReadyToPlay)
+        switch(songState)
         {
-            audioSrc.clip = currentSong;
-            currentMusicTime = 0;
-            songState = ESongStates.Playing;
-            return;
-        }
-        if(songState == ESongStates.Playing)
-        {
-            currentMusicTime += Time.deltaTime;
-
-            if(currentMusicTime > ADDITIONAL_START_TIME && audioSrc.isPlaying == false) audioSrc.Play();
-
-            //TODO this needs to be fixed
-            if (moveEvents.Count != 0)
-            {
-                //for (int i = 0; i < moveEvents.Count; i++)
+            case ESongStates.Loading:
                 {
-                    if (((moveEvents[0].GetComponent("IMoveEvent") as IMoveEvent).GetBeginTime() * 5) < currentMusicTime * 1000)
-                    {
-                        (moveEvents[0].GetComponent("IMoveEvent") as IMoveEvent).ActivateEvent(moveSpeed);
-                        moveEvents.RemoveAt(0);
-                        //i--;
-                        //continue;
-                    }
-                    else
-                    {
-                        //break;
-                    }
+                    return;
                 }
-            }
+            case ESongStates.ReadyToPlay:
+                {
+                    audioSrc.clip = currentSong;
+                    currentMusicTime = 0;
+                    songState = ESongStates.Playing;
+                    return;
+                }
+            case ESongStates.Playing:
+                {
+                    currentMusicTime += Time.deltaTime;
+
+                    if (currentMusicTime > timeToReachChecker && audioSrc.isPlaying == false)
+                    {
+                        songState = ESongStates.Playing;
+                        audioSrc.Play();
+                    }
+
+                    if (moveEvents.Count != 0)
+                    {
+                        //for (int i = 0; i < moveEvents.Count; i++)
+                        {
+                            if (((moveEvents[0].GetComponent("IMoveEvent") as IMoveEvent).GetBeginTime() / tickPerSecond) < currentMusicTime)
+                            {
+                                (moveEvents[0].GetComponent("IMoveEvent") as IMoveEvent).ActivateEvent(moveSpeed);
+                                moveEvents.RemoveAt(0);
+                                //i--;
+                                //continue;
+                            }
+                            else
+                            {
+                                //break;
+                            }
+                        }
+                    }
+                    break;
+                }
         }
     }
 

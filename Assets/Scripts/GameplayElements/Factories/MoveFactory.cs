@@ -7,6 +7,7 @@ using MIDIparser.Models;
 public class MoveFactory : MonoBehaviour
 {
     private readonly float[] eventYPositions = { 8.1f, 7.4f, 6.7f, 6f };
+    private readonly float EVENT_STARTPOS_X = 14f;
 
     public GameObject moveContinuousEventBase;
     public GameObject moveInstantEventBase;
@@ -17,7 +18,7 @@ public class MoveFactory : MonoBehaviour
         foreach(MusicMovementEvent movementEvent in dancerEvents.movementEvents)
         {
             MoveTypeEnum moveTypeEnum;
-            Vector3 eventPosition = new Vector3(10,8.1f,0);
+            Vector3 eventPosition = new Vector3(EVENT_STARTPOS_X, 8.1f,0);
             //if event is move contiuous
             if (movementEvent.EventTypeID > EventTypeEnum.ArrowDownInstant && movementEvent.EventTypeID < EventTypeEnum.ChangeBackground)
             {

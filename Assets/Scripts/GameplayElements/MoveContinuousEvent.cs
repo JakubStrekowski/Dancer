@@ -18,6 +18,7 @@ public class MoveContinuousEvent : MonoBehaviour, IMoveEvent
     private float moveSpeed = 10f;
     private Rigidbody2D rb;
     private SpriteRenderer sr;
+    private bool isCheckedCorrect = false;
 
     public float MoveSpeed { get => moveSpeed; private set => moveSpeed=value; }
     public float BeginTime { get; private set; }
@@ -31,6 +32,7 @@ public class MoveContinuousEvent : MonoBehaviour, IMoveEvent
 
     public void OnCorrectButtonInCollision()
     {
+        isCheckedCorrect = true;
         GetComponent<SpriteRenderer>().color = new Color(0, 255, 0);
         fillPercentage = 100;
     }
@@ -50,7 +52,7 @@ public class MoveContinuousEvent : MonoBehaviour, IMoveEvent
         BeginTime = beginTime;
         Duration = duration;
         MoveType = moveType;
-        transform.localScale = new Vector3((transform.localScale.x * duration/1000) + 1, transform.localScale.y);
+        transform.localScale = new Vector3((transform.localScale.x * duration/2000) + 0.5f, transform.localScale.y);
     }
     public void ActivateEvent(float speed)
     {
@@ -74,5 +76,9 @@ public class MoveContinuousEvent : MonoBehaviour, IMoveEvent
     public MoveTypeEnum GetEventTypeID()
     {
         return MoveType;
+    }
+    public bool isEventCheckedCorrect()
+    {
+        return isCheckedCorrect;
     }
 }

@@ -2,6 +2,7 @@
 
 public interface IMoveEvent
 {
+    public bool isEventCheckedCorrect();
     public float GetBeginTime();
     public void OnCorrectButtonInCollision();
     public void OnMoveEventMissed();

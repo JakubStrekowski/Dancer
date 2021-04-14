@@ -24,43 +24,48 @@ public class NoteChecker : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKey(KeyCode.DownArrow))
+        //TODO replae it with proper input system
+        if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             foreach(IMoveEvent moveEvent in moveEventsInChecker)
             {
-                if(moveEvent.GetEventTypeID() == MoveTypeEnum.Down)
+                if(moveEvent.GetEventTypeID() == MoveTypeEnum.Down && !moveEvent.isEventCheckedCorrect())
                 {
                     moveEvent.OnCorrectButtonInCollision();
+                    break;
                 }
             }
         }
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             foreach (IMoveEvent moveEvent in moveEventsInChecker)
             {
-                if (moveEvent.GetEventTypeID() == MoveTypeEnum.Left)
+                if (moveEvent.GetEventTypeID() == MoveTypeEnum.Left && !moveEvent.isEventCheckedCorrect())
                 {
                     moveEvent.OnCorrectButtonInCollision();
+                    break;
                 }
             }
         }
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             foreach (IMoveEvent moveEvent in moveEventsInChecker)
             {
-                if (moveEvent.GetEventTypeID() == MoveTypeEnum.Right)
+                if (moveEvent.GetEventTypeID() == MoveTypeEnum.Right && !moveEvent.isEventCheckedCorrect())
                 {
                     moveEvent.OnCorrectButtonInCollision();
+                    break;
                 }
             }
         }
-        if (Input.GetKey(KeyCode.UpArrow))
+        if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             foreach (IMoveEvent moveEvent in moveEventsInChecker)
             {
-                if (moveEvent.GetEventTypeID() == MoveTypeEnum.Up)
+                if (moveEvent.GetEventTypeID() == MoveTypeEnum.Up && !moveEvent.isEventCheckedCorrect())
                 {
                     moveEvent.OnCorrectButtonInCollision();
+                    break;
                 }
             }
         }
