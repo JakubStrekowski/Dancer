@@ -6,7 +6,7 @@ using MIDIparser.Models;
 
 public class MoveFactory : MonoBehaviour
 {
-    private readonly float[] eventYPositions = { 8.1f, 7.4f, 6.7f, 6f };
+    private readonly float[] eventYPositions = { 7.6f, 6.9f, 6.2f, 5.5f };
     private readonly float EVENT_STARTPOS_X = 14f;
 
     public GameObject moveContinuousEventBase;

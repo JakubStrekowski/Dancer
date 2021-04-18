@@ -5,6 +5,10 @@ using UnityEngine;
 public class NoteChecker : MonoBehaviour
 {
     private List<IMoveEvent> moveEventsInChecker;
+
+    public delegate void OnHitMistakeDelegate();
+    public static OnHitMistakeDelegate hitMistakeDelegate;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -24,6 +28,7 @@ public class NoteChecker : MonoBehaviour
 
     void Update()
     {
+        bool hitCorrect = false;
         //TODO replae it with proper input system
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
@@ -32,9 +37,11 @@ public class NoteChecker : MonoBehaviour
                 if(moveEvent.GetEventTypeID() == MoveTypeEnum.Down && !moveEvent.isEventCheckedCorrect())
                 {
                     moveEvent.OnCorrectButtonInCollision();
+                    hitCorrect = true;
                     break;
                 }
             }
+            if (!hitCorrect) OnButtonMistake();
         }
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
@@ -43,9 +50,11 @@ public class NoteChecker : MonoBehaviour
                 if (moveEvent.GetEventTypeID() == MoveTypeEnum.Left && !moveEvent.isEventCheckedCorrect())
                 {
                     moveEvent.OnCorrectButtonInCollision();
+                    hitCorrect = true;
                     break;
                 }
             }
+            if (!hitCorrect) OnButtonMistake();
         }
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
@@ -54,9 +63,11 @@ public class NoteChecker : MonoBehaviour
                 if (moveEvent.GetEventTypeID() == MoveTypeEnum.Right && !moveEvent.isEventCheckedCorrect())
                 {
                     moveEvent.OnCorrectButtonInCollision();
+                    hitCorrect = true;
                     break;
                 }
             }
+            if (!hitCorrect) OnButtonMistake();
         }
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
@@ -65,9 +76,15 @@ public class NoteChecker : MonoBehaviour
                 if (moveEvent.GetEventTypeID() == MoveTypeEnum.Up && !moveEvent.isEventCheckedCorrect())
                 {
                     moveEvent.OnCorrectButtonInCollision();
+                    hitCorrect = true;
                     break;
                 }
             }
+            if(!hitCorrect) OnButtonMistake();
         }
+    }
+    public static void OnButtonMistake()
+    {
+        hitMistakeDelegate();
     }
 }

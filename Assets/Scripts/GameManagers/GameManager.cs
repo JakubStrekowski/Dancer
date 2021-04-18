@@ -13,6 +13,12 @@ enum ESongStates
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField]
+    private UIEffectsManager uiFxManager;
+
+    [SerializeField]
+    private UILogicManager uILogicManager;
+
     private AudioClip currentSong;
     private readonly int MAX_LOAD_TRIES = 5;
 
@@ -27,13 +33,16 @@ public class GameManager : MonoBehaviour
     private float speedDiffficulty = 1.0f; //scaling BASE_SPEED to make lever harder
     public float moveSpeed = 10;
 
+    private int mistakeCount = 0;
+    private int totalMoveEvents = 0;
+
     public MoveFactory moveFactory;
     public AudioSource audioSrc;
 
     ESongStates songState = ESongStates.Loading;
     private void Awake()
     {
-
+        NoteChecker.hitMistakeDelegate += AddOneMistake;
     }
     // Start is called before the first frame update
     void Start()
@@ -42,6 +51,11 @@ public class GameManager : MonoBehaviour
         timeToReachChecker = DISTANCE_TO_CHECKER / moveSpeed;
         //TODO set another stage in loader
         moveEvents = moveFactory.GenerateGameMovesFromXml(GameMaster.Instance.musicLoader.DancerSongParsed.dancerEvents);
+        tickPerSecond = GameMaster.Instance.musicLoader.DancerSongParsed.ticksPerSecond;
+        //prepare misstake counts and update ui
+        mistakeCount = 0;
+        totalMoveEvents = GameMaster.Instance.musicLoader.DancerSongParsed.dancerEvents.movementEvents.Count;
+        uILogicManager.UpdateMissesUI(mistakeCount, totalMoveEvents);
 
         StartCoroutine(CheckSongMovesLoaded());
     }
@@ -115,5 +129,11 @@ public class GameManager : MonoBehaviour
         {
             tries++;
         }
+    }
+
+    void AddOneMistake()
+    {
+        mistakeCount++;
+        uILogicManager.UpdateMissesUI(mistakeCount, totalMoveEvents);
     }
 }

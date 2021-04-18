@@ -43,6 +43,10 @@ public class MoveContinuousEvent : MonoBehaviour, IMoveEvent
         {
             GetComponent<SpriteRenderer>().color = new Color(255, 0, 0);
         }
+        if(!isCheckedCorrect)
+        {
+            NoteChecker.OnButtonMistake();
+        }
         //TODO here I can add some custom effects
         StartCoroutine(nameof(DestroyAfterTime));
     }

@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 4903388457522235681}
   - component: {fileID: 4903388457522235711}
   - component: {fileID: 9033806785695060239}
+  - component: {fileID: 419652645957283525}
+  - component: {fileID: -1699483393905536407}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -45,8 +47,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d564889858453794abc8d11693864cd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uiFxManager: {fileID: 419652645957283525}
+  uILogicManager: {fileID: -1699483393905536407}
   moveSpeed: 10
   moveFactory: {fileID: 4903388457522235711}
+  audioSrc: {fileID: 0}
 --- !u!114 &4903388457522235711
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -157,3 +162,28 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &419652645957283525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4903388457522235708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bce8549e8852ea47a2a6ee50d2ca4e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-1699483393905536407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4903388457522235708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05fc35f43fcdb004e889da5ba3a0f8f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  missesTxt: {fileID: 0}

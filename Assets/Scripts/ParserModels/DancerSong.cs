@@ -23,6 +23,8 @@ namespace MIDIparser.Models
         public string title; //song title
         [XmlElement("Description")]
         public string additionaldesc; //song additional description
+        [XmlElement("TicksPerSecond")]
+        public int ticksPerSecond; //how many midi time units counts as a second
         [XmlElement("DancerEvents")]
         public DancerEvents dancerEvents;
 
