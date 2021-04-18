@@ -1,3 +1,4 @@
+using MIDIparser.Models;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -56,6 +57,15 @@ public class GameManager : MonoBehaviour
         mistakeCount = 0;
         totalMoveEvents = GameMaster.Instance.musicLoader.DancerSongParsed.dancerEvents.movementEvents.Count;
         uILogicManager.UpdateMissesUI(mistakeCount, totalMoveEvents);
+
+        ArgbColor newColor = GameMaster.Instance.musicLoader.DancerSongParsed.upArrowColor;
+        uiFxManager.SetArrowColor(MoveTypeEnum.Up, new Color((float)newColor.red / 255, (float)newColor.green / 255, (float)newColor.blue / 255, (float)newColor.alpha / 255));
+        newColor = GameMaster.Instance.musicLoader.DancerSongParsed.rightArrowColor;
+        uiFxManager.SetArrowColor(MoveTypeEnum.Right, new Color((float)newColor.red / 255, (float)newColor.green / 255, (float)newColor.blue / 255, (float)newColor.alpha / 255));
+        newColor = GameMaster.Instance.musicLoader.DancerSongParsed.leftArrowColor;
+        uiFxManager.SetArrowColor(MoveTypeEnum.Left, new Color((float)newColor.red / 255, (float)newColor.green / 255, (float)newColor.blue / 255, (float)newColor.alpha / 255));
+        newColor = GameMaster.Instance.musicLoader.DancerSongParsed.downArrowColor;
+        uiFxManager.SetArrowColor(MoveTypeEnum.Down, new Color((float)newColor.red / 255, (float)newColor.green / 255, (float)newColor.blue / 255, (float)newColor.alpha / 255));
 
         StartCoroutine(CheckSongMovesLoaded());
     }
