@@ -12,13 +12,14 @@ public class MusicLoader
     public DancerSong DancerSongParsed {get; private set; }
     AudioClip newMusic;
 
-    private string _musicPath = Application.dataPath+"/Resources/Music/";
+    private readonly string MUSIC_PATH = Application.dataPath+"/Resources/Music/";
 
-    public void LoadMusicMoves(string fileName = "Test/test.xml")
+    public void LoadMusicMoves(string folderName = "Test")
     {
-        if (File.Exists(_musicPath + fileName))
+        string fileName = folderName + '/' + folderName + ".xml";
+        if (File.Exists(MUSIC_PATH + fileName))
         {
-            System.IO.TextReader reader = new StreamReader(_musicPath + fileName);
+            System.IO.TextReader reader = new StreamReader(MUSIC_PATH + fileName);
             XmlSerializer xml = new XmlSerializer(typeof(DancerSong));
             DancerSongParsed = xml.Deserialize(reader) as DancerSong;
             reader.Close();
@@ -33,7 +34,7 @@ public class MusicLoader
     public IEnumerator GetAudioClipFromFile(string folderName, Action<AudioClip> callback)
     {
         if (callback == null) yield break;
-        using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip("file://"+ _musicPath + '/'+ folderName + '/' + DancerSongParsed.musicFilePath, AudioType.WAV))
+        using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip("file://"+ MUSIC_PATH + '/'+ folderName + '/' + DancerSongParsed.musicFilePath, AudioType.WAV))
         {
             yield return www.SendWebRequest();
 
@@ -48,6 +49,16 @@ public class MusicLoader
                 myClip.name = DancerSongParsed.musicFilePath;
                 callback(myClip);
             }
+        }
+    }
+
+
+    public IEnumerator ImageRequest(string url, Action<UnityWebRequest> callback)
+    {
+        using (UnityWebRequest req = UnityWebRequestTexture.GetTexture(url))
+        {
+            yield return req.SendWebRequest();
+            callback(req);
         }
     }
 
