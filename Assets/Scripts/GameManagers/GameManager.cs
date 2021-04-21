@@ -67,6 +67,14 @@ public class GameManager : MonoBehaviour
         newColor = GameMaster.Instance.musicLoader.DancerSongParsed.downArrowColor;
         uiFxManager.SetArrowColor(MoveTypeEnum.Down, new Color((float)newColor.red / 255, (float)newColor.green / 255, (float)newColor.blue / 255, (float)newColor.alpha / 255));
 
+        newColor = GameMaster.Instance.musicLoader.DancerSongParsed.backgroundColor;
+        uiFxManager.SetBackgroundColor(new Color((float)newColor.red / 255, (float)newColor.green / 255, (float)newColor.blue / 255, (float)newColor.alpha / 255));
+        newColor = GameMaster.Instance.musicLoader.DancerSongParsed.uiColor;
+        uiFxManager.SetPanelUiColor(new Color((float)newColor.red / 255, (float)newColor.green / 255, (float)newColor.blue / 255, (float)newColor.alpha / 255));
+        newColor = GameMaster.Instance.musicLoader.DancerSongParsed.uiTextColor;
+        uiFxManager.SetTextColor(new Color((float)newColor.red / 255, (float)newColor.green / 255, (float)newColor.blue / 255, (float)newColor.alpha / 255));
+
+
         StartCoroutine(CheckSongMovesLoaded());
     }
 
