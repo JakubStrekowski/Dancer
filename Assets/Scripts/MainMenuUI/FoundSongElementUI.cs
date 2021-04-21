@@ -15,7 +15,7 @@ public enum EPreviewElementChildObjects
 
 public class FoundSongElementUI : MonoBehaviour
 {
-    public string levelPath;
+    public string levelFolder;
 
     Image previewImage;
     TextMeshProUGUI titleTxt;
@@ -26,7 +26,7 @@ public class FoundSongElementUI : MonoBehaviour
 
     public void OnInit(string path, float offset, Sprite image, string title, string description, string score)
     {
-        levelPath = path;
+        levelFolder = path;
         GetComponent<RectTransform>().position = new Vector3(GetComponent<RectTransform>().position.x,
             GetComponent<RectTransform>().position.y + offset, GetComponent<RectTransform>().position.z);
 
@@ -39,7 +39,15 @@ public class FoundSongElementUI : MonoBehaviour
         scoreTxt = transform.GetChild((int)EPreviewElementChildObjects.scoreText).GetComponent<TextMeshProUGUI>();
         scoreTxt.text = score;
         onPlayBtn = transform.GetChild((int)EPreviewElementChildObjects.playBtn).GetComponent<Button>();
+        onPlayBtn.onClick.AddListener(OnPlayClicked);
 
         gameObject.SetActive(true);
+    }
+
+
+    public void OnPlayClicked()
+    {
+        GameMaster.Instance.SetSelectedSong(levelFolder);
+        GameMaster.Instance.BeginSongLevel();
     }
 }

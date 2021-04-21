@@ -5,9 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class GameMaster : MonoBehaviour
 {
+    private readonly int PLAY_SONG_SCENE_INDEX = 1;
+
     public MusicLoader musicLoader;
     public AudioClip nextMusic;
     private static GameMaster _instance;
+    private string selectedSongFile;
 
     public static GameMaster Instance { get { return _instance; } }
 
@@ -20,28 +23,41 @@ public class GameMaster : MonoBehaviour
         else
         {
             _instance = this;
+
+            if (SceneManager.GetActiveScene().buildIndex == PLAY_SONG_SCENE_INDEX) //loaded level without main menu
+            {
+                selectedSongFile = "Test";
+                musicLoader = new MusicLoader();
+                musicLoader.LoadMusicMoves();
+                GetAudioClip();
+                return;
+            }
         }
         DontDestroyOnLoad(this.gameObject);
 
         musicLoader = new MusicLoader();
         //TODO set another stage in loader
-        musicLoader.LoadMusicMoves();
+    }
+
+    public void BeginSongLevel()
+    {
+        SceneManager.LoadScene(PLAY_SONG_SCENE_INDEX);
+        musicLoader.LoadMusicMoves(selectedSongFile);
         GetAudioClip();
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
-
     public void GetAudioClip()
     {
-        StartCoroutine(musicLoader.GetAudioClipFromFile("Test", Callback));
+        StartCoroutine(musicLoader.GetAudioClipFromFile(selectedSongFile, Callback));
     }
 
     public void Callback(AudioClip ac)
     {
         nextMusic = ac;
+    }
+
+    public void SetSelectedSong(string song)
+    {
+        selectedSongFile = song;
     }
 }

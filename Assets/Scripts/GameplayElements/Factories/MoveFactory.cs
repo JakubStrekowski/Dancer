@@ -9,6 +9,7 @@ public class MoveFactory : MonoBehaviour
     private readonly float[] eventYPositions = { 7.6f, 6.9f, 6.2f, 5.5f };
     private readonly float EVENT_STARTPOS_X = 14f;
 
+    public GameObject uiAnchor;
     public GameObject moveContinuousEventBase;
     public GameObject moveInstantEventBase;
 
@@ -22,7 +23,7 @@ public class MoveFactory : MonoBehaviour
             //if event is move contiuous
             if (movementEvent.EventTypeID > EventTypeEnum.ArrowDownInstant && movementEvent.EventTypeID < EventTypeEnum.ChangeBackground)
             {
-                GameObject newMoveEvent = Instantiate(moveContinuousEventBase).gameObject;
+                GameObject newMoveEvent = Instantiate(moveContinuousEventBase, uiAnchor.transform).gameObject;
                 switch (movementEvent.EventTypeID)
                 {
                     case EventTypeEnum.ArrowUpDuration:    moveTypeEnum = MoveTypeEnum.Up; eventPosition.y = eventYPositions[0];     break;
@@ -38,7 +39,7 @@ public class MoveFactory : MonoBehaviour
             //if event is move instant
             else if (movementEvent.EventTypeID <= EventTypeEnum.ArrowDownInstant)
             {
-                GameObject newMoveEvent = Instantiate(moveInstantEventBase).gameObject;
+                GameObject newMoveEvent = Instantiate(moveInstantEventBase, uiAnchor.transform).gameObject;
                 switch (movementEvent.EventTypeID)
                 {
                     case EventTypeEnum.ArrowUpInstant:    moveTypeEnum = MoveTypeEnum.Up; eventPosition.y = eventYPositions[0];    break;

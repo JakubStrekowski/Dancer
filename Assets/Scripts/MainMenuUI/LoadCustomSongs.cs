@@ -40,6 +40,10 @@ public class LoadCustomSongs : MonoBehaviour
     {
         dancerSongs = new List<DancerSong>();
         MUSIC_PATH = Application.dataPath + "/Resources/Music/";
+    }
+
+    private void Start()
+    {
         loader = GameMaster.Instance.musicLoader;
     }
 
@@ -78,7 +82,7 @@ public class LoadCustomSongs : MonoBehaviour
                 }
 
                 newSongElement = GameObject.Instantiate(previewSongObject, scrollContent.transform);
-                newSongElement.GetComponent<FoundSongElementUI>().OnInit(dir, currentOffset, previewImage, dancerSongs[iter].title,
+                newSongElement.GetComponent<FoundSongElementUI>().OnInit(fileName, currentOffset, previewImage, dancerSongs[iter].title,
                    dancerSongs[iter].additionaldesc, SCORE_MOCK);
 
                 currentOffset -= NEXT_ELEMENT_OFFSET;

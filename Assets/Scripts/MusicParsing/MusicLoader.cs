@@ -33,8 +33,14 @@ public class MusicLoader
 
     public IEnumerator GetAudioClipFromFile(string folderName, Action<AudioClip> callback)
     {
+        AudioType audioType = AudioType.WAV;
+        if (DancerSongParsed.musicFilePath.EndsWith("mp3"))
+        {
+            audioType = AudioType.MPEG;
+        }
+
         if (callback == null) yield break;
-        using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip("file://"+ MUSIC_PATH + '/'+ folderName + '/' + DancerSongParsed.musicFilePath, AudioType.WAV))
+        using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip("file://"+ MUSIC_PATH + '/'+ folderName + '/' + DancerSongParsed.musicFilePath, audioType))
         {
             yield return www.SendWebRequest();
 
