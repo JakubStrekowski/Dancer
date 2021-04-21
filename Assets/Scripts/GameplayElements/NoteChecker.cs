@@ -9,6 +9,9 @@ public class NoteChecker : MonoBehaviour
     public delegate void OnHitMistakeDelegate();
     public static OnHitMistakeDelegate hitMistakeDelegate;
 
+    public delegate void OnHitCorrectDelegate();
+    public static OnHitCorrectDelegate hitCorrectDelegate;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -86,5 +89,9 @@ public class NoteChecker : MonoBehaviour
     public static void OnButtonMistake()
     {
         hitMistakeDelegate();
+    }
+    public static void OnButtonCorrect()
+    {
+        hitCorrectDelegate();
     }
 }

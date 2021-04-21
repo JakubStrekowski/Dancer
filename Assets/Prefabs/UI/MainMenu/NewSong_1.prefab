@@ -93,7 +93,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d0148f25a816a8468e6d48d80692bbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelPath: 
+  levelFolder: 
 --- !u!1 &2335081115687744973
 GameObject:
   m_ObjectHideFlags: 0
@@ -398,7 +398,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}

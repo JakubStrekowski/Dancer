@@ -3,9 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+public enum ESceneIndexes
+{
+    mainMenuSceneIndex = 0,
+    playSongSceneIndex = 1
+}
+
 public class GameMaster : MonoBehaviour
 {
-    private readonly int PLAY_SONG_SCENE_INDEX = 1;
 
     public MusicLoader musicLoader;
     public AudioClip nextMusic;
@@ -24,7 +29,7 @@ public class GameMaster : MonoBehaviour
         {
             _instance = this;
 
-            if (SceneManager.GetActiveScene().buildIndex == PLAY_SONG_SCENE_INDEX) //loaded level without main menu
+            if (SceneManager.GetActiveScene().buildIndex == (int)ESceneIndexes.playSongSceneIndex) //loaded level without main menu
             {
                 selectedSongFile = "Test";
                 musicLoader = new MusicLoader();
@@ -41,7 +46,7 @@ public class GameMaster : MonoBehaviour
 
     public void BeginSongLevel()
     {
-        SceneManager.LoadScene(PLAY_SONG_SCENE_INDEX);
+        SceneManager.LoadScene((int)ESceneIndexes.playSongSceneIndex);
         musicLoader.LoadMusicMoves(selectedSongFile);
         GetAudioClip();
     }

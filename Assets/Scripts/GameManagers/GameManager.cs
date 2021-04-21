@@ -35,15 +35,21 @@ public class GameManager : MonoBehaviour
     public float moveSpeed = 10;
 
     private int mistakeCount = 0;
+    private int correctCount = 0;
     private int totalMoveEvents = 0;
+
+    private float timeStampToFinish;
 
     public MoveFactory moveFactory;
     public AudioSource audioSrc;
+
+    private bool songWasPlayed = false;
 
     ESongStates songState = ESongStates.Loading;
     private void Awake()
     {
         NoteChecker.hitMistakeDelegate += AddOneMistake;
+        NoteChecker.hitCorrectDelegate += AddOneCorrect;
     }
     // Start is called before the first frame update
     void Start()
@@ -55,8 +61,9 @@ public class GameManager : MonoBehaviour
         tickPerSecond = GameMaster.Instance.musicLoader.DancerSongParsed.ticksPerSecond;
         //prepare misstake counts and update ui
         mistakeCount = 0;
+        correctCount = 0;
         totalMoveEvents = GameMaster.Instance.musicLoader.DancerSongParsed.dancerEvents.movementEvents.Count;
-        uILogicManager.UpdateMissesUI(mistakeCount, totalMoveEvents);
+        uILogicManager.UpdateMissesUI(correctCount, mistakeCount, totalMoveEvents);
 
         ArgbColor newColor = GameMaster.Instance.musicLoader.DancerSongParsed.upArrowColor;
         uiFxManager.SetArrowColor(MoveTypeEnum.Up, new Color((float)newColor.red / 255, (float)newColor.green / 255, (float)newColor.blue / 255, (float)newColor.alpha / 255));
@@ -100,8 +107,15 @@ public class GameManager : MonoBehaviour
 
                     if (currentMusicTime > timeToReachChecker && audioSrc.isPlaying == false)
                     {
-                        songState = ESongStates.Playing;
+                        if(songWasPlayed)
+                        {
+                            songState = ESongStates.Finished;
+                            timeStampToFinish = currentMusicTime + 3;
+                            break;
+                        }
+
                         audioSrc.Play();
+                        songWasPlayed = true;
                     }
 
                     if (moveEvents.Count != 0)
@@ -121,6 +135,21 @@ public class GameManager : MonoBehaviour
                             }
                         }
                     }
+                    break;
+                }
+            case ESongStates.Finished:
+                {
+                    currentMusicTime += Time.deltaTime;
+                    if (timeStampToFinish < currentMusicTime)
+                    {
+                        songState = ESongStates.Finalized;
+                        uILogicManager.UpdateFinalScore(GameMaster.Instance.musicLoader.DancerSongParsed.title, correctCount, totalMoveEvents, mistakeCount);
+                        uILogicManager.ActivateEndingPanel();
+                    }
+                    break;
+                }
+            case ESongStates.Finalized:
+                {
                     break;
                 }
         }
@@ -152,6 +181,12 @@ public class GameManager : MonoBehaviour
     void AddOneMistake()
     {
         mistakeCount++;
-        uILogicManager.UpdateMissesUI(mistakeCount, totalMoveEvents);
+        uILogicManager.UpdateMissesUI(correctCount, mistakeCount, totalMoveEvents);
+    }
+
+    void AddOneCorrect()
+    {
+        correctCount++;
+        uILogicManager.UpdateMissesUI(correctCount, mistakeCount, totalMoveEvents);
     }
 }

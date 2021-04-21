@@ -35,6 +35,7 @@ public class MoveContinuousEvent : MonoBehaviour, IMoveEvent
         isCheckedCorrect = true;
         GetComponent<SpriteRenderer>().color = new Color(0, 255, 0);
         fillPercentage = 100;
+        NoteChecker.OnButtonCorrect();
     }
 
     public void OnMoveEventMissed()

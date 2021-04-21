@@ -13,7 +13,7 @@ public class LoadCustomSongs : MonoBehaviour
     private readonly float NEXT_ELEMENT_OFFSET = 100;
     private string MUSIC_PATH;
 
-    private readonly string SCORE_MOCK = "0/100";
+    private readonly string SCORE_MOCK = "No highscore yet";
 
     [SerializeField]
     private MusicLoader loader;
@@ -81,9 +81,25 @@ public class LoadCustomSongs : MonoBehaviour
                     yield return new WaitForSeconds(0.2f);
                 }
 
+                HighScore highScore = DataManager.Instance.GetScoreByLevel(loader.DancerSongParsed.title);
+
+                string highScoreText = "";
+                Color scoreColor;
+                if (highScore is null) 
+                {
+                    scoreColor = Color.white;
+                    highScoreText = SCORE_MOCK;
+                }
+                else
+                {
+                    scoreColor = UILogicManager.FINAL_TEXT_COLORS[highScore.grade];
+                    highScoreText = "HighScore: hit " + highScore.score.ToString() + " / miss " + highScore.misses.ToString();
+                }
+
+
                 newSongElement = GameObject.Instantiate(previewSongObject, scrollContent.transform);
                 newSongElement.GetComponent<FoundSongElementUI>().OnInit(fileName, currentOffset, previewImage, dancerSongs[iter].title,
-                   dancerSongs[iter].additionaldesc, SCORE_MOCK);
+                   dancerSongs[iter].additionaldesc, highScoreText, scoreColor);
 
                 currentOffset -= NEXT_ELEMENT_OFFSET;
                 currentLoadStage = ESongLoadStages.loadingPreview;

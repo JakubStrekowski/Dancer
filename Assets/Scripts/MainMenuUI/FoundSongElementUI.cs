@@ -24,7 +24,7 @@ public class FoundSongElementUI : MonoBehaviour
 
     Button onPlayBtn;
 
-    public void OnInit(string path, float offset, Sprite image, string title, string description, string score)
+    public void OnInit(string path, float offset, Sprite image, string title, string description, string score, Color scoreColor)
     {
         levelFolder = path;
         GetComponent<RectTransform>().position = new Vector3(GetComponent<RectTransform>().position.x,
@@ -38,6 +38,7 @@ public class FoundSongElementUI : MonoBehaviour
         descriptionTxt.text = description;
         scoreTxt = transform.GetChild((int)EPreviewElementChildObjects.scoreText).GetComponent<TextMeshProUGUI>();
         scoreTxt.text = score;
+        scoreTxt.color = scoreColor;
         onPlayBtn = transform.GetChild((int)EPreviewElementChildObjects.playBtn).GetComponent<Button>();
         onPlayBtn.onClick.AddListener(OnPlayClicked);
 
