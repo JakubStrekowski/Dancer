@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
 
     private AudioClip currentSong;
     private readonly int MAX_LOAD_TRIES = 5;
+    private readonly float TIME_AFTER_SONG_AWAIT = 1f;
 
     private readonly float DISTANCE_TO_CHECKER = 20f;
     private readonly float BASE_SPEED = 4; //with this speed event will reach checker in 5 second
@@ -57,8 +58,8 @@ public class GameManager : MonoBehaviour
         moveSpeed = BASE_SPEED * speedDiffficulty;
         timeToReachChecker = DISTANCE_TO_CHECKER / moveSpeed;
         //TODO set another stage in loader
-        moveEvents = moveFactory.GenerateGameMovesFromXml(GameMaster.Instance.musicLoader.DancerSongParsed.dancerEvents);
         tickPerSecond = GameMaster.Instance.musicLoader.DancerSongParsed.ticksPerSecond;
+        moveEvents = moveFactory.GenerateGameMovesFromXml(GameMaster.Instance.musicLoader.DancerSongParsed.dancerEvents, tickPerSecond * speedDiffficulty);
         //prepare misstake counts and update ui
         mistakeCount = 0;
         correctCount = 0;
@@ -110,7 +111,7 @@ public class GameManager : MonoBehaviour
                         if(songWasPlayed)
                         {
                             songState = ESongStates.Finished;
-                            timeStampToFinish = currentMusicTime + 3;
+                            timeStampToFinish = currentMusicTime + TIME_AFTER_SONG_AWAIT;
                             break;
                         }
 

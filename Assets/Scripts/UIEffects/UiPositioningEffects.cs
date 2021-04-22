@@ -7,7 +7,8 @@ public class UiPositioningEffects : MonoBehaviour
     private Vector2 startPosiion;
     private Vector2 endposition;
 
-    bool floatingEnabled;
+    //TODO probably need to rebuild the notefactory to create events lazily if i want to kee this
+    bool floatingEnabled = false;
 
     void Start()
     {

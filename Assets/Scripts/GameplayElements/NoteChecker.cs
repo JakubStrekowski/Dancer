@@ -32,12 +32,12 @@ public class NoteChecker : MonoBehaviour
     void Update()
     {
         bool hitCorrect = false;
-        //TODO replae it with proper input system
+        //TODO replace it with proper input system
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            foreach(IMoveEvent moveEvent in moveEventsInChecker)
+            foreach (IMoveEvent moveEvent in moveEventsInChecker)
             {
-                if(moveEvent.GetEventTypeID() == MoveTypeEnum.Down && !moveEvent.isEventCheckedCorrect())
+                if (moveEvent.GetEventTypeID() == MoveTypeEnum.Down && !moveEvent.isEventCheckedCorrect())
                 {
                     moveEvent.OnCorrectButtonInCollision();
                     hitCorrect = true;
@@ -83,7 +83,61 @@ public class NoteChecker : MonoBehaviour
                     break;
                 }
             }
-            if(!hitCorrect) OnButtonMistake();
+            if (!hitCorrect) OnButtonMistake();
+        }
+        //---------------------
+
+
+        if (Input.GetKeyUp(KeyCode.DownArrow))
+        {
+
+            foreach (IMoveEvent moveEvent in moveEventsInChecker)
+            {
+                if (moveEvent.GetEventTypeID() == MoveTypeEnum.Down && moveEvent.isEventHeldDown())
+                {
+                    moveEvent.StopHolding();
+                    break;
+                }
+            }
+        }
+
+        if (Input.GetKeyUp(KeyCode.LeftArrow))
+        {
+
+            foreach (IMoveEvent moveEvent in moveEventsInChecker)
+            {
+                if (moveEvent.GetEventTypeID() == MoveTypeEnum.Left && moveEvent.isEventHeldDown())
+                {
+                    moveEvent.StopHolding();
+                    break;
+                }
+            }
+        }
+
+        if (Input.GetKeyUp(KeyCode.RightArrow))
+        {
+
+            foreach (IMoveEvent moveEvent in moveEventsInChecker)
+            {
+                if (moveEvent.GetEventTypeID() == MoveTypeEnum.Right && moveEvent.isEventHeldDown())
+                {
+                    moveEvent.StopHolding();
+                    break;
+                }
+            }
+        }
+
+        if (Input.GetKeyUp(KeyCode.UpArrow))
+        {
+
+            foreach (IMoveEvent moveEvent in moveEventsInChecker)
+            {
+                if (moveEvent.GetEventTypeID() == MoveTypeEnum.Up && moveEvent.isEventHeldDown())
+                {
+                    moveEvent.StopHolding();
+                    break;
+                }
+            }
         }
     }
     public static void OnButtonMistake()

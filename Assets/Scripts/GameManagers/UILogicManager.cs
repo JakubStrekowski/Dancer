@@ -36,18 +36,18 @@ public class UILogicManager : MonoBehaviour
     {
         finalScore.text = "Correct: " + currentPasses + "/" + totalMoves + " Misses:" + currentMisses;
         int grade;
-        float scorepercentage = currentPasses / totalMoves;
+        float scorepercentage = (float)currentPasses / (float)totalMoves;
         if(scorepercentage == 1.0f && currentMisses == 0)
         {
             finalScore.color = FINAL_TEXT_COLORS[(int)ELevelCompleteGrades.platinum];
             grade = (int)ELevelCompleteGrades.platinum;
         }
-        if (scorepercentage >= 0.8f && currentMisses <= 3)
+        else if (scorepercentage >= 0.8f && currentMisses <= (int)(totalMoves * 0.15f))
         {
             finalScore.color = FINAL_TEXT_COLORS[(int)ELevelCompleteGrades.gold];
             grade = (int)ELevelCompleteGrades.gold;
         }
-        if (scorepercentage >= 0.6f && currentMisses <= 12)
+        else if (scorepercentage >= 0.6f && currentMisses <= (int)(totalMoves * 0.3f))
         {
             finalScore.color = FINAL_TEXT_COLORS[(int)ELevelCompleteGrades.silver];
             grade = (int)ELevelCompleteGrades.silver;

@@ -13,7 +13,7 @@ public class MoveFactory : MonoBehaviour
     public GameObject moveContinuousEventBase;
     public GameObject moveInstantEventBase;
 
-    public List<GameObject> GenerateGameMovesFromXml(DancerEvents dancerEvents)
+    public List<GameObject> GenerateGameMovesFromXml(DancerEvents dancerEvents, float ticksPerSpeed)
     {
         List<GameObject> createdMoveEvents = new List<GameObject>();
         foreach(MusicMovementEvent movementEvent in dancerEvents.movementEvents)
@@ -32,7 +32,7 @@ public class MoveFactory : MonoBehaviour
                     case EventTypeEnum.ArrowDownDuration:  moveTypeEnum = MoveTypeEnum.Down; eventPosition.y = eventYPositions[3];   break;
                     default: moveTypeEnum = MoveTypeEnum.Down; eventPosition.y = eventYPositions[3]; break;
                 }
-                newMoveEvent.GetComponent<IMoveEvent>().SetObjectVals(movementEvent.StartTime, movementEvent.Duration, moveTypeEnum);
+                newMoveEvent.GetComponent<IMoveEvent>().SetObjectVals(movementEvent.StartTime, movementEvent.Duration, moveTypeEnum, ticksPerSpeed);
                 newMoveEvent.transform.position = eventPosition;
                 createdMoveEvents.Add(newMoveEvent);
             }
@@ -48,7 +48,7 @@ public class MoveFactory : MonoBehaviour
                     case EventTypeEnum.ArrowDownInstant:  moveTypeEnum = MoveTypeEnum.Down; eventPosition.y = eventYPositions[3];  break;
                     default: moveTypeEnum = MoveTypeEnum.Down; break;
                 }
-                newMoveEvent.GetComponent<IMoveEvent>().SetObjectVals(movementEvent.StartTime, movementEvent.Duration, moveTypeEnum);
+                newMoveEvent.GetComponent<IMoveEvent>().SetObjectVals(movementEvent.StartTime, movementEvent.Duration, moveTypeEnum, ticksPerSpeed);
                 newMoveEvent.transform.position = eventPosition;
                 createdMoveEvents.Add(newMoveEvent);
             }

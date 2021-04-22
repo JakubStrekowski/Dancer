@@ -12,6 +12,9 @@ public enum MoveTypeEnum
 
 public class MoveContinuousEvent : MonoBehaviour, IMoveEvent
 {
+    [SerializeField]
+    private SpriteRenderer holdBar;
+
     private readonly float DESTROY_DELAY = 5.0f;
 
     private float fillPercentage = 0;
@@ -20,6 +23,10 @@ public class MoveContinuousEvent : MonoBehaviour, IMoveEvent
     private SpriteRenderer sr;
     private bool isCheckedCorrect = false;
 
+    private float durationInSeconds;
+    private float passedTimeWhileHeld;
+
+    public bool IsBeingHeld { get; set; }
     public float MoveSpeed { get => moveSpeed; private set => moveSpeed=value; }
     public float BeginTime { get; private set; }
     public float Duration { get; private set; }
@@ -32,17 +39,20 @@ public class MoveContinuousEvent : MonoBehaviour, IMoveEvent
 
     public void OnCorrectButtonInCollision()
     {
-        isCheckedCorrect = true;
-        GetComponent<SpriteRenderer>().color = new Color(0, 255, 0);
-        fillPercentage = 100;
-        NoteChecker.OnButtonCorrect();
+        if(!isCheckedCorrect && fillPercentage == 0)
+        {
+            GetComponent<SpriteRenderer>().color = new Color(0, 255, 0);
+            IsBeingHeld = true;
+            rb.velocity = Vector2.zero;
+            passedTimeWhileHeld = 0;
+        }
     }
 
     public void OnMoveEventMissed()
     {
         if(!(fillPercentage > 0))
         {
-            GetComponent<SpriteRenderer>().color = new Color(255, 0, 0);
+            GetComponent<SpriteRenderer>().color = new Color(1, 0, 0);
         }
         if(!isCheckedCorrect)
         {
@@ -52,24 +62,42 @@ public class MoveContinuousEvent : MonoBehaviour, IMoveEvent
         StartCoroutine(nameof(DestroyAfterTime));
     }
 
-    public void SetObjectVals(float beginTime, float duration, MoveTypeEnum moveType)
+    public void SetObjectVals(float beginTime, float duration, MoveTypeEnum moveType, float ticksPerSpeed)
     {
         BeginTime = beginTime;
         Duration = duration;
         MoveType = moveType;
-        transform.localScale = new Vector3((transform.localScale.x * duration/2000) + 0.5f, transform.localScale.y);
+        holdBar.transform.localScale = new Vector3((1f * ticksPerSpeed / duration), transform.localScale.y);
+        durationInSeconds = 1f * ticksPerSpeed / duration;
     }
     public void ActivateEvent(float speed)
     {
         moveSpeed = speed;
         rb.velocity = Vector2.left * moveSpeed;
         sr.enabled = true;
+        holdBar.enabled = true;
     }
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
+    }
+
+    void Update()
+    {
+        if(IsBeingHeld && fillPercentage < 1)
+        {
+            passedTimeWhileHeld += Time.deltaTime * 4;
+            fillPercentage = (passedTimeWhileHeld / durationInSeconds);
+            holdBar.transform.localPosition = new Vector3(-fillPercentage * durationInSeconds, holdBar.transform.localPosition.y);
+        }
+        if(fillPercentage >= 1 && !isCheckedCorrect)
+        {
+            StopHolding();
+            isCheckedCorrect = true;
+            NoteChecker.OnButtonCorrect();
+        }
     }
 
     private IEnumerator DestroyAfterTime()
@@ -85,5 +113,16 @@ public class MoveContinuousEvent : MonoBehaviour, IMoveEvent
     public bool isEventCheckedCorrect()
     {
         return isCheckedCorrect;
+    }
+
+    public bool isEventHeldDown()
+    {
+        return IsBeingHeld;
+    }
+
+    public void StopHolding()
+    {
+        IsBeingHeld = false;
+        rb.velocity = moveSpeed * Vector2.left;
     }
 }

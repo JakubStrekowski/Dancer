@@ -6,7 +6,11 @@ public interface IMoveEvent
     public float GetBeginTime();
     public void OnCorrectButtonInCollision();
     public void OnMoveEventMissed();
-    public void SetObjectVals(float beginTime, float duration, MoveTypeEnum moveType);
+    public void SetObjectVals(float beginTime, float duration, MoveTypeEnum moveType, float ticksPerSpeed);
     public void ActivateEvent(float speed);
     public MoveTypeEnum GetEventTypeID();
+
+    public bool isEventHeldDown();
+
+    public void StopHolding();
 }
