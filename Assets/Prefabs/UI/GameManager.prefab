@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4903388457522235710}
   - component: {fileID: 4903388457522235681}
   - component: {fileID: 4903388457522235711}
+  - component: {fileID: 341324941800771508}
   - component: {fileID: 9033806785695060239}
   - component: {fileID: 419652645957283525}
   - component: {fileID: -1699483393905536407}
@@ -50,6 +51,7 @@ MonoBehaviour:
   uiFxManager: {fileID: 419652645957283525}
   uILogicManager: {fileID: -1699483393905536407}
   moveSpeed: 10
+  effectsFactory: {fileID: 341324941800771508}
   moveFactory: {fileID: 4903388457522235711}
   audioSrc: {fileID: 0}
 --- !u!114 &4903388457522235711
@@ -64,8 +66,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ef6727c3566c6741b69a751b613e3c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uiAnchor: {fileID: 0}
   moveContinuousEventBase: {fileID: 3874231391359583477, guid: 9887abc8b98013d41b98d96961c3bcb1, type: 3}
   moveInstantEventBase: {fileID: 3874231391359583477, guid: 9887abc8b98013d41b98d96961c3bcb1, type: 3}
+--- !u!114 &341324941800771508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4903388457522235708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 935a8862b41b93f4685e59c79b2f5da2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visualEffectObject: {fileID: 7654797956837960314, guid: 3a5941661c3d0054689d9aa633943cf3, type: 3}
 --- !u!82 &9033806785695060239
 AudioSource:
   m_ObjectHideFlags: 0
@@ -187,3 +203,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   missesTxt: {fileID: 0}
+  gameEndedPanel: {fileID: 0}
+  finalScore: {fileID: 0}
+  newHighScore: {fileID: 0}

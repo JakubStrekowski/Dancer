@@ -16,12 +16,15 @@ namespace MIDIparser.Models
         [XmlArray("MovementEvents")]
         [XmlArrayItem("MusicMovementEvent")]
         public Collection<MusicMovementEvent> movementEvents;
-        public Collection<MusicEventBase> otherEvents; 
+        public Collection<MusicEventBase> otherEvents;
+        [XmlArrayItem("MusicVisualEvent")]
+        public Collection<VisualEventBase> visualEvents;
 
         public DancerEvents()
         {
             movementEvents = new Collection<MusicMovementEvent>();
             otherEvents = new Collection<MusicEventBase>();
+            visualEvents = new Collection<VisualEventBase>();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MIDIparser.Models.VisualEventsSubclasses;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,10 @@ namespace MIDIparser.Models
     [XmlInclude(typeof(MusicMovementEvent))]
     [XmlInclude(typeof(DancerEvents))]
     [XmlInclude(typeof(ArgbColor))]
+    [XmlInclude(typeof(VisualEventBase))]
+    [XmlInclude(typeof(CreateDeleteVisualEvent))]
+    [XmlInclude(typeof(ChangeColorLinearVisualEffect))]
+    [XmlInclude(typeof(ChangePositionLinearVisualEffect))]
     public class DancerSong
     {
         //general info

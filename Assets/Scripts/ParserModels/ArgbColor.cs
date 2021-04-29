@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using UnityEngine;
 
 namespace MIDIparser.Models
 {
@@ -30,6 +31,11 @@ namespace MIDIparser.Models
             red = r;
             green = g;
             blue = b;
+        }
+
+        public Color ToUnityColor()
+        {
+            return new Color((float)red / 255f, (float)green / 255f, (float)blue / 255f, (float)alpha / 255f);
         }
 
     }

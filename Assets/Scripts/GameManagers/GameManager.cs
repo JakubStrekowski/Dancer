@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviour
     private float tickPerSecond = 1680f;
 
     List<GameObject> moveEvents;
+    List<VisualEventBase> visualEvents;
+
     private float currentMusicTime = 0.0f;
 
     private float speedDiffficulty = 1.0f; //scaling BASE_SPEED to make lever harder
@@ -41,6 +43,7 @@ public class GameManager : MonoBehaviour
 
     private float timeStampToFinish;
 
+    public EffectsFactory effectsFactory;
     public MoveFactory moveFactory;
     public AudioSource audioSrc;
 
@@ -60,6 +63,8 @@ public class GameManager : MonoBehaviour
         //TODO set another stage in loader
         tickPerSecond = GameMaster.Instance.musicLoader.DancerSongParsed.ticksPerSecond;
         moveEvents = moveFactory.GenerateGameMovesFromXml(GameMaster.Instance.musicLoader.DancerSongParsed.dancerEvents, tickPerSecond * speedDiffficulty);
+        //TODO set another stage in loader
+        visualEvents = effectsFactory.GenerateVisualEffectObjects(GameMaster.Instance.musicLoader.DancerSongParsed.dancerEvents, tickPerSecond * speedDiffficulty);
         //prepare misstake counts and update ui
         mistakeCount = 0;
         correctCount = 0;
@@ -121,19 +126,21 @@ public class GameManager : MonoBehaviour
 
                     if (moveEvents.Count != 0)
                     {
-                        //for (int i = 0; i < moveEvents.Count; i++)
+                        while(((moveEvents[0].GetComponent("IMoveEvent") as IMoveEvent).GetBeginTime() / tickPerSecond) < currentMusicTime)
                         {
-                            if (((moveEvents[0].GetComponent("IMoveEvent") as IMoveEvent).GetBeginTime() / tickPerSecond) < currentMusicTime)
-                            {
-                                (moveEvents[0].GetComponent("IMoveEvent") as IMoveEvent).ActivateEvent(moveSpeed);
-                                moveEvents.RemoveAt(0);
-                                //i--;
-                                //continue;
-                            }
-                            else
-                            {
-                                //break;
-                            }
+                            (moveEvents[0].GetComponent("IMoveEvent") as IMoveEvent).ActivateEvent(moveSpeed);
+                            moveEvents.RemoveAt(0);
+                            if (moveEvents.Count == 0) break;
+                        }
+                    }
+
+                    if(visualEvents.Count != 0)
+                    {
+                        while((visualEvents[0].startTime / tickPerSecond + timeToReachChecker) < currentMusicTime)
+                        {
+                            effectsFactory.ResolveEffect(visualEvents[0]);
+                            visualEvents.RemoveAt(0);
+                            if (visualEvents.Count == 0) break;
                         }
                     }
                     break;
