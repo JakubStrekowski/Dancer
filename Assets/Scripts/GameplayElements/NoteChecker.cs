@@ -33,7 +33,7 @@ public class NoteChecker : MonoBehaviour
     {
         bool hitCorrect = false;
         //TODO replace it with proper input system
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        if (Input.GetButtonDown("Down"))
         {
             foreach (IMoveEvent moveEvent in moveEventsInChecker)
             {
@@ -46,7 +46,7 @@ public class NoteChecker : MonoBehaviour
             }
             if (!hitCorrect) OnButtonMistake();
         }
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        if (Input.GetButtonDown("Left"))
         {
             foreach (IMoveEvent moveEvent in moveEventsInChecker)
             {
@@ -59,7 +59,7 @@ public class NoteChecker : MonoBehaviour
             }
             if (!hitCorrect) OnButtonMistake();
         }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetButtonDown("Right"))
         {
             foreach (IMoveEvent moveEvent in moveEventsInChecker)
             {
@@ -72,7 +72,7 @@ public class NoteChecker : MonoBehaviour
             }
             if (!hitCorrect) OnButtonMistake();
         }
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetButtonDown("Up"))
         {
             foreach (IMoveEvent moveEvent in moveEventsInChecker)
             {
@@ -88,7 +88,7 @@ public class NoteChecker : MonoBehaviour
         //---------------------
 
 
-        if (Input.GetKeyUp(KeyCode.DownArrow))
+        if (Input.GetButtonUp("Down"))
         {
 
             foreach (IMoveEvent moveEvent in moveEventsInChecker)
@@ -101,7 +101,7 @@ public class NoteChecker : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyUp(KeyCode.LeftArrow))
+        if (Input.GetButtonUp("Left"))
         {
 
             foreach (IMoveEvent moveEvent in moveEventsInChecker)
@@ -114,7 +114,7 @@ public class NoteChecker : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyUp(KeyCode.RightArrow))
+        if (Input.GetButtonUp("Right"))
         {
 
             foreach (IMoveEvent moveEvent in moveEventsInChecker)
@@ -127,7 +127,7 @@ public class NoteChecker : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyUp(KeyCode.UpArrow))
+        if (Input.GetButtonUp("Up"))
         {
 
             foreach (IMoveEvent moveEvent in moveEventsInChecker)

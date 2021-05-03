@@ -38,5 +38,9 @@ namespace MIDIparser.Models
             return new Color((float)red / 255f, (float)green / 255f, (float)blue / 255f, (float)alpha / 255f);
         }
 
+        public static Color ConvertFromBytes(byte a, byte r, byte g, byte b)
+        {
+            return new Color((float)r / 255f, (float)g / 255f, (float)b / 255f, (float)a / 255f);
+        }
     }
 }

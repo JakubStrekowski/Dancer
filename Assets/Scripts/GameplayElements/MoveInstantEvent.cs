@@ -10,6 +10,7 @@ public class MoveInstantEvent : MonoBehaviour, IMoveEvent
     private Rigidbody2D rb;
     private SpriteRenderer sr;
     private bool isCheckedCorrect = false;
+    private Color colorToSet;
 
     public float MoveSpeed { get => moveSpeed; private set => moveSpeed = value; }
     public float BeginTime { get; private set; }
@@ -20,6 +21,7 @@ public class MoveInstantEvent : MonoBehaviour, IMoveEvent
         moveSpeed = speed;
         rb.velocity = Vector2.left * moveSpeed;
         sr.enabled = true;
+        sr.color = colorToSet;
     }
 
     public float GetBeginTime()
@@ -40,7 +42,7 @@ public class MoveInstantEvent : MonoBehaviour, IMoveEvent
     public void OnCorrectButtonInCollision()
     {
         isCheckedCorrect = true;
-        GetComponent<SpriteRenderer>().color = new Color(0, 255, 0);
+        GetComponent<SpriteRenderer>().color = new Color(255, 255, 255);
         NoteChecker.OnButtonCorrect();
     }
 
@@ -57,10 +59,11 @@ public class MoveInstantEvent : MonoBehaviour, IMoveEvent
         StartCoroutine(nameof(DestroyAfterTime));
     }
 
-    public void SetObjectVals(float beginTime, float duration, MoveTypeEnum moveType, float ticksPerSpeed)
+    public void SetObjectVals(float beginTime, float duration, MoveTypeEnum moveType, float ticksPerSpeed, Color color)
     {
         BeginTime = beginTime;
         MoveType = moveType;
+        colorToSet = color;
     }
 
     // Start is called before the first frame update

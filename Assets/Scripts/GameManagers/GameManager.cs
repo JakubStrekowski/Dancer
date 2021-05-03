@@ -61,9 +61,17 @@ public class GameManager : MonoBehaviour
         moveSpeed = BASE_SPEED * speedDiffficulty;
         timeToReachChecker = DISTANCE_TO_CHECKER / moveSpeed;
         //TODO set another stage in loader
+        //Set colors of move events
+        moveFactory.SetMoveColor(0, GameMaster.Instance.musicLoader.DancerSongParsed.upArrowColor.ToUnityColor());
+        moveFactory.SetMoveColor(1, GameMaster.Instance.musicLoader.DancerSongParsed.rightArrowColor.ToUnityColor());
+        moveFactory.SetMoveColor(2, GameMaster.Instance.musicLoader.DancerSongParsed.leftArrowColor.ToUnityColor());
+        moveFactory.SetMoveColor(3, GameMaster.Instance.musicLoader.DancerSongParsed.downArrowColor.ToUnityColor());
+
+        //instantiate all move events
         tickPerSecond = GameMaster.Instance.musicLoader.DancerSongParsed.ticksPerSecond;
         moveEvents = moveFactory.GenerateGameMovesFromXml(GameMaster.Instance.musicLoader.DancerSongParsed.dancerEvents, tickPerSecond * speedDiffficulty);
-        //TODO set another stage in loader
+
+        //instantiate all visual events
         visualEvents = effectsFactory.GenerateVisualEffectObjects(GameMaster.Instance.musicLoader.DancerSongParsed.dancerEvents, tickPerSecond * speedDiffficulty);
         //prepare misstake counts and update ui
         mistakeCount = 0;
@@ -71,6 +79,7 @@ public class GameManager : MonoBehaviour
         totalMoveEvents = GameMaster.Instance.musicLoader.DancerSongParsed.dancerEvents.movementEvents.Count;
         uILogicManager.UpdateMissesUI(correctCount, mistakeCount, totalMoveEvents);
 
+        //set ui colors
         ArgbColor newColor = GameMaster.Instance.musicLoader.DancerSongParsed.upArrowColor;
         uiFxManager.SetArrowColor(MoveTypeEnum.Up, new Color((float)newColor.red / 255, (float)newColor.green / 255, (float)newColor.blue / 255, (float)newColor.alpha / 255));
         newColor = GameMaster.Instance.musicLoader.DancerSongParsed.rightArrowColor;
@@ -113,7 +122,7 @@ public class GameManager : MonoBehaviour
 
                     if (currentMusicTime > timeToReachChecker && audioSrc.isPlaying == false)
                     {
-                        if(songWasPlayed)
+                        if(songWasPlayed) //finishing song condiion
                         {
                             songState = ESongStates.Finished;
                             timeStampToFinish = currentMusicTime + TIME_AFTER_SONG_AWAIT;
@@ -124,6 +133,7 @@ public class GameManager : MonoBehaviour
                         songWasPlayed = true;
                     }
 
+                    //setting move events active when they reach (time - time for them to reach note checker)
                     if (moveEvents.Count != 0)
                     {
                         while(((moveEvents[0].GetComponent("IMoveEvent") as IMoveEvent).GetBeginTime() / tickPerSecond) < currentMusicTime)
@@ -134,7 +144,8 @@ public class GameManager : MonoBehaviour
                         }
                     }
 
-                    if(visualEvents.Count != 0)
+                    //setting visual events active when they reach their time
+                    if (visualEvents.Count != 0)
                     {
                         while((visualEvents[0].startTime / tickPerSecond + timeToReachChecker) < currentMusicTime)
                         {
@@ -147,6 +158,7 @@ public class GameManager : MonoBehaviour
                 }
             case ESongStates.Finished:
                 {
+                    //after a while showing final score
                     currentMusicTime += Time.deltaTime;
                     if (timeStampToFinish < currentMusicTime)
                     {

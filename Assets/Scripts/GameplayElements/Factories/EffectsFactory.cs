@@ -68,6 +68,16 @@ public class EffectsFactory : MonoBehaviour
                     visualObjects[effect.objectId].ChangeColorLinear(argb.ToUnityColor(),float.Parse(parsedFx.paramsList[(int)VisualEventsSubclassesParamsEnum.timeToReach]));
                     break;
                 }
+            case VisualEventTypeEnum.ChangeColorObjectArc:
+                {
+                    ChangeColorArcVisualEffect parsedFx = (ChangeColorArcVisualEffect)effect;
+                    ArgbColor argb = new ArgbColor(Byte.Parse(parsedFx.paramsList[(int)VisualEventsSubclassesParamsEnum.alpha]),
+                        Byte.Parse(parsedFx.paramsList[(int)VisualEventsSubclassesParamsEnum.red]),
+                        Byte.Parse(parsedFx.paramsList[(int)VisualEventsSubclassesParamsEnum.green]),
+                        Byte.Parse(parsedFx.paramsList[(int)VisualEventsSubclassesParamsEnum.blue]));
+                    visualObjects[effect.objectId].ChangeColorArc(argb.ToUnityColor(), float.Parse(parsedFx.paramsList[(int)VisualEventsSubclassesParamsEnum.timeToReach]));
+                    break;
+                }
             case VisualEventTypeEnum.ChangePosObjectLinear:
                 {
                     ChangePositionLinearVisualEffect parsedFx = (ChangePositionLinearVisualEffect)effect;
@@ -76,7 +86,26 @@ public class EffectsFactory : MonoBehaviour
                     visualObjects[effect.objectId].MoveTowardsLinear(newPos, float.Parse(parsedFx.paramsList[(int)ChangePositionLinearParamsEnum.duration]));
                     break;
                 }
-
+            case VisualEventTypeEnum.ChangePosObjectArc:
+                {
+                    ChangePositionDampingVisualEffect parsedFx = (ChangePositionDampingVisualEffect)effect;
+                    Vector2 newPos = new Vector2(float.Parse(parsedFx.paramsList[(int)ChangePositionLinearParamsEnum.posX]),
+                        float.Parse(parsedFx.paramsList[(int)ChangePositionLinearParamsEnum.posY]));
+                    visualObjects[effect.objectId].MoveTowardsDamping(newPos, float.Parse(parsedFx.paramsList[(int)ChangePositionLinearParamsEnum.duration]));
+                    break;
+                }
+            case VisualEventTypeEnum.ChangeRotObjectLinear:
+                {
+                    ChangeRotationLinearVisualEffect parsedFx = (ChangeRotationLinearVisualEffect)effect;
+                    visualObjects[effect.objectId].RotateLinear(float.Parse(parsedFx.paramsList[(int)ChangePotationLinearParamsEnum.rotation]), float.Parse(parsedFx.paramsList[(int)ChangePositionLinearParamsEnum.duration]));
+                    break;
+                }
+            case VisualEventTypeEnum.ChangeRotObjectArc:
+                {
+                    ChangeRotationArcVisualEffect parsedFx = (ChangeRotationArcVisualEffect)effect;
+                    visualObjects[effect.objectId].RotateArc(float.Parse(parsedFx.paramsList[(int)ChangePotationLinearParamsEnum.rotation]), float.Parse(parsedFx.paramsList[(int)ChangePositionLinearParamsEnum.duration]));
+                    break;
+                }
             default:break;
         }
     }

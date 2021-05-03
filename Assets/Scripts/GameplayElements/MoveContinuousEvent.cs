@@ -22,6 +22,7 @@ public class MoveContinuousEvent : MonoBehaviour, IMoveEvent
     private Rigidbody2D rb;
     private SpriteRenderer sr;
     private bool isCheckedCorrect = false;
+    private Color colorToSet;
 
     private float durationInSeconds;
     private float passedTimeWhileHeld;
@@ -41,7 +42,7 @@ public class MoveContinuousEvent : MonoBehaviour, IMoveEvent
     {
         if(!isCheckedCorrect && fillPercentage == 0)
         {
-            GetComponent<SpriteRenderer>().color = new Color(0, 255, 0);
+            GetComponent<SpriteRenderer>().color = new Color(255, 255, 255);
             IsBeingHeld = true;
             rb.velocity = Vector2.zero;
             passedTimeWhileHeld = 0;
@@ -62,13 +63,14 @@ public class MoveContinuousEvent : MonoBehaviour, IMoveEvent
         StartCoroutine(nameof(DestroyAfterTime));
     }
 
-    public void SetObjectVals(float beginTime, float duration, MoveTypeEnum moveType, float ticksPerSpeed)
+    public void SetObjectVals(float beginTime, float duration, MoveTypeEnum moveType, float ticksPerSpeed, Color color)
     {
         BeginTime = beginTime;
         Duration = duration;
         MoveType = moveType;
         holdBar.transform.localScale = new Vector3((1f * ticksPerSpeed / duration), transform.localScale.y);
         durationInSeconds = 1f * ticksPerSpeed / duration;
+        colorToSet = color;
     }
     public void ActivateEvent(float speed)
     {
@@ -76,6 +78,7 @@ public class MoveContinuousEvent : MonoBehaviour, IMoveEvent
         rb.velocity = Vector2.left * moveSpeed;
         sr.enabled = true;
         holdBar.enabled = true;
+        sr.color = colorToSet;
     }
 
     void Start()

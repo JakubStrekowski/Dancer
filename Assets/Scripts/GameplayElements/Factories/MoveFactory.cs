@@ -9,6 +9,13 @@ public class MoveFactory : MonoBehaviour
     private readonly float[] eventYPositions = { 7.6f, 6.9f, 6.2f, 5.5f };
     private readonly float EVENT_STARTPOS_X = 14f;
 
+    private Color[] moveColors = { 
+        ArgbColor.ConvertFromBytes(255, 185, 255, 255),
+        ArgbColor.ConvertFromBytes(255, 63, 255, 13),
+        ArgbColor.ConvertFromBytes(255, 162, 0, 255),
+        ArgbColor.ConvertFromBytes(255, 255, 173, 0)
+    };
+
     public GameObject uiAnchor;
     public GameObject moveContinuousEventBase;
     public GameObject moveInstantEventBase;
@@ -32,7 +39,7 @@ public class MoveFactory : MonoBehaviour
                     case EventTypeEnum.ArrowDownDuration:  moveTypeEnum = MoveTypeEnum.Down; eventPosition.y = eventYPositions[3];   break;
                     default: moveTypeEnum = MoveTypeEnum.Down; eventPosition.y = eventYPositions[3]; break;
                 }
-                newMoveEvent.GetComponent<IMoveEvent>().SetObjectVals(movementEvent.StartTime, movementEvent.Duration, moveTypeEnum, ticksPerSpeed);
+                newMoveEvent.GetComponent<IMoveEvent>().SetObjectVals(movementEvent.StartTime, movementEvent.Duration, moveTypeEnum, ticksPerSpeed, moveColors[(int)moveTypeEnum]);
                 newMoveEvent.transform.position = eventPosition;
                 createdMoveEvents.Add(newMoveEvent);
             }
@@ -48,11 +55,16 @@ public class MoveFactory : MonoBehaviour
                     case EventTypeEnum.ArrowDownInstant:  moveTypeEnum = MoveTypeEnum.Down; eventPosition.y = eventYPositions[3];  break;
                     default: moveTypeEnum = MoveTypeEnum.Down; break;
                 }
-                newMoveEvent.GetComponent<IMoveEvent>().SetObjectVals(movementEvent.StartTime, movementEvent.Duration, moveTypeEnum, ticksPerSpeed);
+                newMoveEvent.GetComponent<IMoveEvent>().SetObjectVals(movementEvent.StartTime, movementEvent.Duration, moveTypeEnum, ticksPerSpeed, moveColors[(int)moveTypeEnum]);
                 newMoveEvent.transform.position = eventPosition;
                 createdMoveEvents.Add(newMoveEvent);
             }
         }
         return createdMoveEvents;
+    }
+
+    public void SetMoveColor(int colorID, Color color)
+    {
+        moveColors[colorID] = color;
     }
 }
