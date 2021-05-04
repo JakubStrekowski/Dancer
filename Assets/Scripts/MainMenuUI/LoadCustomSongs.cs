@@ -153,4 +153,9 @@ public class LoadCustomSongs : MonoBehaviour
             }
         }));
     }
+
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
 }
