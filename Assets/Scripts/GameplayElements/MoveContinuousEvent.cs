@@ -27,6 +27,7 @@ public class MoveContinuousEvent : MonoBehaviour, IMoveEvent
     private float durationInSeconds;
     private float passedTimeWhileHeld;
 
+    public ParticleSystem onHitEffect;
     public bool IsBeingHeld { get; set; }
     public float MoveSpeed { get => moveSpeed; private set => moveSpeed=value; }
     public float BeginTime { get; private set; }
@@ -46,6 +47,7 @@ public class MoveContinuousEvent : MonoBehaviour, IMoveEvent
             IsBeingHeld = true;
             rb.velocity = Vector2.zero;
             passedTimeWhileHeld = 0;
+            onHitEffect.Play();
         }
     }
 
@@ -85,6 +87,8 @@ public class MoveContinuousEvent : MonoBehaviour, IMoveEvent
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
+        ParticleSystem.MainModule particleMainModule = onHitEffect.main;
+        particleMainModule.startColor = colorToSet;
     }
 
     void Update()

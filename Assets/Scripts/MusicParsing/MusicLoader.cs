@@ -12,14 +12,15 @@ public class MusicLoader
     public DancerSong DancerSongParsed {get; private set; }
     AudioClip newMusic;
 
-    private readonly string MUSIC_PATH = Application.dataPath+"/Resources/Music/";
+
+    public string musicPath;
 
     public void LoadMusicMoves(string folderName = "Test")
     {
         string fileName = folderName + '/' + folderName + ".xml";
-        if (File.Exists(MUSIC_PATH + fileName))
+        if (File.Exists(musicPath + fileName))
         {
-            System.IO.TextReader reader = new StreamReader(MUSIC_PATH + fileName);
+            System.IO.TextReader reader = new StreamReader(musicPath + fileName);
             XmlSerializer xml = new XmlSerializer(typeof(DancerSong));
             DancerSongParsed = xml.Deserialize(reader) as DancerSong;
             reader.Close();
@@ -38,9 +39,13 @@ public class MusicLoader
         {
             audioType = AudioType.MPEG;
         }
+        if (DancerSongParsed.musicFilePath.EndsWith("ogg"))
+        {
+            audioType = AudioType.OGGVORBIS;
+        }
 
         if (callback == null) yield break;
-        using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip("file://"+ MUSIC_PATH + '/'+ folderName + '/' + DancerSongParsed.musicFilePath, audioType))
+        using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip("file://"+ musicPath + '/'+ folderName + '/' + DancerSongParsed.musicFilePath, audioType))
         {
             yield return www.SendWebRequest();
 

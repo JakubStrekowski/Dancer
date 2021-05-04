@@ -12,6 +12,7 @@ public class MoveInstantEvent : MonoBehaviour, IMoveEvent
     private bool isCheckedCorrect = false;
     private Color colorToSet;
 
+    public ParticleSystem onHitEffect;
     public float MoveSpeed { get => moveSpeed; private set => moveSpeed = value; }
     public float BeginTime { get; private set; }
     public MoveTypeEnum MoveType { get; private set; }
@@ -43,6 +44,7 @@ public class MoveInstantEvent : MonoBehaviour, IMoveEvent
     {
         isCheckedCorrect = true;
         GetComponent<SpriteRenderer>().color = new Color(255, 255, 255);
+        onHitEffect.Play();
         NoteChecker.OnButtonCorrect();
     }
 
@@ -71,6 +73,8 @@ public class MoveInstantEvent : MonoBehaviour, IMoveEvent
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
+        ParticleSystem.MainModule particleMainModule = onHitEffect.main;
+        particleMainModule.startColor = colorToSet;
     }
 
     private IEnumerator DestroyAfterTime()

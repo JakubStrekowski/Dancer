@@ -1,10 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering.Universal;
+using UnityEngine.SceneManagement;
 
 public class NoteChecker : MonoBehaviour
 {
+    private readonly float LIGHT_INTENSITY_LOW = 0.5f;
+    private readonly float LIGHT_INTENSITY_HIGH = 1f;
+
     private List<IMoveEvent> moveEventsInChecker;
+    private float timeToRestart = 1f;
+    private float timeRestartPassed = 0;
 
     public delegate void OnHitMistakeDelegate();
     public static OnHitMistakeDelegate hitMistakeDelegate;
@@ -12,6 +19,7 @@ public class NoteChecker : MonoBehaviour
     public delegate void OnHitCorrectDelegate();
     public static OnHitCorrectDelegate hitCorrectDelegate;
 
+    public Light2D[] arrowLights;
     // Start is called before the first frame update
     void Awake()
     {
@@ -44,6 +52,8 @@ public class NoteChecker : MonoBehaviour
                     break;
                 }
             }
+            arrowLights[(int)MoveTypeEnum.Down].intensity = LIGHT_INTENSITY_HIGH;
+
             if (!hitCorrect) OnButtonMistake();
         }
         if (Input.GetButtonDown("Left"))
@@ -57,6 +67,8 @@ public class NoteChecker : MonoBehaviour
                     break;
                 }
             }
+            arrowLights[(int)MoveTypeEnum.Left].intensity = LIGHT_INTENSITY_HIGH;
+
             if (!hitCorrect) OnButtonMistake();
         }
         if (Input.GetButtonDown("Right"))
@@ -70,6 +82,8 @@ public class NoteChecker : MonoBehaviour
                     break;
                 }
             }
+            arrowLights[(int)MoveTypeEnum.Right].intensity = LIGHT_INTENSITY_HIGH;
+
             if (!hitCorrect) OnButtonMistake();
         }
         if (Input.GetButtonDown("Up"))
@@ -83,6 +97,8 @@ public class NoteChecker : MonoBehaviour
                     break;
                 }
             }
+            arrowLights[(int)MoveTypeEnum.Up].intensity = LIGHT_INTENSITY_HIGH;
+
             if (!hitCorrect) OnButtonMistake();
         }
         //---------------------
@@ -99,6 +115,8 @@ public class NoteChecker : MonoBehaviour
                     break;
                 }
             }
+
+            arrowLights[(int)MoveTypeEnum.Down].intensity = LIGHT_INTENSITY_LOW;
         }
 
         if (Input.GetButtonUp("Left"))
@@ -112,6 +130,8 @@ public class NoteChecker : MonoBehaviour
                     break;
                 }
             }
+
+            arrowLights[(int)MoveTypeEnum.Left].intensity = LIGHT_INTENSITY_LOW;
         }
 
         if (Input.GetButtonUp("Right"))
@@ -125,6 +145,8 @@ public class NoteChecker : MonoBehaviour
                     break;
                 }
             }
+
+            arrowLights[(int)MoveTypeEnum.Right].intensity = LIGHT_INTENSITY_LOW;
         }
 
         if (Input.GetButtonUp("Up"))
@@ -138,6 +160,28 @@ public class NoteChecker : MonoBehaviour
                     break;
                 }
             }
+
+            arrowLights[(int)MoveTypeEnum.Up].intensity = LIGHT_INTENSITY_LOW;
+        }
+
+        //--resetting song
+        if(Input.GetButton("Restart"))
+        {
+            timeRestartPassed += Time.deltaTime;
+            if(timeRestartPassed >= timeToRestart)
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
+        }
+        if(Input.GetButtonUp("Restart"))
+        {
+            timeRestartPassed = 0;
+        }
+
+        //escaping to menu
+        if (Input.GetButtonDown("Cancel"))
+        {
+            SceneManager.LoadScene((int)ESceneIndexes.mainMenuSceneIndex);
         }
     }
     public static void OnButtonMistake()

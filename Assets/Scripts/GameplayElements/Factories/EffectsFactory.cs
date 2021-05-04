@@ -13,13 +13,8 @@ public class EffectsFactory : MonoBehaviour
     [SerializeField]
     GameObject visualEffectObject;
 
-    private string MUSIC_PATH;
     List<VisualEffectSprite> visualObjects;
 
-    private void Awake()
-    {
-        MUSIC_PATH = Application.dataPath + "/Resources/Music/";
-    }
 
     public List<VisualEventBase> GenerateVisualEffectObjects(DancerEvents dancerEvents, float ticksPerSpeed)
     {
@@ -35,7 +30,7 @@ public class EffectsFactory : MonoBehaviour
             GameObject newObject = Instantiate(visualEffectObject,
                 new Vector3(float.Parse(visualEvent.paramsList[(int)CreateParamsEnum.posX]), float.Parse(visualEvent.paramsList[(int)CreateParamsEnum.posY]), 0),
                 Quaternion.identity);
-            DownloadImage(MUSIC_PATH + GameMaster.Instance.musicLoader.DancerSongParsed.title + "/" + visualEvent.paramsList[(int)CreateParamsEnum.spritePath],newObject);
+            DownloadImage(GameMaster.Instance.musicLoader.musicPath + GameMaster.Instance.musicLoader.DancerSongParsed.title + "/" + visualEvent.paramsList[(int)CreateParamsEnum.spritePath],newObject);
             newObject.GetComponent<VisualEffectSprite>().SetParameters(ticksPerSpeed);
 
             visualObjects.Add(newObject.GetComponent<VisualEffectSprite>());

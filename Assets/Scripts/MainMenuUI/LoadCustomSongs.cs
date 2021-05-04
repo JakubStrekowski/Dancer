@@ -12,6 +12,7 @@ public class LoadCustomSongs : MonoBehaviour
 {
     private readonly float NEXT_ELEMENT_OFFSET = 100;
     private string MUSIC_PATH;
+    private string PREDEFINED_MUSIC_PATH;
 
     private readonly string SCORE_MOCK = "No highscore yet";
 
@@ -22,47 +23,71 @@ public class LoadCustomSongs : MonoBehaviour
     private RectTransform scrollContent;
 
     [SerializeField]
+    private RectTransform predefinedScrollContent;
+
+    [SerializeField]
     private GameObject previewSongObject;
 
     private List<DancerSong> dancerSongs;
     private float currentOffset;
     private Sprite previewImage;
+    private RectTransform selectedContent;
 
     private ESongLoadStages currentLoadStage;
 
     public enum ESongLoadStages
     {
+        readyToOperate = 0,
         loadingPreview,
-        awaitingForNextDir
+        awaitingForNextDir,
     }
 
     private void Awake()
     {
         dancerSongs = new List<DancerSong>();
         MUSIC_PATH = Application.dataPath + "/Resources/Music/";
+        PREDEFINED_MUSIC_PATH = Application.dataPath + "/Resources/PredefinedMusic/";
     }
 
     private void Start()
     {
         loader = GameMaster.Instance.musicLoader;
     }
+    public void OnPredefinedSongMenuOpened()
+    {
+        if(currentLoadStage == ESongLoadStages.readyToOperate)
+        {
+            currentLoadStage = ESongLoadStages.loadingPreview;
+            loader.musicPath = PREDEFINED_MUSIC_PATH;
+            selectedContent = predefinedScrollContent;
+            dancerSongs = new List<DancerSong>();
+
+            StartCoroutine(LoadAllLevels());
+        }
+    }
 
     public void OnCustomSongMenuOpened()
     {
-        currentLoadStage = ESongLoadStages.loadingPreview;
+        if (currentLoadStage == ESongLoadStages.readyToOperate)
+        {
+            currentLoadStage = ESongLoadStages.loadingPreview;
+            loader.musicPath = MUSIC_PATH;
+            selectedContent = scrollContent;
+            dancerSongs = new List<DancerSong>();
 
-        StartCoroutine(LoadAllLevels());
+            StartCoroutine(LoadAllLevels());
+        }
     }
 
     private IEnumerator LoadAllLevels()
     {
 
-        for (int i = scrollContent.transform.childCount - 1; i >= 0; i--)
+        for (int i = selectedContent.transform.childCount - 1; i >= 0; i--)
         {
-            GameObject.Destroy(scrollContent.transform.GetChild(i).gameObject);
+            GameObject.Destroy(selectedContent.transform.GetChild(i).gameObject);
         }
 
-        List<string> directories = Directory.EnumerateDirectories(MUSIC_PATH).ToList();
+        List<string> directories = Directory.EnumerateDirectories(loader.musicPath).ToList();
         currentOffset = 0;
         int iter = 0;
         foreach (string dir in directories)
@@ -97,7 +122,7 @@ public class LoadCustomSongs : MonoBehaviour
                 }
 
 
-                newSongElement = GameObject.Instantiate(previewSongObject, scrollContent.transform);
+                newSongElement = GameObject.Instantiate(previewSongObject, selectedContent.transform);
                 newSongElement.GetComponent<FoundSongElementUI>().OnInit(fileName, currentOffset, previewImage, dancerSongs[iter].title,
                    dancerSongs[iter].additionaldesc, highScoreText, scoreColor);
 
@@ -106,6 +131,7 @@ public class LoadCustomSongs : MonoBehaviour
                 iter++;
             }
         }
+        currentLoadStage = ESongLoadStages.readyToOperate;
     }
 
     private void DownloadImage(string url)
