@@ -46,6 +46,7 @@ public class GameMaster : MonoBehaviour
 
     public void BeginSongLevel()
     {
+        nextMusic = null;
         SceneManager.LoadScene((int)ESceneIndexes.playSongSceneIndex);
         musicLoader.LoadMusicMoves(selectedSongFile);
         GetAudioClip();
