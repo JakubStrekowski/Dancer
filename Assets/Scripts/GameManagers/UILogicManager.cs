@@ -23,6 +23,12 @@ public class UILogicManager : MonoBehaviour
     public TextMeshProUGUI finalScore;
     public TextMeshProUGUI newHighScore;
     public Slider songProgress;
+    public TextMeshProUGUI titleTxt;
+
+    public void UpdateTitle(string value)
+    {
+        titleTxt.text = value;
+    }
 
     public void SetMaxValue(float value)
     {

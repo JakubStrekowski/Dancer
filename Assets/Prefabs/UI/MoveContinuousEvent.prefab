@@ -241,7 +241,7 @@ GameObject:
   - component: {fileID: 667955300870724231}
   - component: {fileID: 1443485246230132862}
   - component: {fileID: 6708728812839493961}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: OnHitParticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5066,7 +5066,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 5
   m_RenderMode: 0
   m_SortMode: 0
   m_MinParticleSize: 0

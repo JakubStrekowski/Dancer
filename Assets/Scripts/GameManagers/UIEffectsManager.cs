@@ -11,6 +11,7 @@ public class UIEffectsManager : MonoBehaviour
     private Image panelUi;
     private TextMeshProUGUI scoreText;
     private TextMeshProUGUI instructionsText;
+    private TextMeshProUGUI titleText;
     private Image songProgress;
     private Image songProgressBg;
 
@@ -25,6 +26,7 @@ public class UIEffectsManager : MonoBehaviour
         panelUi = GameObject.Find("UIScorePanel").GetComponent<Image>();
         scoreText = GameObject.Find("MissesTxt").GetComponent<TextMeshProUGUI>();
         instructionsText = GameObject.Find("ButtonInfo").GetComponent<TextMeshProUGUI>();
+        titleText = GameObject.Find("TitleInfo").GetComponent<TextMeshProUGUI>();
         songProgress = GameObject.Find("ProgressFill").GetComponent<Image>();
         songProgressBg = GameObject.Find("ProgressBackground").GetComponent<Image>();
     }
@@ -47,6 +49,7 @@ public class UIEffectsManager : MonoBehaviour
     {
         scoreText.color = color;
         instructionsText.color = color;
+        titleText.color = color;
         songProgress.color = color;
         songProgressBg.color = new Color(color.r * 0.5f, color.g * 0.5f, color.b * 0.5f, color.a);
     }

@@ -78,6 +78,7 @@ public class GameManager : MonoBehaviour
         correctCount = 0;
         totalMoveEvents = GameMaster.Instance.musicLoader.DancerSongParsed.dancerEvents.movementEvents.Count;
         uILogicManager.UpdateMissesUI(correctCount, mistakeCount, totalMoveEvents);
+        uILogicManager.UpdateTitle(GameMaster.Instance.musicLoader.DancerSongParsed.title);
         uILogicManager.SetMaxValue((moveEvents[moveEvents.Count - 1].GetComponent("IMoveEvent") as IMoveEvent).GetBeginTime() / tickPerSecond + timeToReachChecker);
 
         //set ui colors
