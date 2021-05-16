@@ -71,8 +71,8 @@ public class MoveContinuousEvent : MonoBehaviour, IMoveEvent
         BeginTime = beginTime;
         Duration = duration;
         MoveType = moveType;
-        holdBar.transform.localScale = new Vector3((1f * ticksPerSpeed / duration), transform.localScale.y);
-        durationInSeconds = 1f * ticksPerSpeed / duration;
+        holdBar.transform.localScale = new Vector3((1f * duration / ticksPerSpeed), transform.localScale.y);
+        durationInSeconds = 1f * duration / ticksPerSpeed;
         colorToSet = color;
     }
     public void ActivateEvent(float speed)

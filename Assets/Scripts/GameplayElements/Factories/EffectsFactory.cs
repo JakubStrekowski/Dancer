@@ -14,12 +14,12 @@ public class EffectsFactory : MonoBehaviour
     GameObject visualEffectObject;
 
     List<VisualEffectSprite> visualObjects;
-
+    int currentLayer = 0;
 
     public List<VisualEventBase> GenerateVisualEffectObjects(DancerEvents dancerEvents, float ticksPerSpeed)
     {
         visualObjects = new List<VisualEffectSprite>();
-
+        currentLayer = 0;
         List<VisualEventBase> creationEvents = dancerEvents.visualEvents.Where(x => x.eventType == VisualEventTypeEnum.CreateObject).ToList();
 
         List<VisualEventBase> orderedList = dancerEvents.visualEvents.OrderBy(x => x.startTime).ToList();
@@ -32,7 +32,8 @@ public class EffectsFactory : MonoBehaviour
                 Quaternion.identity);
             DownloadImage(GameMaster.Instance.musicLoader.musicPath + GameMaster.Instance.musicLoader.DancerSongParsed.title + "/" + visualEvent.paramsList[(int)CreateParamsEnum.spritePath],newObject);
             newObject.GetComponent<VisualEffectSprite>().SetParameters(ticksPerSpeed);
-
+            newObject.GetComponent<SpriteRenderer>().sortingOrder = currentLayer;
+            currentLayer++;
             visualObjects.Add(newObject.GetComponent<VisualEffectSprite>());
         }
 
