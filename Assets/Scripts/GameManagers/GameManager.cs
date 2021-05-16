@@ -78,6 +78,7 @@ public class GameManager : MonoBehaviour
         correctCount = 0;
         totalMoveEvents = GameMaster.Instance.musicLoader.DancerSongParsed.dancerEvents.movementEvents.Count;
         uILogicManager.UpdateMissesUI(correctCount, mistakeCount, totalMoveEvents);
+        uILogicManager.SetMaxValue((moveEvents[moveEvents.Count - 1].GetComponent("IMoveEvent") as IMoveEvent).GetBeginTime() / tickPerSecond + timeToReachChecker);
 
         //set ui colors
         ArgbColor newColor = GameMaster.Instance.musicLoader.DancerSongParsed.upArrowColor;
@@ -132,6 +133,8 @@ public class GameManager : MonoBehaviour
                         audioSrc.Play();
                         songWasPlayed = true;
                     }
+
+                    uILogicManager.UpdateProgress(currentMusicTime);
 
                     //setting move events active when they reach (time - time for them to reach note checker)
                     if (moveEvents.Count != 0)

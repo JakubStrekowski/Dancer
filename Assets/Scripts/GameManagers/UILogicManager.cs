@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public enum ELevelCompleteGrades
 {
@@ -21,6 +22,17 @@ public class UILogicManager : MonoBehaviour
     public GameObject gameEndedPanel;
     public TextMeshProUGUI finalScore;
     public TextMeshProUGUI newHighScore;
+    public Slider songProgress;
+
+    public void SetMaxValue(float value)
+    {
+        songProgress.maxValue = value;
+    }
+
+    public void UpdateProgress(float value)
+    {
+        songProgress.value = value;
+    }
 
     public void UpdateMissesUI(int correctCount, int currentMisses, int totalMoves)
     {

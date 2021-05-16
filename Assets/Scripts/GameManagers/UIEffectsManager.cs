@@ -10,6 +10,9 @@ public class UIEffectsManager : MonoBehaviour
     private SpriteRenderer background;
     private Image panelUi;
     private TextMeshProUGUI scoreText;
+    private TextMeshProUGUI instructionsText;
+    private Image songProgress;
+    private Image songProgressBg;
 
     void Awake()
     {
@@ -21,7 +24,9 @@ public class UIEffectsManager : MonoBehaviour
         background = GameObject.Find("Background").GetComponent<SpriteRenderer>();
         panelUi = GameObject.Find("UIScorePanel").GetComponent<Image>();
         scoreText = GameObject.Find("MissesTxt").GetComponent<TextMeshProUGUI>();
-
+        instructionsText = GameObject.Find("ButtonInfo").GetComponent<TextMeshProUGUI>();
+        songProgress = GameObject.Find("ProgressFill").GetComponent<Image>();
+        songProgressBg = GameObject.Find("ProgressBackground").GetComponent<Image>();
     }
 
     public void SetArrowColor(MoveTypeEnum moveTypeEnum, Color color)
@@ -41,5 +46,8 @@ public class UIEffectsManager : MonoBehaviour
     public void SetTextColor(Color color)
     {
         scoreText.color = color;
+        instructionsText.color = color;
+        songProgress.color = color;
+        songProgressBg.color = new Color(color.r * 0.5f, color.g * 0.5f, color.b * 0.5f, color.a);
     }
 }

@@ -22,6 +22,7 @@ public class MoveContinuousEvent : MonoBehaviour, IMoveEvent
     private Rigidbody2D rb;
     private SpriteRenderer sr;
     private bool isCheckedCorrect = false;
+    private bool isReleasedTooEarly = false;
     private Color colorToSet;
 
     private float durationInSeconds;
@@ -131,5 +132,15 @@ public class MoveContinuousEvent : MonoBehaviour, IMoveEvent
     {
         IsBeingHeld = false;
         rb.velocity = moveSpeed * Vector2.left;
+        if(fillPercentage < 1)
+        {
+            isReleasedTooEarly = true;
+        }
     }
+
+    public bool IsReleasedTooEarly()
+    {
+        return isReleasedTooEarly;
+    }
+
 }

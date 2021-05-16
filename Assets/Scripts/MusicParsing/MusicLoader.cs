@@ -15,7 +15,7 @@ public class MusicLoader
 
     public string musicPath;
 
-    public void LoadMusicMoves(string folderName = "Test")
+    public void LoadMusicMoves(string folderName = "AVGVSTA - Together Again")
     {
         string fileName = folderName + '/' + folderName + ".xml";
         if (File.Exists(musicPath + fileName))

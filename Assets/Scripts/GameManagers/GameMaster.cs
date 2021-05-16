@@ -31,9 +31,10 @@ public class GameMaster : MonoBehaviour
 
             if (SceneManager.GetActiveScene().buildIndex == (int)ESceneIndexes.playSongSceneIndex) //loaded level without main menu
             {
-                selectedSongFile = "Test";
+                selectedSongFile = "AVGVSTA - Together Again";
                 musicLoader = new MusicLoader();
-                musicLoader.LoadMusicMoves();
+                musicLoader.musicPath = Application.dataPath + "/Resources/PredefinedMusic/";
+                musicLoader.LoadMusicMoves(selectedSongFile);
                 GetAudioClip();
                 return;
             }

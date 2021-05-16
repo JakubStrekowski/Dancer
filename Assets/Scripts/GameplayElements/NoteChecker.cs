@@ -6,8 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class NoteChecker : MonoBehaviour
 {
-    private readonly float LIGHT_INTENSITY_LOW = 0.5f;
-    private readonly float LIGHT_INTENSITY_HIGH = 1f;
 
     private List<IMoveEvent> moveEventsInChecker;
     private float timeToRestart = 1f;
@@ -19,7 +17,7 @@ public class NoteChecker : MonoBehaviour
     public delegate void OnHitCorrectDelegate();
     public static OnHitCorrectDelegate hitCorrectDelegate;
 
-    public Light2D[] arrowLights;
+    public ArrowLightEffect[] arrowLights;
     // Start is called before the first frame update
     void Awake()
     {
@@ -47,12 +45,16 @@ public class NoteChecker : MonoBehaviour
             {
                 if (moveEvent.GetEventTypeID() == MoveTypeEnum.Down && !moveEvent.isEventCheckedCorrect())
                 {
+                    if(moveEvent is MoveContinuousEvent)
+                    {
+                        if ((moveEvent as MoveContinuousEvent).IsReleasedTooEarly()) continue;
+                    }
                     moveEvent.OnCorrectButtonInCollision();
                     hitCorrect = true;
                     break;
                 }
             }
-            arrowLights[(int)MoveTypeEnum.Down].intensity = LIGHT_INTENSITY_HIGH;
+            arrowLights[(int)MoveTypeEnum.Down].LightUpEvent();
 
             if (!hitCorrect) OnButtonMistake();
         }
@@ -62,12 +64,16 @@ public class NoteChecker : MonoBehaviour
             {
                 if (moveEvent.GetEventTypeID() == MoveTypeEnum.Left && !moveEvent.isEventCheckedCorrect())
                 {
+                    if (moveEvent is MoveContinuousEvent)
+                    {
+                        if ((moveEvent as MoveContinuousEvent).IsReleasedTooEarly()) continue;
+                    }
                     moveEvent.OnCorrectButtonInCollision();
                     hitCorrect = true;
                     break;
                 }
             }
-            arrowLights[(int)MoveTypeEnum.Left].intensity = LIGHT_INTENSITY_HIGH;
+            arrowLights[(int)MoveTypeEnum.Left].LightUpEvent();
 
             if (!hitCorrect) OnButtonMistake();
         }
@@ -77,12 +83,16 @@ public class NoteChecker : MonoBehaviour
             {
                 if (moveEvent.GetEventTypeID() == MoveTypeEnum.Right && !moveEvent.isEventCheckedCorrect())
                 {
+                    if (moveEvent is MoveContinuousEvent)
+                    {
+                        if ((moveEvent as MoveContinuousEvent).IsReleasedTooEarly()) continue;
+                    }
                     moveEvent.OnCorrectButtonInCollision();
                     hitCorrect = true;
                     break;
                 }
             }
-            arrowLights[(int)MoveTypeEnum.Right].intensity = LIGHT_INTENSITY_HIGH;
+            arrowLights[(int)MoveTypeEnum.Right].LightUpEvent();
 
             if (!hitCorrect) OnButtonMistake();
         }
@@ -92,12 +102,16 @@ public class NoteChecker : MonoBehaviour
             {
                 if (moveEvent.GetEventTypeID() == MoveTypeEnum.Up && !moveEvent.isEventCheckedCorrect())
                 {
+                    if (moveEvent is MoveContinuousEvent)
+                    {
+                        if ((moveEvent as MoveContinuousEvent).IsReleasedTooEarly()) continue;
+                    }
                     moveEvent.OnCorrectButtonInCollision();
                     hitCorrect = true;
                     break;
                 }
             }
-            arrowLights[(int)MoveTypeEnum.Up].intensity = LIGHT_INTENSITY_HIGH;
+            arrowLights[(int)MoveTypeEnum.Up].LightUpEvent();
 
             if (!hitCorrect) OnButtonMistake();
         }
@@ -115,8 +129,6 @@ public class NoteChecker : MonoBehaviour
                     break;
                 }
             }
-
-            arrowLights[(int)MoveTypeEnum.Down].intensity = LIGHT_INTENSITY_LOW;
         }
 
         if (Input.GetButtonUp("Left"))
@@ -130,8 +142,6 @@ public class NoteChecker : MonoBehaviour
                     break;
                 }
             }
-
-            arrowLights[(int)MoveTypeEnum.Left].intensity = LIGHT_INTENSITY_LOW;
         }
 
         if (Input.GetButtonUp("Right"))
@@ -145,8 +155,6 @@ public class NoteChecker : MonoBehaviour
                     break;
                 }
             }
-
-            arrowLights[(int)MoveTypeEnum.Right].intensity = LIGHT_INTENSITY_LOW;
         }
 
         if (Input.GetButtonUp("Up"))
@@ -160,8 +168,6 @@ public class NoteChecker : MonoBehaviour
                     break;
                 }
             }
-
-            arrowLights[(int)MoveTypeEnum.Up].intensity = LIGHT_INTENSITY_LOW;
         }
 
         //--resetting song
