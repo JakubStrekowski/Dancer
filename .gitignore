@@ -61,3 +61,5 @@ crashlytics-build.properties
 /Assets/TextMesh Pro
 /Assets/Resources/Music
 /Assets/Saved
+
+*.meta
