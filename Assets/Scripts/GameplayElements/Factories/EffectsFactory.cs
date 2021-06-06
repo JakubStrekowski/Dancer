@@ -14,13 +14,16 @@ public class EffectsFactory : MonoBehaviour
     GameObject visualEffectObject;
 
     List<VisualEffectSprite> visualObjects;
+    Dictionary<string, Sprite> spritesToChangeReserve;
     int currentLayer = 0;
 
     public List<VisualEventBase> GenerateVisualEffectObjects(DancerEvents dancerEvents, float ticksPerSpeed)
     {
         visualObjects = new List<VisualEffectSprite>();
+        spritesToChangeReserve = new Dictionary<string, Sprite>();
         currentLayer = 0;
         List<VisualEventBase> creationEvents = dancerEvents.visualEvents.Where(x => x.eventType == VisualEventTypeEnum.CreateObject).ToList();
+        List<VisualEventBase> changeSprites = dancerEvents.visualEvents.Where(x => x.eventType == VisualEventTypeEnum.ChangeSprite).ToList();
 
         List<VisualEventBase> orderedList = dancerEvents.visualEvents.OrderBy(x => x.startTime).ToList();
         dancerEvents.visualEvents = new Collection<VisualEventBase>(orderedList);
@@ -35,6 +38,16 @@ public class EffectsFactory : MonoBehaviour
             newObject.GetComponent<SpriteRenderer>().sortingOrder = currentLayer;
             currentLayer++;
             visualObjects.Add(newObject.GetComponent<VisualEffectSprite>());
+        }
+
+        foreach(VisualEventBase visualEvent in changeSprites)
+        {
+            if(!spritesToChangeReserve.ContainsKey(visualEvent.paramsList[0]))
+            {
+                DownloadImageToCollection(GameMaster.Instance.musicLoader.musicPath + GameMaster.Instance.musicLoader.DancerSongParsed.title + "/" + visualEvent.paramsList[(int)CreateParamsEnum.spritePath],
+                    visualEvent.paramsList[(int)CreateParamsEnum.spritePath]);
+            }
+
         }
 
         return dancerEvents.visualEvents.ToList();
@@ -102,6 +115,12 @@ public class EffectsFactory : MonoBehaviour
                     visualObjects[effect.objectId].RotateArc(float.Parse(parsedFx.paramsList[(int)ChangePotationLinearParamsEnum.rotation]), float.Parse(parsedFx.paramsList[(int)ChangePositionLinearParamsEnum.duration]));
                     break;
                 }
+            case VisualEventTypeEnum.ChangeSprite:
+                {
+                    ChangeSpriteVisualEffect parsedFx = (ChangeSpriteVisualEffect)effect;
+                    visualObjects[effect.objectId].ChangeSprite(spritesToChangeReserve[effect.paramsList[(int)CreateParamsEnum.spritePath]]);
+                    break;
+                }
             default:break;
         }
     }
@@ -120,6 +139,24 @@ public class EffectsFactory : MonoBehaviour
                 Texture2D texture = DownloadHandlerTexture.GetContent(www);
                 // Save it into the Image UI's sprite
                 visualEffect.GetComponent<SpriteRenderer>().sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+            }
+        }));
+    }
+
+    private void DownloadImageToCollection(string url, string name)
+    {
+        StartCoroutine(GameMaster.Instance.musicLoader.ImageRequest(url, (UnityWebRequest www) =>
+        {
+            if (www.result == UnityWebRequest.Result.ConnectionError)
+            {
+                Debug.Log($"{www.error}: {www.downloadHandler.text}");
+            }
+            else
+            {
+                // Get the texture out using a helper downloadhandler
+                Texture2D texture = DownloadHandlerTexture.GetContent(www);
+                // Save it into the Image UI's sprite
+                spritesToChangeReserve.Add(name ,Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f)));
             }
         }));
     }

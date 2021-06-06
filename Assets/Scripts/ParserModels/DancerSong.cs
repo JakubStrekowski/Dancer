@@ -22,6 +22,7 @@ namespace MIDIparser.Models
     [XmlInclude(typeof(ChangePositionDampingVisualEffect))]
     [XmlInclude(typeof(ChangeRotationLinearVisualEffect))]
     [XmlInclude(typeof(ChangeRotationArcVisualEffect))]
+    [XmlInclude(typeof(ChangeSpriteVisualEffect))]
     public class DancerSong
     {
         //general info

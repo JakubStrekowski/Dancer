@@ -93,6 +93,11 @@ public class VisualEffectSprite : MonoBehaviour
         }
     }
 
+    public void ChangeSprite(Sprite newSprite)
+    {
+        sr.sprite = newSprite;
+    }
+
     private IEnumerator MoveLinearProcedure(Vector2 position, float duration)
     {
         float time = 0;

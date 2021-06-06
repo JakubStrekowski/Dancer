@@ -17,6 +17,7 @@ namespace MIDIparser.Models
         ChangePosObjectArc,
         ChangeRotObjectLinear,
         ChangeRotObjectArc,
+        ChangeSprite
     }
 
     [Serializable]

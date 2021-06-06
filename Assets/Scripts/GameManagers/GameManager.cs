@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
 
         //instantiate all visual events
         visualEvents = effectsFactory.GenerateVisualEffectObjects(GameMaster.Instance.musicLoader.DancerSongParsed.dancerEvents, tickPerSecond * speedDiffficulty);
-        //prepare misstake counts and update ui
+        //prepare mistake counts and update ui
         mistakeCount = 0;
         correctCount = 0;
         totalMoveEvents = GameMaster.Instance.musicLoader.DancerSongParsed.dancerEvents.movementEvents.Count;
