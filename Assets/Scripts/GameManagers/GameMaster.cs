@@ -67,4 +67,13 @@ public class GameMaster : MonoBehaviour
     {
         selectedSongFile = song;
     }
+
+    public void LoadSongToEditor(string song)
+    {
+        selectedSongFile = song;
+        musicLoader.LoadMusicMoves(selectedSongFile);
+        GetAudioClip();
+        GameObject.Find("EditorManager").GetComponent<EditorUIManager>().RefreshEditorTexts(musicLoader.DancerSongParsed); //TODO refactor
+        GameObject.Find("CustomGamesPanel").SetActive(false);
+    }
 }

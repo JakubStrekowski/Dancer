@@ -1,6 +1,9 @@
+using MIDIparser.Models;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 public enum EEditorToolState
@@ -33,6 +36,13 @@ public enum EEditorToolEventMode
     arc,
 }
 
+public enum EEditorTextInfoUIObjs
+{
+    title,
+    description
+}
+
+
 
 public class EditorUIManager : MonoBehaviour
 {
@@ -41,6 +51,27 @@ public class EditorUIManager : MonoBehaviour
 
     [SerializeField]
     private Button[] paletteButtons;
+
+    [SerializeField]
+    private TextMeshProUGUI infoTexts;
+
+    [SerializeField]
+    private TMP_InputField[] infoInputFields;
+
+    [SerializeField]
+    private Image songImagePreview;
+
+
+    private MusicLoader loader;
+    private string MUSIC_PATH;
+
+
+
+    private void Start()
+    {
+        loader = GameMaster.Instance.musicLoader;
+        MUSIC_PATH = Application.dataPath + "/Resources/Music/";
+    }
 
     private void RefreshButtonStates()
     {
@@ -95,4 +126,32 @@ public class EditorUIManager : MonoBehaviour
             paletteButtons[(int)EEditorButton.linArc].GetComponentInChildren<Text>().text = "Ar";
         }
     }
+
+    public void RefreshEditorTexts(DancerSong dancerSong)
+    {
+        infoInputFields[(int)EEditorTextInfoUIObjs.title].text = dancerSong.title;
+        infoInputFields[(int)EEditorTextInfoUIObjs.description].text = dancerSong.additionaldesc;
+        infoTexts.text = dancerSong.musicFilePath;
+        DownloadImage(MUSIC_PATH + '/' + dancerSong.title + '/' + dancerSong.imagePreviewPath);
+    }
+
+    private void DownloadImage(string url)
+    {
+        StartCoroutine(loader.ImageRequest(url, (UnityWebRequest www) =>
+        {
+            if (www.result == UnityWebRequest.Result.ConnectionError)
+            {
+                Debug.Log($"{www.error}: {www.downloadHandler.text}");
+            }
+            else
+            {
+                // Get the texture out using a helper downloadhandler
+                Texture2D texture = DownloadHandlerTexture.GetContent(www);
+                // Save it into the Image UI's sprite
+                songImagePreview.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+
+            }
+        }));
+    }
+
 }

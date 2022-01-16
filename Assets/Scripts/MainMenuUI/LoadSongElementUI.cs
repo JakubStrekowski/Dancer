@@ -4,16 +4,15 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum EPreviewElementChildObjects
+public enum EPreviewLoadElementChildObjects
 {
     previewImage = 0,
     titleText,
     desciptionText,
-    scoreText,
     playBtn
 }
 
-public class FoundSongElementUI : SongElementUI
+public class LoadSongElementUI : SongElementUI
 {
 
     public override void OnInit(string path, float offset, Sprite image, string title, string description, string score, Color scoreColor)
@@ -28,9 +27,6 @@ public class FoundSongElementUI : SongElementUI
         titleTxt.text = title;
         descriptionTxt = transform.GetChild((int)EPreviewElementChildObjects.desciptionText).GetComponent<TextMeshProUGUI>();
         descriptionTxt.text = description;
-        scoreTxt = transform.GetChild((int)EPreviewElementChildObjects.scoreText).GetComponent<TextMeshProUGUI>();
-        scoreTxt.text = score;
-        scoreTxt.color = scoreColor;
         onPlayBtn = transform.GetChild((int)EPreviewElementChildObjects.playBtn).GetComponent<Button>();
         onPlayBtn.onClick.AddListener(OnPlayClicked);
 
@@ -40,7 +36,6 @@ public class FoundSongElementUI : SongElementUI
 
     public override void OnPlayClicked()
     {
-        GameMaster.Instance.SetSelectedSong(levelFolder);
-        GameMaster.Instance.BeginSongLevel();
+        GameMaster.Instance.LoadSongToEditor(levelFolder);
     }
 }

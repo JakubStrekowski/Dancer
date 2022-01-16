@@ -123,7 +123,7 @@ public class LoadCustomSongs : MonoBehaviour
 
 
                 newSongElement = GameObject.Instantiate(previewSongObject, selectedContent.transform);
-                newSongElement.GetComponent<FoundSongElementUI>().OnInit(fileName, currentOffset, previewImage, dancerSongs[iter].title,
+                newSongElement.GetComponent<SongElementUI>().OnInit(fileName, currentOffset, previewImage, dancerSongs[iter].title,
                    dancerSongs[iter].additionaldesc, highScoreText, scoreColor);
 
                 currentOffset -= NEXT_ELEMENT_OFFSET;
