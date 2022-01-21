@@ -5,6 +5,7 @@ using UnityEngine;
 
 enum ESongStates
 {
+    AwaitingToStart,
     Loading,
     ReadyToPlay,
     Playing,
@@ -21,11 +22,6 @@ public class GameManager : MonoBehaviour
     private UILogicManager uILogicManager;
 
     private AudioClip currentSong;
-    private readonly int MAX_LOAD_TRIES = 5;
-    private readonly float TIME_AFTER_SONG_AWAIT = 1f;
-
-    private readonly float DISTANCE_TO_CHECKER = 20f;
-    private readonly float BASE_SPEED = 4; //with this speed event will reach checker in 5 second
     private float timeToReachChecker = 5f;
     private float tickPerSecond = 1680f;
 
@@ -49,60 +45,23 @@ public class GameManager : MonoBehaviour
 
     private bool songWasPlayed = false;
 
-    ESongStates songState = ESongStates.Loading;
+    ESongStates songState = ESongStates.AwaitingToStart;
     private void Awake()
     {
         NoteChecker.hitMistakeDelegate += AddOneMistake;
         NoteChecker.hitCorrectDelegate += AddOneCorrect;
     }
-    // Start is called before the first frame update
-    void Start()
+
+    void OnEnable()
     {
-        moveSpeed = BASE_SPEED * speedDiffficulty;
-        timeToReachChecker = DISTANCE_TO_CHECKER / moveSpeed;
-        //TODO set another stage in loader
-        //Set colors of move events
-        moveFactory.SetMoveColor(0, GameMaster.Instance.musicLoader.DancerSongParsed.upArrowColor.ToUnityColor());
-        moveFactory.SetMoveColor(1, GameMaster.Instance.musicLoader.DancerSongParsed.rightArrowColor.ToUnityColor());
-        moveFactory.SetMoveColor(2, GameMaster.Instance.musicLoader.DancerSongParsed.leftArrowColor.ToUnityColor());
-        moveFactory.SetMoveColor(3, GameMaster.Instance.musicLoader.DancerSongParsed.downArrowColor.ToUnityColor());
-
-        //instantiate all move events
-        tickPerSecond = GameMaster.Instance.musicLoader.DancerSongParsed.ticksPerSecond;
-        moveEvents = moveFactory.GenerateGameMovesFromXml(GameMaster.Instance.musicLoader.DancerSongParsed.dancerEvents, tickPerSecond * speedDiffficulty);
-
-        //instantiate all visual events
-        visualEvents = effectsFactory.GenerateVisualEffectObjects(GameMaster.Instance.musicLoader.DancerSongParsed.dancerEvents, tickPerSecond * speedDiffficulty);
-        //prepare mistake counts and update ui
-        mistakeCount = 0;
-        correctCount = 0;
-        totalMoveEvents = GameMaster.Instance.musicLoader.DancerSongParsed.dancerEvents.movementEvents.Count;
-        uILogicManager.UpdateMissesUI(correctCount, mistakeCount, totalMoveEvents);
-        uILogicManager.UpdateTitle(GameMaster.Instance.musicLoader.DancerSongParsed.title);
-        uILogicManager.SetMaxValue((moveEvents[moveEvents.Count - 1].GetComponent("IMoveEvent") as IMoveEvent).GetBeginTime() / tickPerSecond + timeToReachChecker);
-
-        //set ui colors
-        ArgbColor newColor = GameMaster.Instance.musicLoader.DancerSongParsed.upArrowColor;
-        uiFxManager.SetArrowColor(MoveTypeEnum.Up, new Color((float)newColor.red / 255, (float)newColor.green / 255, (float)newColor.blue / 255, (float)newColor.alpha / 255));
-        newColor = GameMaster.Instance.musicLoader.DancerSongParsed.rightArrowColor;
-        uiFxManager.SetArrowColor(MoveTypeEnum.Right, new Color((float)newColor.red / 255, (float)newColor.green / 255, (float)newColor.blue / 255, (float)newColor.alpha / 255));
-        newColor = GameMaster.Instance.musicLoader.DancerSongParsed.leftArrowColor;
-        uiFxManager.SetArrowColor(MoveTypeEnum.Left, new Color((float)newColor.red / 255, (float)newColor.green / 255, (float)newColor.blue / 255, (float)newColor.alpha / 255));
-        newColor = GameMaster.Instance.musicLoader.DancerSongParsed.downArrowColor;
-        uiFxManager.SetArrowColor(MoveTypeEnum.Down, new Color((float)newColor.red / 255, (float)newColor.green / 255, (float)newColor.blue / 255, (float)newColor.alpha / 255));
-
-        newColor = GameMaster.Instance.musicLoader.DancerSongParsed.backgroundColor;
-        uiFxManager.SetBackgroundColor(new Color((float)newColor.red / 255, (float)newColor.green / 255, (float)newColor.blue / 255, (float)newColor.alpha / 255));
-        newColor = GameMaster.Instance.musicLoader.DancerSongParsed.uiColor;
-        uiFxManager.SetPanelUiColor(new Color((float)newColor.red / 255, (float)newColor.green / 255, (float)newColor.blue / 255, (float)newColor.alpha / 255));
-        newColor = GameMaster.Instance.musicLoader.DancerSongParsed.uiTextColor;
-        uiFxManager.SetTextColor(new Color((float)newColor.red / 255, (float)newColor.green / 255, (float)newColor.blue / 255, (float)newColor.alpha / 255));
-
-
-        StartCoroutine(CheckSongMovesLoaded());
+        ReinitAndPlay();
     }
 
-    // Update is called once per frame
+    private void OnDisable()
+    {
+        songState = ESongStates.AwaitingToStart;
+    }
+
     void FixedUpdate()
     {
         switch(songState)
@@ -127,7 +86,7 @@ public class GameManager : MonoBehaviour
                         if(songWasPlayed) //finishing song condiion
                         {
                             songState = ESongStates.Finished;
-                            timeStampToFinish = currentMusicTime + TIME_AFTER_SONG_AWAIT;
+                            timeStampToFinish = currentMusicTime + Constants.TIME_AFTER_SONG_AWAIT;
                             break;
                         }
 
@@ -182,7 +141,7 @@ public class GameManager : MonoBehaviour
     IEnumerator CheckSongMovesLoaded()
     {
         int tries = 0;
-        while(tries < MAX_LOAD_TRIES)
+        while(tries < Constants.MAX_LOAD_TRIES)
         {
             if (currentSong is null || moveEvents is null)
             {
@@ -212,5 +171,51 @@ public class GameManager : MonoBehaviour
     {
         correctCount++;
         uILogicManager.UpdateMissesUI(correctCount, mistakeCount, totalMoveEvents);
+    }
+
+    public void ReinitAndPlay()
+    {
+        moveSpeed = Constants.BASE_SPEED * speedDiffficulty;
+        timeToReachChecker = Constants.DISTANCE_TO_CHECKER / moveSpeed;
+        //TODO set another stage in loader
+        //Set colors of move events
+        moveFactory.SetMoveColor(0, GameMaster.Instance.musicLoader.DancerSongParsed.upArrowColor.ToUnityColor());
+        moveFactory.SetMoveColor(1, GameMaster.Instance.musicLoader.DancerSongParsed.rightArrowColor.ToUnityColor());
+        moveFactory.SetMoveColor(2, GameMaster.Instance.musicLoader.DancerSongParsed.leftArrowColor.ToUnityColor());
+        moveFactory.SetMoveColor(3, GameMaster.Instance.musicLoader.DancerSongParsed.downArrowColor.ToUnityColor());
+
+        //instantiate all move events
+        tickPerSecond = GameMaster.Instance.musicLoader.DancerSongParsed.ticksPerSecond;
+        moveEvents = moveFactory.GenerateGameMovesFromXml(GameMaster.Instance.musicLoader.DancerSongParsed.dancerEvents, tickPerSecond * speedDiffficulty);
+
+        //instantiate all visual events
+        visualEvents = effectsFactory.GenerateVisualEffectObjects(GameMaster.Instance.musicLoader.DancerSongParsed.dancerEvents, tickPerSecond * speedDiffficulty);
+        //prepare mistake counts and update ui
+        mistakeCount = 0;
+        correctCount = 0;
+        totalMoveEvents = GameMaster.Instance.musicLoader.DancerSongParsed.dancerEvents.movementEvents.Count;
+        uILogicManager.UpdateMissesUI(correctCount, mistakeCount, totalMoveEvents);
+        uILogicManager.UpdateTitle(GameMaster.Instance.musicLoader.DancerSongParsed.title);
+        uILogicManager.SetMaxValue((moveEvents[moveEvents.Count - 1].GetComponent("IMoveEvent") as IMoveEvent).GetBeginTime() / tickPerSecond + timeToReachChecker);
+
+        //set ui colors
+        ArgbColor newColor = GameMaster.Instance.musicLoader.DancerSongParsed.upArrowColor;
+        uiFxManager.SetArrowColor(MoveTypeEnum.Up, new Color((float)newColor.red / 255, (float)newColor.green / 255, (float)newColor.blue / 255, (float)newColor.alpha / 255));
+        newColor = GameMaster.Instance.musicLoader.DancerSongParsed.rightArrowColor;
+        uiFxManager.SetArrowColor(MoveTypeEnum.Right, new Color((float)newColor.red / 255, (float)newColor.green / 255, (float)newColor.blue / 255, (float)newColor.alpha / 255));
+        newColor = GameMaster.Instance.musicLoader.DancerSongParsed.leftArrowColor;
+        uiFxManager.SetArrowColor(MoveTypeEnum.Left, new Color((float)newColor.red / 255, (float)newColor.green / 255, (float)newColor.blue / 255, (float)newColor.alpha / 255));
+        newColor = GameMaster.Instance.musicLoader.DancerSongParsed.downArrowColor;
+        uiFxManager.SetArrowColor(MoveTypeEnum.Down, new Color((float)newColor.red / 255, (float)newColor.green / 255, (float)newColor.blue / 255, (float)newColor.alpha / 255));
+
+        newColor = GameMaster.Instance.musicLoader.DancerSongParsed.backgroundColor;
+        uiFxManager.SetBackgroundColor(new Color((float)newColor.red / 255, (float)newColor.green / 255, (float)newColor.blue / 255, (float)newColor.alpha / 255));
+        newColor = GameMaster.Instance.musicLoader.DancerSongParsed.uiColor;
+        uiFxManager.SetPanelUiColor(new Color((float)newColor.red / 255, (float)newColor.green / 255, (float)newColor.blue / 255, (float)newColor.alpha / 255));
+        newColor = GameMaster.Instance.musicLoader.DancerSongParsed.uiTextColor;
+        uiFxManager.SetTextColor(new Color((float)newColor.red / 255, (float)newColor.green / 255, (float)newColor.blue / 255, (float)newColor.alpha / 255));
+
+
+        StartCoroutine(CheckSongMovesLoaded());
     }
 }

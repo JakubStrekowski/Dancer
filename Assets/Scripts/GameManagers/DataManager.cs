@@ -5,9 +5,6 @@ using UnityEngine;
 
 public class DataManager : MonoBehaviour
 {
-    private readonly string HIGHSCORE_FOLDER = "Saved";
-    private readonly string HIGHSCORE_FILE_NAME = "scores.json";
-
     private HighScoreContainer highScores;
     private static DataManager _instance;
 
@@ -24,16 +21,16 @@ public class DataManager : MonoBehaviour
         {
             _instance = this;
 
-            if (!Directory.Exists(Application.dataPath + "/" + HIGHSCORE_FOLDER))
+            if (!Directory.Exists(Application.dataPath + "/" + Constants.HIGHSCORE_FOLDER))
             {
-                Directory.CreateDirectory(Application.dataPath + "/" + HIGHSCORE_FOLDER);
+                Directory.CreateDirectory(Application.dataPath + "/" + Constants.HIGHSCORE_FOLDER);
             }
 
             highScores = new HighScoreContainer();
 
-            if(File.Exists(Application.dataPath + "/" + HIGHSCORE_FOLDER + "/" + HIGHSCORE_FILE_NAME))
+            if(File.Exists(Application.dataPath + "/" + Constants.HIGHSCORE_FOLDER + "/" + Constants.HIGHSCORE_FILE_NAME))
             {
-                var inputString = File.ReadAllText(Application.dataPath + "/" + HIGHSCORE_FOLDER + "/" + HIGHSCORE_FILE_NAME);
+                var inputString = File.ReadAllText(Application.dataPath + "/" + Constants.HIGHSCORE_FOLDER + "/" + Constants.HIGHSCORE_FILE_NAME);
                 highScores = JsonUtility.FromJson<HighScoreContainer>(inputString);
             }
 
@@ -43,9 +40,9 @@ public class DataManager : MonoBehaviour
 
     public void SaveHighScores()
     {
-        File.Delete(Application.dataPath + "/" + HIGHSCORE_FOLDER + "/" + HIGHSCORE_FILE_NAME);
+        File.Delete(Application.dataPath + "/" + Constants.HIGHSCORE_FOLDER + "/" + Constants.HIGHSCORE_FILE_NAME);
         var outputString = JsonUtility.ToJson(highScores);
-        File.WriteAllText(Application.dataPath + "/" + HIGHSCORE_FOLDER + "/" + HIGHSCORE_FILE_NAME, outputString);
+        File.WriteAllText(Application.dataPath + "/" + Constants.HIGHSCORE_FOLDER + "/" + Constants.HIGHSCORE_FILE_NAME, outputString);
     }
 
     public bool isNewHighScore(string levelName, int score,int misses, int grade)

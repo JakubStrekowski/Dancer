@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: -1699483393905536407}
   m_Layer: 0
   m_Name: GameManager
-  m_TagString: Untagged
+  m_TagString: GameManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -206,3 +206,5 @@ MonoBehaviour:
   gameEndedPanel: {fileID: 0}
   finalScore: {fileID: 0}
   newHighScore: {fileID: 0}
+  songProgress: {fileID: 0}
+  titleTxt: {fileID: 0}
