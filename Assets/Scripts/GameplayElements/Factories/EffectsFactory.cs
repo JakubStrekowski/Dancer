@@ -125,6 +125,14 @@ public class EffectsFactory : MonoBehaviour
         }
     }
 
+    public void DeleteAllVisualSprites()
+    {
+        foreach(VisualEffectSprite createdObject in visualObjects)
+        {
+            GameObject.Destroy(createdObject.gameObject);
+        }
+    }
+
     private void DownloadImage(string url, GameObject visualEffect)
     {
         StartCoroutine(GameMaster.Instance.musicLoader.ImageRequest(url, (UnityWebRequest www) =>

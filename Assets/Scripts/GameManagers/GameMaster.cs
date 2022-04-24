@@ -6,7 +6,8 @@ using UnityEngine.SceneManagement;
 public enum ESceneIndexes
 {
     mainMenuSceneIndex = 0,
-    playSongSceneIndex = 1
+    playSongSceneIndex = 1,
+    editorSceneIndex = 2,
 }
 
 public class GameMaster : MonoBehaviour

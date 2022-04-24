@@ -59,7 +59,17 @@ public class GameManager : MonoBehaviour
 
     private void OnDisable()
     {
+        foreach(GameObject moveEventObject in moveEvents)
+        {
+            Destroy(moveEventObject);
+        }
+
+        effectsFactory.DeleteAllVisualSprites();
+
         songState = ESongStates.AwaitingToStart;
+
+        audioSrc.Stop();
+        songWasPlayed = false;
     }
 
     void FixedUpdate()
