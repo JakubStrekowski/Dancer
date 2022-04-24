@@ -245,6 +245,20 @@ public class EditorUIManager : MonoBehaviour
         }
     }
 
+    public void OnTitleChange()
+    {
+        DancerSong currentSong = GameMaster.Instance.musicLoader.DancerSongParsed;
+        currentSong.title = 
+            infoInputFields[(int)EEditorTextInfoUIObjs.title].text;
+    }
+
+    public void OnDescriptionChange()
+    {
+        DancerSong currentSong = GameMaster.Instance.musicLoader.DancerSongParsed;
+        currentSong.additionaldesc = 
+            infoInputFields[(int)EEditorTextInfoUIObjs.description].text;
+    }
+
     public void SwitchStagePanel()
     {
         editStagePanel.SetActive(!editStagePanel.activeSelf);

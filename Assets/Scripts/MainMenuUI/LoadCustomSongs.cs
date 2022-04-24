@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -76,6 +77,34 @@ public class LoadCustomSongs : MonoBehaviour
             dancerSongs = new List<DancerSong>();
 
             StartCoroutine(LoadAllLevels());
+        }
+    }
+
+    public void OnCustomSongSave()
+    {
+        if (currentLoadStage == ESongLoadStages.readyToOperate)
+        {
+            DancerSong newSong = GameMaster.Instance.musicLoader.DancerSongParsed;
+
+            System.IO.Directory.CreateDirectory(MUSIC_PATH + newSong.title);
+
+            System.IO.TextWriter writer = new StreamWriter(
+                MUSIC_PATH + newSong.title + "/" + newSong.title + ".xml");
+
+            // string filename = newSong.musicFilePath.Split('\\').Last();
+            // string imageFileName = newSong.imagePreviewPath.Split('\\').Last();
+
+
+            /* TODO
+             * - create palette class to hold all imported images
+             * - save imported images to save directory
+             * - save preview image to save directory
+             * - save music file to save directory
+             */
+
+            XmlSerializer xml = new XmlSerializer(typeof(DancerSong));
+            xml.Serialize(writer, newSong);
+            writer.Close();
         }
     }
 
