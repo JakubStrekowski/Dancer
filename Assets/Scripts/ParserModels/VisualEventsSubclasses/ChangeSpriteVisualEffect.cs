@@ -13,7 +13,9 @@ namespace MIDIparser.Models.VisualEventsSubclasses
         {
 
         }
-        public ChangeSpriteVisualEffect(int objectID, long startTime, VisualEventTypeEnum type, string spritePath = null)
+        public ChangeSpriteVisualEffect(
+            int objectID, long startTime, 
+            VisualEventTypeEnum type, string spritePath = null)
         {
             this.objectId = objectID;
             this.startTime = startTime;
@@ -24,7 +26,9 @@ namespace MIDIparser.Models.VisualEventsSubclasses
         {
             get
             {
-                return objectId.ToString() + " " + eventType.ToString() + " " + startTime.ToString();
+                return objectId.ToString() + " " + 
+                    eventType.ToString() + " " + 
+                    startTime.ToString();
             }
         }
     }

@@ -20,7 +20,9 @@ namespace MIDIparser.Models.VisualEventsSubclasses
 
         }
 
-        public ChangePositionLinearVisualEffect(int objectID, long startTime, VisualEventTypeEnum type, long duration, float posX, float posY)
+        public ChangePositionLinearVisualEffect(
+            int objectID, long startTime, 
+            VisualEventTypeEnum type, long duration, float posX, float posY)
         {
             this.objectId = objectID;
             this.startTime = startTime;

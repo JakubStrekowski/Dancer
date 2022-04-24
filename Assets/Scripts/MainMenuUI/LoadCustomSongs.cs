@@ -106,7 +106,8 @@ public class LoadCustomSongs : MonoBehaviour
                     yield return new WaitForSeconds(0.2f);
                 }
 
-                HighScore highScore = DataManager.Instance.GetScoreByLevel(loader.DancerSongParsed.title);
+                HighScore highScore = 
+                    DataManager.Instance.GetScoreByLevel(loader.DancerSongParsed.title);
 
                 string highScoreText = "";
                 Color scoreColor;
@@ -118,13 +119,16 @@ public class LoadCustomSongs : MonoBehaviour
                 else
                 {
                     scoreColor = UILogicManager.FINAL_TEXT_COLORS[highScore.grade];
-                    highScoreText = "HighScore: hit " + highScore.score.ToString() + " / miss " + highScore.misses.ToString();
+                    highScoreText = 
+                        "HighScore: hit " + highScore.score.ToString() + 
+                        " / miss " + highScore.misses.ToString();
                 }
 
 
-                newSongElement = GameObject.Instantiate(previewSongObject, selectedContent.transform);
-                newSongElement.GetComponent<SongElementUI>().OnInit(fileName, currentOffset, previewImage, dancerSongs[iter].title,
-                   dancerSongs[iter].additionaldesc, highScoreText, scoreColor);
+                newSongElement = Instantiate(previewSongObject, selectedContent.transform);
+                newSongElement.GetComponent<SongElementUI>().
+                    OnInit(fileName, currentOffset, previewImage, dancerSongs[iter].title,
+                    dancerSongs[iter].additionaldesc, highScoreText, scoreColor);
 
                 currentOffset -= NEXT_ELEMENT_OFFSET;
                 currentLoadStage = ESongLoadStages.loadingPreview;
@@ -147,7 +151,10 @@ public class LoadCustomSongs : MonoBehaviour
                 // Get the texture out using a helper downloadhandler
                 Texture2D texture = DownloadHandlerTexture.GetContent(www);
                 // Save it into the Image UI's sprite
-                previewImage = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+                previewImage = Sprite.Create(
+                    texture,
+                    new Rect(0, 0, texture.width, texture.height), 
+                    new Vector2(0.5f, 0.5f));
 
                 currentLoadStage = ESongLoadStages.awaitingForNextDir;
             }

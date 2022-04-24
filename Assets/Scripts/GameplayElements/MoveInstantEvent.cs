@@ -61,7 +61,9 @@ public class MoveInstantEvent : MonoBehaviour, IMoveEvent
         StartCoroutine(nameof(DestroyAfterTime));
     }
 
-    public void SetObjectVals(float beginTime, float duration, MoveTypeEnum moveType, float ticksPerSpeed, Color color)
+    public void SetObjectVals(
+        float beginTime, float duration, 
+        MoveTypeEnum moveType, float ticksPerSpeed, Color color)
     {
         BeginTime = beginTime;
         MoveType = moveType;

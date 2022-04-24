@@ -13,7 +13,9 @@ namespace MIDIparser.Models.VisualEventsSubclasses
 
         }
 
-        public ChangeColorArcVisualEffect(int objectID, long startTime, VisualEventTypeEnum type, ArgbColor colorToSet, long timeToSet)
+        public ChangeColorArcVisualEffect(
+            int objectID, long startTime, 
+            VisualEventTypeEnum type, ArgbColor colorToSet, long timeToSet)
         {
             this.objectId = objectID;
             this.startTime = startTime;
@@ -31,8 +33,13 @@ namespace MIDIparser.Models.VisualEventsSubclasses
         {
             get
             {
-                return objectId.ToString() + " " + startTime.ToString() + " - " + (startTime + float.Parse(paramsList[(int)VisualEventsSubclassesParamsEnum.timeToReach])) + " ARC_COLOR : a"
-                  + paramsList[3] + " r" + paramsList[0] + " g" + paramsList[1] + " b" + paramsList[2];
+                return objectId.ToString() + " " + 
+                    startTime.ToString() + " - " + 
+                    (startTime + float.Parse(paramsList[(int)VisualEventsSubclassesParamsEnum.timeToReach])) + 
+                    " ARC_COLOR : a" + paramsList[3] + 
+                    " r" + paramsList[0] + 
+                    " g" + paramsList[1] + 
+                    " b" + paramsList[2];
             }
         }
     }

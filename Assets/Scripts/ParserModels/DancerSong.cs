@@ -63,7 +63,10 @@ namespace MIDIparser.Models
             dancerEvents = new DancerEvents();
         }
 
-        public DancerSong(DancerEvents dancerEvents, string title, string description, int ticksPerSecond, string pathToMusic, string pathToImage, ArgbColor[] colorSettings)
+        public DancerSong(DancerEvents dancerEvents,
+            string title, string description, 
+            int ticksPerSecond, string pathToMusic, string pathToImage, 
+            ArgbColor[] colorSettings)
         {
             this.dancerEvents = dancerEvents;
             this.title = title;

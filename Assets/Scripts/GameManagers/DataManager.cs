@@ -28,9 +28,18 @@ public class DataManager : MonoBehaviour
 
             highScores = new HighScoreContainer();
 
-            if(File.Exists(Application.dataPath + "/" + Constants.HIGHSCORE_FOLDER + "/" + Constants.HIGHSCORE_FILE_NAME))
+
+
+            if(File.Exists(
+                Application.dataPath + "/" + 
+                Constants.HIGHSCORE_FOLDER + "/" + 
+                Constants.HIGHSCORE_FILE_NAME))
             {
-                var inputString = File.ReadAllText(Application.dataPath + "/" + Constants.HIGHSCORE_FOLDER + "/" + Constants.HIGHSCORE_FILE_NAME);
+                var inputString = File.ReadAllText(
+                    Application.dataPath + "/" + 
+                    Constants.HIGHSCORE_FOLDER + "/" + 
+                    Constants.HIGHSCORE_FILE_NAME);
+
                 highScores = JsonUtility.FromJson<HighScoreContainer>(inputString);
             }
 
@@ -40,12 +49,21 @@ public class DataManager : MonoBehaviour
 
     public void SaveHighScores()
     {
-        File.Delete(Application.dataPath + "/" + Constants.HIGHSCORE_FOLDER + "/" + Constants.HIGHSCORE_FILE_NAME);
+        File.Delete(
+            Application.dataPath + "/" + 
+            Constants.HIGHSCORE_FOLDER + "/" + 
+            Constants.HIGHSCORE_FILE_NAME);
+
         var outputString = JsonUtility.ToJson(highScores);
-        File.WriteAllText(Application.dataPath + "/" + Constants.HIGHSCORE_FOLDER + "/" + Constants.HIGHSCORE_FILE_NAME, outputString);
+
+        File.WriteAllText(
+            Application.dataPath + "/" + 
+            Constants.HIGHSCORE_FOLDER + "/" + 
+            Constants.HIGHSCORE_FILE_NAME, 
+            outputString);
     }
 
-    public bool isNewHighScore(string levelName, int score,int misses, int grade)
+    public bool IsNewHighScore(string levelName, int score, int misses, int grade)
     {
         HighScore prevScore = highScores.scores.Find(x => x.levelName == levelName);
 
@@ -53,9 +71,12 @@ public class DataManager : MonoBehaviour
 
         if (prevScore.grade > grade) return true;
 
-        if (prevScore.grade == grade && prevScore.score < score) return true;
+        if (prevScore.grade == grade && 
+            prevScore.score < score) return true;
 
-        if (prevScore.grade == grade && prevScore.score == score && prevScore.misses > misses) return true;
+        if (prevScore.grade == grade && 
+            prevScore.score == score && 
+            prevScore.misses > misses) return true;
 
         return false;
     }
@@ -63,10 +84,12 @@ public class DataManager : MonoBehaviour
     public void AddNewScore(string levelName, int score, int misses, int grade)
     {
         HighScore prevScore = highScores.scores.Find(x => x.levelName == levelName);
+
         if(prevScore != null)
         {
             highScores.scores.Remove(prevScore);
         }
+
         highScores.scores.Add(new HighScore(levelName, score, misses, grade));
     }
 

@@ -35,12 +35,28 @@ namespace MIDIparser.Models
 
         public Color ToUnityColor()
         {
-            return new Color((float)red / 255f, (float)green / 255f, (float)blue / 255f, (float)alpha / 255f);
+            return new Color(
+                red / 255f, 
+                green / 255f, 
+                blue / 255f, 
+                alpha / 255f);
         }
 
         public static Color ConvertFromBytes(byte a, byte r, byte g, byte b)
         {
-            return new Color((float)r / 255f, (float)g / 255f, (float)b / 255f, (float)a / 255f);
+            return new Color(
+                r / 255f, 
+                g / 255f, 
+                b / 255f, 
+                a / 255f);
+        }
+        public static Color ConvertFromBytes(ArgbColor argb)
+        {
+            return new Color(
+                argb.red / 255f, 
+                argb.green / 255f, 
+                argb.blue / 255f, 
+                argb.alpha / 255f);
         }
     }
 }

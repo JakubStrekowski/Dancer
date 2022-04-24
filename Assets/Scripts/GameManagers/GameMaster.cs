@@ -30,7 +30,8 @@ public class GameMaster : MonoBehaviour
         {
             _instance = this;
 
-            if (SceneManager.GetActiveScene().buildIndex == (int)ESceneIndexes.playSongSceneIndex) //loaded level without main menu
+            if (SceneManager.GetActiveScene().buildIndex == 
+                (int)ESceneIndexes.playSongSceneIndex) //loaded level without main menu
             {
                 selectedSongFile = "AVGVSTA - Together Again";
                 musicLoader = new MusicLoader();
@@ -74,7 +75,8 @@ public class GameMaster : MonoBehaviour
         selectedSongFile = song;
         musicLoader.LoadMusicMoves(selectedSongFile);
         GetAudioClip();
-        GameObject.Find("EditorManager").GetComponent<EditorUIManager>().RefreshEditorTexts(musicLoader.DancerSongParsed); //TODO refactor
+        GameObject.Find("EditorManager").GetComponent<EditorUIManager>().
+            RefreshEditorTexts(musicLoader.DancerSongParsed); //TODO refactor
         GameObject.Find("CustomGamesPanel").SetActive(false);
     }
 }

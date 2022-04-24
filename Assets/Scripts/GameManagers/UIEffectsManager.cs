@@ -18,10 +18,15 @@ public class UIEffectsManager : MonoBehaviour
     void Awake()
     {
         movementArrows = new SetCustomArrowColor[4];
-        movementArrows[(int)MoveTypeEnum.Up] = GameObject.Find("NoteUpUI").GetComponent<SetCustomArrowColor>();
-        movementArrows[(int)MoveTypeEnum.Down] = GameObject.Find("NoteDownUI").GetComponent<SetCustomArrowColor>();
-        movementArrows[(int)MoveTypeEnum.Left] = GameObject.Find("NoteLeftUI").GetComponent<SetCustomArrowColor>();
-        movementArrows[(int)MoveTypeEnum.Right] = GameObject.Find("NoteRightUI").GetComponent<SetCustomArrowColor>();
+        movementArrows[(int)MoveTypeEnum.Up] = 
+            GameObject.Find("NoteUpUI").GetComponent<SetCustomArrowColor>();
+        movementArrows[(int)MoveTypeEnum.Down] = 
+            GameObject.Find("NoteDownUI").GetComponent<SetCustomArrowColor>();
+        movementArrows[(int)MoveTypeEnum.Left] = 
+            GameObject.Find("NoteLeftUI").GetComponent<SetCustomArrowColor>();
+        movementArrows[(int)MoveTypeEnum.Right] = 
+            GameObject.Find("NoteRightUI").GetComponent<SetCustomArrowColor>();
+
         background = GameObject.Find("Background").GetComponent<SpriteRenderer>();
         panelUi = GameObject.Find("UIScorePanel").GetComponent<Image>();
         scoreText = GameObject.Find("MissesTxt").GetComponent<TextMeshProUGUI>();
@@ -51,6 +56,10 @@ public class UIEffectsManager : MonoBehaviour
         instructionsText.color = color;
         titleText.color = color;
         songProgress.color = color;
-        songProgressBg.color = new Color(color.r * 0.5f, color.g * 0.5f, color.b * 0.5f, color.a);
+        songProgressBg.color = new Color(
+            color.r * Constants.PROGRESS_BG_COLOR_MULTIPLIER, 
+            color.g * Constants.PROGRESS_BG_COLOR_MULTIPLIER, 
+            color.b * Constants.PROGRESS_BG_COLOR_MULTIPLIER, 
+            color.a);
     }
 }

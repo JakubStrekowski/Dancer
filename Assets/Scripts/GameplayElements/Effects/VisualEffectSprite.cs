@@ -55,7 +55,8 @@ public class VisualEffectSprite : MonoBehaviour
         }
         else
         {
-            transform.rotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y, rotateDegree);
+            transform.rotation = Quaternion.Euler(
+                transform.rotation.x, transform.rotation.y, rotateDegree);
         }
     }
     public void RotateArc(float rotateDegree, float duration)
@@ -66,7 +67,8 @@ public class VisualEffectSprite : MonoBehaviour
         }
         else
         {
-            transform.rotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y, rotateDegree);
+            transform.rotation = Quaternion.Euler(
+                transform.rotation.x, transform.rotation.y, rotateDegree);
         }
     }
 
@@ -115,7 +117,9 @@ public class VisualEffectSprite : MonoBehaviour
             float resultX = Mathf.Lerp(0, targetX, t);
             float resultY = Mathf.Lerp(0, targetY, t);
 
-            transform.position = new Vector2(transform.position.x + resultX - prevAddX, transform.position.y + resultY - prevAddY);
+            transform.position = new Vector2(
+                transform.position.x + resultX - prevAddX, 
+                transform.position.y + resultY - prevAddY);
 
             prevAddX = resultX;
             prevAddY = resultY;
@@ -140,15 +144,21 @@ public class VisualEffectSprite : MonoBehaviour
 
             float resultZ = Mathf.Lerp(0, targetZ, t);
 
-            transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z + resultZ - prevAddZ);
+            transform.rotation = Quaternion.Euler(
+                transform.rotation.eulerAngles.x, 
+                transform.rotation.eulerAngles.y, 
+                transform.rotation.eulerAngles.z + resultZ - prevAddZ);
 
             prevAddZ = resultZ;
-
 
             time += Time.deltaTime;
             yield return null;
         }
-        transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z + targetZ - prevAddZ);
+
+        transform.rotation = Quaternion.Euler(
+            transform.rotation.eulerAngles.x, 
+            transform.rotation.eulerAngles.y, 
+            transform.rotation.eulerAngles.z + targetZ - prevAddZ);
     }
 
     private IEnumerator RotateArcProcedure(float rotation, float duration)
@@ -166,7 +176,10 @@ public class VisualEffectSprite : MonoBehaviour
 
             float resultZ = Mathf.Lerp(0, targetZ, t);
 
-            transform.rotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y, transform.rotation.z + resultZ- - prevAddZ);
+            transform.rotation = Quaternion.Euler(
+                transform.rotation.x, 
+                transform.rotation.y, 
+                transform.rotation.z + resultZ - prevAddZ);
 
             prevAddZ = resultZ;
 
@@ -174,7 +187,10 @@ public class VisualEffectSprite : MonoBehaviour
             time += Time.deltaTime;
             yield return null;
         }
-        transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z + targetZ - prevAddZ);
+        transform.rotation = Quaternion.Euler(
+            transform.rotation.eulerAngles.x, 
+            transform.rotation.eulerAngles.y, 
+            transform.rotation.eulerAngles.z + targetZ - prevAddZ);
     }
 
     private IEnumerator MoveDampingProcedure(Vector2 position, float duration)
@@ -183,7 +199,11 @@ public class VisualEffectSprite : MonoBehaviour
 
         while (time <= duration)
         {
-            transform.position = Vector2.SmoothDamp(transform.position, position, ref velocity, duration);
+            transform.position = Vector2.SmoothDamp(
+                transform.position, 
+                position, 
+                ref velocity, 
+                duration);
 
             yield return null;
         }
@@ -202,6 +222,7 @@ public class VisualEffectSprite : MonoBehaviour
         float prevR = 0;
         float prevG = 0;
         float prevB = 0;
+
         while (time <= duration)
         {
             float t = time / duration;
@@ -211,8 +232,11 @@ public class VisualEffectSprite : MonoBehaviour
             float resultG = Mathf.Lerp(0, targetG, t);
             float resultB = Mathf.Lerp(0, targetB, t);
 
-            sr.color = new Color(sr.color.r + resultR - prevR, sr.color.g + resultG - prevG, sr.color.b + resultB - prevB, sr.color.a + resultA - prevA);
-
+            sr.color = new Color(
+                sr.color.r + resultR - prevR, 
+                sr.color.g + resultG - prevG, 
+                sr.color.b + resultB - prevB, 
+                sr.color.a + resultA - prevA);
 
             prevA = resultA;
             prevR = resultR;
@@ -237,6 +261,7 @@ public class VisualEffectSprite : MonoBehaviour
         float prevR = 0;
         float prevG = 0;
         float prevB = 0;
+
         while (time <= duration)
         {
             float t = time / duration;
@@ -248,8 +273,11 @@ public class VisualEffectSprite : MonoBehaviour
             float resultG = Mathf.Lerp(0, targetG, t);
             float resultB = Mathf.Lerp(0, targetB, t);
 
-            sr.color = new Color(sr.color.r + resultR - prevR, sr.color.g + resultG - prevG, sr.color.b + resultB - prevB, sr.color.a + resultA - prevA);
-
+            sr.color = new Color(
+                sr.color.r + resultR - prevR, 
+                sr.color.g + resultG - prevG, 
+                sr.color.b + resultB - prevB, 
+                sr.color.a + resultA - prevA);
 
             prevA = resultA;
             prevR = resultR;

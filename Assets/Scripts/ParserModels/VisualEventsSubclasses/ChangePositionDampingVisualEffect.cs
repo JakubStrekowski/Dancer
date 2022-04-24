@@ -13,7 +13,9 @@ namespace MIDIparser.Models.VisualEventsSubclasses
 
         }
 
-        public ChangePositionDampingVisualEffect(int objectID, long startTime, VisualEventTypeEnum type, long duration, float posX, float posY)
+        public ChangePositionDampingVisualEffect(
+            int objectID, long startTime, 
+            VisualEventTypeEnum type, long duration, float posX, float posY)
         {
             this.objectId = objectID;
             this.startTime = startTime;
@@ -30,8 +32,10 @@ namespace MIDIparser.Models.VisualEventsSubclasses
         {
             get
             {
-                return objectId.ToString() + " " + startTime.ToString() + "-" + (startTime + float.Parse(paramsList[(int)ChangePositionLinearParamsEnum.duration]))
-                    + " POS -> [" + this.paramsList[(int)ChangePositionLinearParamsEnum.posX] + "," + this.paramsList[(int)ChangePositionLinearParamsEnum.posY] + "]";
+                return objectId.ToString() + " " + startTime.ToString() + "-" + 
+                    (startTime + float.Parse(paramsList[(int)ChangePositionLinearParamsEnum.duration]))
+                    + " POS -> [" + this.paramsList[(int)ChangePositionLinearParamsEnum.posX] + 
+                    "," + this.paramsList[(int)ChangePositionLinearParamsEnum.posY] + "]";
             }
         }
 

@@ -45,7 +45,9 @@ public class MusicLoader
         }
 
         if (callback == null) yield break;
-        using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip("file://"+ musicPath + '/'+ folderName + '/' + DancerSongParsed.musicFilePath, audioType))
+        using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip(
+            "file://"+ musicPath + '/'+ folderName + '/' + DancerSongParsed.musicFilePath, 
+            audioType))
         {
             yield return www.SendWebRequest();
 

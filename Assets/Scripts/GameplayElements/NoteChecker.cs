@@ -43,11 +43,13 @@ public class NoteChecker : MonoBehaviour
         {
             foreach (IMoveEvent moveEvent in moveEventsInChecker)
             {
-                if (moveEvent.GetEventTypeID() == MoveTypeEnum.Down && !moveEvent.isEventCheckedCorrect())
+                if (moveEvent.GetEventTypeID() == MoveTypeEnum.Down && 
+                    !moveEvent.isEventCheckedCorrect())
                 {
                     if(moveEvent is MoveContinuousEvent)
                     {
-                        if ((moveEvent as MoveContinuousEvent).IsReleasedTooEarly()) continue;
+                        if ((moveEvent as MoveContinuousEvent).IsReleasedTooEarly()) 
+                            continue;
                     }
                     moveEvent.OnCorrectButtonInCollision();
                     hitCorrect = true;
@@ -62,11 +64,13 @@ public class NoteChecker : MonoBehaviour
         {
             foreach (IMoveEvent moveEvent in moveEventsInChecker)
             {
-                if (moveEvent.GetEventTypeID() == MoveTypeEnum.Left && !moveEvent.isEventCheckedCorrect())
+                if (moveEvent.GetEventTypeID() == MoveTypeEnum.Left && 
+                    !moveEvent.isEventCheckedCorrect())
                 {
                     if (moveEvent is MoveContinuousEvent)
                     {
-                        if ((moveEvent as MoveContinuousEvent).IsReleasedTooEarly()) continue;
+                        if ((moveEvent as MoveContinuousEvent).IsReleasedTooEarly()) 
+                            continue;
                     }
                     moveEvent.OnCorrectButtonInCollision();
                     hitCorrect = true;
@@ -81,11 +85,13 @@ public class NoteChecker : MonoBehaviour
         {
             foreach (IMoveEvent moveEvent in moveEventsInChecker)
             {
-                if (moveEvent.GetEventTypeID() == MoveTypeEnum.Right && !moveEvent.isEventCheckedCorrect())
+                if (moveEvent.GetEventTypeID() == MoveTypeEnum.Right && 
+                    !moveEvent.isEventCheckedCorrect())
                 {
                     if (moveEvent is MoveContinuousEvent)
                     {
-                        if ((moveEvent as MoveContinuousEvent).IsReleasedTooEarly()) continue;
+                        if ((moveEvent as MoveContinuousEvent).IsReleasedTooEarly()) 
+                            continue;
                     }
                     moveEvent.OnCorrectButtonInCollision();
                     hitCorrect = true;
@@ -100,11 +106,13 @@ public class NoteChecker : MonoBehaviour
         {
             foreach (IMoveEvent moveEvent in moveEventsInChecker)
             {
-                if (moveEvent.GetEventTypeID() == MoveTypeEnum.Up && !moveEvent.isEventCheckedCorrect())
+                if (moveEvent.GetEventTypeID() == MoveTypeEnum.Up && 
+                    !moveEvent.isEventCheckedCorrect())
                 {
                     if (moveEvent is MoveContinuousEvent)
                     {
-                        if ((moveEvent as MoveContinuousEvent).IsReleasedTooEarly()) continue;
+                        if ((moveEvent as MoveContinuousEvent).IsReleasedTooEarly()) 
+                            continue;
                     }
                     moveEvent.OnCorrectButtonInCollision();
                     hitCorrect = true;
@@ -123,7 +131,8 @@ public class NoteChecker : MonoBehaviour
 
             foreach (IMoveEvent moveEvent in moveEventsInChecker)
             {
-                if (moveEvent.GetEventTypeID() == MoveTypeEnum.Down && moveEvent.isEventHeldDown())
+                if (moveEvent.GetEventTypeID() == MoveTypeEnum.Down && 
+                    moveEvent.isEventHeldDown())
                 {
                     moveEvent.StopHolding();
                     break;
@@ -136,7 +145,8 @@ public class NoteChecker : MonoBehaviour
 
             foreach (IMoveEvent moveEvent in moveEventsInChecker)
             {
-                if (moveEvent.GetEventTypeID() == MoveTypeEnum.Left && moveEvent.isEventHeldDown())
+                if (moveEvent.GetEventTypeID() == MoveTypeEnum.Left && 
+                    moveEvent.isEventHeldDown())
                 {
                     moveEvent.StopHolding();
                     break;
@@ -149,7 +159,8 @@ public class NoteChecker : MonoBehaviour
 
             foreach (IMoveEvent moveEvent in moveEventsInChecker)
             {
-                if (moveEvent.GetEventTypeID() == MoveTypeEnum.Right && moveEvent.isEventHeldDown())
+                if (moveEvent.GetEventTypeID() == MoveTypeEnum.Right && 
+                    moveEvent.isEventHeldDown())
                 {
                     moveEvent.StopHolding();
                     break;
@@ -162,7 +173,8 @@ public class NoteChecker : MonoBehaviour
 
             foreach (IMoveEvent moveEvent in moveEventsInChecker)
             {
-                if (moveEvent.GetEventTypeID() == MoveTypeEnum.Up && moveEvent.isEventHeldDown())
+                if (moveEvent.GetEventTypeID() == MoveTypeEnum.Up && 
+                    moveEvent.isEventHeldDown())
                 {
                     moveEvent.StopHolding();
                     break;

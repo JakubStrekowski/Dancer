@@ -148,7 +148,14 @@ public class EditorUIManager : MonoBehaviour
                 // Get the texture out using a helper downloadhandler
                 Texture2D texture = DownloadHandlerTexture.GetContent(www);
                 // Save it into the Image UI's sprite
-                songImagePreview.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+                songImagePreview.sprite = Sprite.Create(
+                    texture,
+                    new Rect(
+                        0,
+                        0, 
+                        texture.width, 
+                        texture.height), 
+                    new Vector2(0.5f, 0.5f));
 
             }
         }));

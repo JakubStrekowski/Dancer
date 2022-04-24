@@ -16,7 +16,13 @@ public enum ELevelCompleteGrades
 
 public class UILogicManager : MonoBehaviour
 {
-    public static readonly Color[] FINAL_TEXT_COLORS = { new Color(0.9f, 0.9f, 0.9f), new Color(1, 1, 0.6f), new Color(0.6f, 0.6f, 0.6f), new Color(0.5f, 0.4f, 0f) };
+    public static readonly Color[] FINAL_TEXT_COLORS = 
+    { 
+        new Color(0.9f, 0.9f, 0.9f), 
+        new Color(1, 1, 0.6f), 
+        new Color(0.6f, 0.6f, 0.6f),
+        new Color(0.5f, 0.4f, 0f) 
+    };
 
     public TextMeshProUGUI missesTxt;
     public GameObject gameEndedPanel;
@@ -52,20 +58,37 @@ public class UILogicManager : MonoBehaviour
 
     public void UpdateFinalScore(string levelName, int currentPasses, int totalMoves, int currentMisses)
     {
-        finalScore.text = "Correct: " + currentPasses + "/" + totalMoves + " Misses:" + currentMisses;
+        finalScore.text = "Correct: " + currentPasses + "/" + totalMoves +
+                          " Misses:" + currentMisses;
+
+        int grade = CalculateGrade(currentPasses, totalMoves, currentMisses);
+
+        if (DataManager.Instance.IsNewHighScore(levelName, currentPasses, currentMisses, grade))
+        {
+            ActivateNewHighScorePopup();
+            DataManager.Instance.AddNewScore(levelName, currentPasses, currentMisses, grade);
+            DataManager.Instance.SaveHighScores();
+        }
+    }
+
+    private int CalculateGrade(int currentPasses, int totalMoves, int currentMisses)
+    {
         int grade;
-        float scorepercentage = (float)currentPasses / (float)totalMoves;
-        if(scorepercentage == 1.0f && currentMisses == 0)
+        float scorepercentage = currentPasses / (float)totalMoves;
+        if (scorepercentage == 1.0f &&
+            currentMisses == 0)
         {
             finalScore.color = FINAL_TEXT_COLORS[(int)ELevelCompleteGrades.platinum];
             grade = (int)ELevelCompleteGrades.platinum;
         }
-        else if (scorepercentage >= 0.8f && currentMisses <= (int)(totalMoves * 0.15f))
+        else if (scorepercentage >= 0.8f &&
+            currentMisses <= (int)(totalMoves * 0.15f))
         {
             finalScore.color = FINAL_TEXT_COLORS[(int)ELevelCompleteGrades.gold];
             grade = (int)ELevelCompleteGrades.gold;
         }
-        else if (scorepercentage >= 0.6f && currentMisses <= (int)(totalMoves * 0.3f))
+        else if (scorepercentage >= 0.6f &&
+            currentMisses <= (int)(totalMoves * 0.3f))
         {
             finalScore.color = FINAL_TEXT_COLORS[(int)ELevelCompleteGrades.silver];
             grade = (int)ELevelCompleteGrades.silver;
@@ -76,12 +99,7 @@ public class UILogicManager : MonoBehaviour
             grade = (int)ELevelCompleteGrades.bronze;
         }
 
-        if (DataManager.Instance.isNewHighScore(levelName, currentPasses, currentMisses, grade))
-        {
-            ActivateNewHighScorePopup();
-            DataManager.Instance.AddNewScore(levelName, currentPasses, currentMisses, grade);
-            DataManager.Instance.SaveHighScores();
-        }
+        return grade;
     }
 
     public void ActivateNewHighScorePopup()

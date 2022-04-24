@@ -13,7 +13,9 @@ namespace MIDIparser.Models.VisualEventsSubclasses
 
         }
 
-        public ChangeRotationArcVisualEffect(int objectID, long startTime, VisualEventTypeEnum type, long duration, float roation)
+        public ChangeRotationArcVisualEffect(
+            int objectID, long startTime, 
+            VisualEventTypeEnum type, long duration, float roation)
         {
             this.objectId = objectID;
             this.startTime = startTime;
@@ -29,7 +31,8 @@ namespace MIDIparser.Models.VisualEventsSubclasses
         {
             get
             {
-                return objectId.ToString() + " " + startTime.ToString() + "-" + (startTime + float.Parse(paramsList[(int)ChangePositionLinearParamsEnum.duration]))
+                return objectId.ToString() + " " + startTime.ToString() + "-" + 
+                    (startTime + float.Parse(paramsList[(int)ChangePositionLinearParamsEnum.duration]))
                     + " ROT -> " + this.paramsList[(int)ChangePotationLinearParamsEnum.rotation];
             }
         }

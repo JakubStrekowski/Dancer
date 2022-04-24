@@ -37,7 +37,12 @@ namespace MIDIparser.Models
 
         public virtual string ListRepresentation
         {
-            get { return objectId.ToString() + " " + eventType.ToString() + " " + startTime.ToString(); }
+            get 
+            { 
+                return objectId.ToString() + " " + 
+                    eventType.ToString() + " " + 
+                    startTime.ToString(); 
+            }
         }
     }
 }

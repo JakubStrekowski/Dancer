@@ -21,7 +21,9 @@ namespace MIDIparser.Models.VisualEventsSubclasses
         {
 
         }
-        public ChangeColorLinearVisualEffect(int objectID, long startTime, VisualEventTypeEnum type, ArgbColor colorToSet, long timeToSet)
+        public ChangeColorLinearVisualEffect(
+            int objectID, long startTime, VisualEventTypeEnum type, 
+            ArgbColor colorToSet, long timeToSet)
         {
             this.objectId = objectID;
             this.startTime = startTime;

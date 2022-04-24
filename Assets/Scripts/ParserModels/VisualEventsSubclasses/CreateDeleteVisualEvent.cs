@@ -20,7 +20,10 @@ namespace MIDIparser.Models.VisualEventsSubclasses
         {
 
         }
-        public CreateDeleteVisualEvent (int objectID, long startTime, VisualEventTypeEnum type, string spritePath = null, float posX = 0, float posY = 0)
+        public CreateDeleteVisualEvent (
+            int objectID, long startTime, 
+            VisualEventTypeEnum type, string spritePath = null, 
+            float posX = 0, float posY = 0)
         {
             this.objectId = objectID;
             this.startTime = startTime;

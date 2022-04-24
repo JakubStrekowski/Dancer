@@ -66,12 +66,17 @@ public class MoveContinuousEvent : MonoBehaviour, IMoveEvent
         StartCoroutine(nameof(DestroyAfterTime));
     }
 
-    public void SetObjectVals(float beginTime, float duration, MoveTypeEnum moveType, float ticksPerSpeed, Color color)
+    public void SetObjectVals(
+        float beginTime, float duration, 
+        MoveTypeEnum moveType, float ticksPerSpeed, Color color)
     {
         BeginTime = beginTime;
         Duration = duration;
         MoveType = moveType;
-        holdBar.transform.localScale = new Vector3((1f * duration / ticksPerSpeed), transform.localScale.y);
+        holdBar.transform.localScale = new Vector3(
+            1f * duration / ticksPerSpeed, 
+            transform.localScale.y);
+
         durationInSeconds = 1f * duration / ticksPerSpeed;
         colorToSet = color;
     }
@@ -98,7 +103,9 @@ public class MoveContinuousEvent : MonoBehaviour, IMoveEvent
         {
             passedTimeWhileHeld += Time.deltaTime * 4;
             fillPercentage = (passedTimeWhileHeld / durationInSeconds);
-            holdBar.transform.localPosition = new Vector3(-fillPercentage * durationInSeconds, holdBar.transform.localPosition.y);
+            holdBar.transform.localPosition = new Vector3(
+                -fillPercentage * durationInSeconds, 
+                holdBar.transform.localPosition.y);
         }
         if(fillPercentage >= 1 && !isCheckedCorrect)
         {

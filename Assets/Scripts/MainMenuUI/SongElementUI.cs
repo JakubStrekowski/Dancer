@@ -16,7 +16,10 @@ public abstract class SongElementUI : MonoBehaviour
 
     protected Button onPlayBtn;
 
-    public abstract void OnInit(string path, float offset, Sprite image, string title, string description, string score, Color scoreColor);
+    public abstract void OnInit(
+        string path, float offset, Sprite image, 
+        string title, string description, 
+        string score, Color scoreColor);
 
     public abstract void OnPlayClicked();
 }

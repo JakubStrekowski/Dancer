@@ -11,4 +11,6 @@ public static class Constants
     public const float DISTANCE_TO_CHECKER = 20f;
     public const float BASE_SPEED = 4; //with this speed event will reach checker in 5 second
 
+    public const float PROGRESS_BG_COLOR_MULTIPLIER = 0.5f;
+
 }
