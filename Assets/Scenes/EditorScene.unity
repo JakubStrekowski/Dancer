@@ -1601,7 +1601,7 @@ GameObject:
   - component: {fileID: 94066771}
   - component: {fileID: 94066770}
   m_Layer: 5
-  m_Name: UIElements_1
+  m_Name: UiTextTitle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4571,7 +4571,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5.0625
+  orthographic size: 5.063979
   m_Depth: 1
   m_CullingMask:
     serializedVersion: 2
@@ -5927,7 +5927,7 @@ GameObject:
   - component: {fileID: 693507085}
   - component: {fileID: 693507084}
   m_Layer: 5
-  m_Name: BckgrndClrBtn
+  m_Name: UiTxtColotBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6091,6 +6091,14 @@ MonoBehaviour:
   - {fileID: 1631984872}
   - {fileID: 873283969}
   songImagePreview: {fileID: 1778732762}
+  colorsPreview:
+  - {fileID: 404559155}
+  - {fileID: 1462450948}
+  - {fileID: 2042978924}
+  - {fileID: 24404563}
+  - {fileID: 1301130974}
+  - {fileID: 0}
+  editStagePanel: {fileID: 2008049673}
 --- !u!4 &706257398
 Transform:
   m_ObjectHideFlags: 0
@@ -11950,7 +11958,7 @@ GameObject:
   - component: {fileID: 1301130974}
   - component: {fileID: 1301130973}
   m_Layer: 5
-  m_Name: BckgrndClrBtn
+  m_Name: BckgrndColorBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17586,10 +17594,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2008049673}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 706257397}
+        m_TargetAssemblyTypeName: EditorUIManager, Assembly-CSharp
+        m_MethodName: SwitchStagePanel
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -18158,7 +18166,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2048762302
 RectTransform:
   m_ObjectHideFlags: 0
@@ -18354,7 +18362,7 @@ GameObject:
   - component: {fileID: 2061764531}
   - component: {fileID: 2061764530}
   m_Layer: 5
-  m_Name: UIElements_1
+  m_Name: UIBackgroundTitle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

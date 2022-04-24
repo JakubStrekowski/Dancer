@@ -75,8 +75,11 @@ public class GameMaster : MonoBehaviour
         selectedSongFile = song;
         musicLoader.LoadMusicMoves(selectedSongFile);
         GetAudioClip();
+        //TODO refactor
         GameObject.Find("EditorManager").GetComponent<EditorUIManager>().
-            RefreshEditorTexts(musicLoader.DancerSongParsed); //TODO refactor
+            RefreshEditorTexts(); 
+        GameObject.Find("EditorManager").GetComponent<EditorUIManager>().
+            RefreshEditorColors(); 
         GameObject.Find("CustomGamesPanel").SetActive(false);
     }
 }

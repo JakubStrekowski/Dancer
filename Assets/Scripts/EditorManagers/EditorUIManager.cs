@@ -1,3 +1,4 @@
+using HSVPicker;
 using MIDIparser.Models;
 using System.Collections;
 using System.Collections.Generic;
@@ -41,6 +42,16 @@ public enum EEditorTextInfoUIObjs
     title,
     description
 }
+public enum EEditorInfoColors
+{
+    None = -1,
+    UpArrow,
+    RightArrow,
+    LeftArrow,
+    DownArrow,
+    UiBackground,
+    UiText,
+}
 
 
 
@@ -52,6 +63,10 @@ public class EditorUIManager : MonoBehaviour
     [SerializeField]
     private Button[] paletteButtons;
 
+    #region SongInfoPanel
+    //TODO move to another sctipt
+    public EEditorInfoColors currentlyEditedColor = EEditorInfoColors.None;
+
     [SerializeField]
     private TextMeshProUGUI infoTexts;
 
@@ -61,6 +76,21 @@ public class EditorUIManager : MonoBehaviour
     [SerializeField]
     private Image songImagePreview;
 
+    [SerializeField]
+    private ColorPicker colorPicker;
+
+    [SerializeField]
+    private Image[] colorsPreview;
+
+    [SerializeField]
+    private Image uiColorPreview;
+
+    [SerializeField]
+    private TextMeshProUGUI uiTextPreview;
+    #endregion
+
+    [SerializeField]
+    private GameObject editStagePanel;
 
     private MusicLoader loader;
     private string MUSIC_PATH;
@@ -127,12 +157,97 @@ public class EditorUIManager : MonoBehaviour
         }
     }
 
-    public void RefreshEditorTexts(DancerSong dancerSong)
+    public void RefreshEditorTexts()
     {
-        infoInputFields[(int)EEditorTextInfoUIObjs.title].text = dancerSong.title;
-        infoInputFields[(int)EEditorTextInfoUIObjs.description].text = dancerSong.additionaldesc;
-        infoTexts.text = dancerSong.musicFilePath;
-        DownloadImage(MUSIC_PATH + '/' + dancerSong.title + '/' + dancerSong.imagePreviewPath);
+        DancerSong currentSong = GameMaster.Instance.musicLoader.DancerSongParsed;
+
+        infoInputFields[(int)EEditorTextInfoUIObjs.title].text = currentSong.title;
+        infoInputFields[(int)EEditorTextInfoUIObjs.description].text = currentSong.additionaldesc;
+        infoTexts.text = currentSong.musicFilePath;
+        DownloadImage(MUSIC_PATH + '/' + currentSong.title + '/' + currentSong.imagePreviewPath);
+    }
+
+    public void RefreshEditorColors()
+    {
+        DancerSong currentSong = GameMaster.Instance.musicLoader.DancerSongParsed;
+
+        colorsPreview[(int)EEditorInfoColors.UpArrow].color =
+            currentSong.upArrowColor.ToUnityColor();
+        colorsPreview[(int)EEditorInfoColors.RightArrow].color =
+            currentSong.rightArrowColor.ToUnityColor();
+        colorsPreview[(int)EEditorInfoColors.LeftArrow].color =
+            currentSong.leftArrowColor.ToUnityColor();
+        colorsPreview[(int)EEditorInfoColors.DownArrow].color =
+            currentSong.downArrowColor.ToUnityColor();
+
+        colorsPreview[(int)EEditorInfoColors.UiBackground].color =
+            currentSong.uiColor.ToUnityColor();
+        colorsPreview[(int)EEditorInfoColors.UiText].color =
+            currentSong.uiTextColor.ToUnityColor();
+
+        uiColorPreview.color = colorsPreview[(int)EEditorInfoColors.UiBackground].color;
+        uiTextPreview.color = colorsPreview[(int)EEditorInfoColors.UiText].color;
+    }
+
+    public void SetCurrentlyEditedColor(int value)
+    {
+        currentlyEditedColor = (EEditorInfoColors)value;
+        colorPicker.CurrentColor = colorsPreview[value].color;
+    }
+
+    public void OnColorChange()
+    {
+        DancerSong currentSong = GameMaster.Instance.musicLoader.DancerSongParsed;
+
+        if (currentlyEditedColor == EEditorInfoColors.None) return;
+
+        colorsPreview[(int)currentlyEditedColor].color = colorPicker.CurrentColor;
+
+        if (currentlyEditedColor == EEditorInfoColors.UiBackground)
+        {
+            uiColorPreview.color = colorPicker.CurrentColor;
+        }
+        if (currentlyEditedColor == EEditorInfoColors.UiText)
+        {
+            uiTextPreview.color = colorPicker.CurrentColor;
+        }
+
+        switch (currentlyEditedColor)
+        {
+            case EEditorInfoColors.None:
+                break;
+            case EEditorInfoColors.UpArrow:
+                currentSong.upArrowColor = 
+                    new ArgbColor(colorsPreview[(int)currentlyEditedColor].color);
+                break;
+            case EEditorInfoColors.RightArrow:
+                currentSong.rightArrowColor =
+                    new ArgbColor(colorsPreview[(int)currentlyEditedColor].color);
+                break;
+            case EEditorInfoColors.LeftArrow:
+                currentSong.leftArrowColor =
+                    new ArgbColor(colorsPreview[(int)currentlyEditedColor].color);
+                break;
+            case EEditorInfoColors.DownArrow:
+                currentSong.downArrowColor =
+                    new ArgbColor(colorsPreview[(int)currentlyEditedColor].color);
+                break;
+            case EEditorInfoColors.UiBackground:
+                currentSong.uiColor =
+                    new ArgbColor(colorsPreview[(int)currentlyEditedColor].color);
+                break;
+            case EEditorInfoColors.UiText:
+                currentSong.uiTextColor =
+                    new ArgbColor(colorsPreview[(int)currentlyEditedColor].color);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void SwitchStagePanel()
+    {
+        editStagePanel.SetActive(!editStagePanel.activeSelf);
     }
 
     private void DownloadImage(string url)

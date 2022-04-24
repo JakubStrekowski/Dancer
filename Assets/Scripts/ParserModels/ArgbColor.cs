@@ -32,6 +32,13 @@ namespace MIDIparser.Models
             green = g;
             blue = b;
         }
+        public ArgbColor(Color color)
+        {
+            alpha = (byte)(color.a * 255);
+            red = (byte)(color.r * 255);
+            green = (byte)(color.g * 255);
+            blue = (byte)(color.b * 255);
+        }
 
         public Color ToUnityColor()
         {
