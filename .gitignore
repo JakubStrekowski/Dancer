@@ -65,3 +65,4 @@ crashlytics-build.properties
 *.meta
 /Assets/Resources/PredefinedMusic/AVGVSTA - Space station
 /Assets/Resources/PredefinedMusic/Challenges Ahead
+/Assets/Plugins/SimpleFileBrowser
