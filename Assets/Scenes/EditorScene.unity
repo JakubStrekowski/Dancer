@@ -492,6 +492,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 706257397}
+        m_TargetAssemblyTypeName: EditorUIManager, Assembly-CSharp
+        m_MethodName: SetCurrentlyEditedColor
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &24404563
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1087,7 +1099,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.20754719, g: 0.20754719, b: 0.20754719, a: 1}
+  m_Color: {r: 0.4056604, g: 0.4056604, b: 0.4056604, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2247,7 +2259,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 147925956}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 903849904}
+        m_TargetAssemblyTypeName: LoadCustomSongs, Assembly-CSharp
+        m_MethodName: OnCustomSongSave
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &147925956
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2853,7 +2877,7 @@ GameObject:
   - component: {fileID: 212792464}
   - component: {fileID: 212792463}
   m_Layer: 5
-  m_Name: BgImg
+  m_Name: TxtImg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3808,6 +3832,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 706257397}
+        m_TargetAssemblyTypeName: EditorUIManager, Assembly-CSharp
+        m_MethodName: SetCurrentlyEditedColor
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -5927,7 +5963,7 @@ GameObject:
   - component: {fileID: 693507085}
   - component: {fileID: 693507084}
   m_Layer: 5
-  m_Name: UiTxtColotBtn
+  m_Name: UiTxtColorBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6009,6 +6045,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 706257397}
+        m_TargetAssemblyTypeName: EditorUIManager, Assembly-CSharp
+        m_MethodName: SetCurrentlyEditedColor
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 5
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &693507085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6086,18 +6134,22 @@ MonoBehaviour:
   - {fileID: 2101972553}
   - {fileID: 1785163163}
   - {fileID: 173582890}
+  currentlyEditedColor: 0
   infoTexts: {fileID: 413885011}
   infoInputFields:
   - {fileID: 1631984872}
   - {fileID: 873283969}
   songImagePreview: {fileID: 1778732762}
+  colorPicker: {fileID: 9061531909201726013}
   colorsPreview:
-  - {fileID: 404559155}
-  - {fileID: 1462450948}
-  - {fileID: 2042978924}
-  - {fileID: 24404563}
-  - {fileID: 1301130974}
-  - {fileID: 0}
+  - {fileID: 1837872617}
+  - {fileID: 1368855645}
+  - {fileID: 1105285250}
+  - {fileID: 2105690798}
+  - {fileID: 1787662069}
+  - {fileID: 212792463}
+  uiColorPreview: {fileID: 65081704}
+  uiTextPreview: {fileID: 951808054}
   editStagePanel: {fileID: 2008049673}
 --- !u!4 &706257398
 Transform:
@@ -6823,7 +6875,7 @@ RectTransform:
   m_Father: {fileID: 19425835}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.0799995}
+  m_AnchorMin: {x: 0, y: 0.51799953}
   m_AnchorMax: {x: 1, y: 0.9999995}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
@@ -7977,7 +8029,19 @@ MonoBehaviour:
       m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 706257397}
+        m_TargetAssemblyTypeName: EditorUIManager, Assembly-CSharp
+        m_MethodName: OnDescriptionChange
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnTouchScreenKeyboardStatusChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -12040,6 +12104,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 706257397}
+        m_TargetAssemblyTypeName: EditorUIManager, Assembly-CSharp
+        m_MethodName: SetCurrentlyEditedColor
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 4
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &1301130974
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13382,6 +13458,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 706257397}
+        m_TargetAssemblyTypeName: EditorUIManager, Assembly-CSharp
+        m_MethodName: SetCurrentlyEditedColor
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &1462450948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14192,8 +14280,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 789718354}
   m_HandleRect: {fileID: 789718353}
   m_Direction: 2
-  m_Value: 0.9999939
-  m_Size: 0.92
+  m_Value: 0.99999905
+  m_Size: 0.482
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -14354,7 +14442,19 @@ MonoBehaviour:
       m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 706257397}
+        m_TargetAssemblyTypeName: EditorUIManager, Assembly-CSharp
+        m_MethodName: OnTitleChange
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnTouchScreenKeyboardStatusChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -18107,6 +18207,18 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 706257397}
+        m_TargetAssemblyTypeName: EditorUIManager, Assembly-CSharp
+        m_MethodName: SetCurrentlyEditedColor
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
@@ -24147,7 +24259,19 @@ MonoBehaviour:
     - {r: 0, g: 0.7868185, b: 1, a: 1}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 706257397}
+        m_TargetAssemblyTypeName: EditorUIManager, Assembly-CSharp
+        m_MethodName: OnColorChange
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &9061531909201726149
 MonoBehaviour:
   m_ObjectHideFlags: 0

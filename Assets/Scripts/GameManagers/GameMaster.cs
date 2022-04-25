@@ -79,7 +79,9 @@ public class GameMaster : MonoBehaviour
         GameObject.Find("EditorManager").GetComponent<EditorUIManager>().
             RefreshEditorTexts(); 
         GameObject.Find("EditorManager").GetComponent<EditorUIManager>().
-            RefreshEditorColors(); 
+            RefreshEditorColors();
+        GameObject.Find("EditorManager").GetComponent<PaletteManager>().
+            PopulateFromLoadedSong(musicLoader.DancerSongParsed);
         GameObject.Find("CustomGamesPanel").SetActive(false);
     }
 }

@@ -113,7 +113,7 @@ public class LoadCustomSongs : MonoBehaviour
 
         for (int i = selectedContent.transform.childCount - 1; i >= 0; i--)
         {
-            GameObject.Destroy(selectedContent.transform.GetChild(i).gameObject);
+            Destroy(selectedContent.transform.GetChild(i).gameObject);
         }
 
         List<string> directories = Directory.EnumerateDirectories(loader.musicPath).ToList();

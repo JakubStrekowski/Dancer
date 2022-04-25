@@ -19,10 +19,10 @@ public class LoadSongElementUI : SongElementUI
         string description, string score, Color scoreColor)
     {
         levelFolder = path;
-        GetComponent<RectTransform>().position = 
-            new Vector3(GetComponent<RectTransform>().position.x,
-            GetComponent<RectTransform>().position.y + 
-            offset, GetComponent<RectTransform>().position.z);
+        GetComponent<RectTransform>().position = new Vector3(
+                GetComponent<RectTransform>().position.x,
+                GetComponent<RectTransform>().position.y + offset, 
+                GetComponent<RectTransform>().position.z);
 
         previewImage = transform.GetChild((int)EPreviewElementChildObjects.previewImage)
                             .GetComponent<Image>();
