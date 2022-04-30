@@ -18,8 +18,6 @@ public class MoveContinuousEvent : MonoBehaviour, IMoveEvent
     private readonly float DESTROY_DELAY = 5.0f;
 
     private float fillPercentage = 0;
-    private float moveSpeed = 10f;
-    private Rigidbody2D rb;
     private SpriteRenderer sr;
     private bool isCheckedCorrect = false;
     private bool isReleasedTooEarly = false;
@@ -27,10 +25,10 @@ public class MoveContinuousEvent : MonoBehaviour, IMoveEvent
 
     private float durationInSeconds;
     private float passedTimeWhileHeld;
+    private float posWhenHit = 0;
 
     public ParticleSystem onHitEffect;
     public bool IsBeingHeld { get; set; }
-    public float MoveSpeed { get => moveSpeed; private set => moveSpeed=value; }
     public float BeginTime { get; private set; }
     public float Duration { get; private set; }
     public MoveTypeEnum MoveType { get; private set; }
@@ -46,8 +44,8 @@ public class MoveContinuousEvent : MonoBehaviour, IMoveEvent
         {
             GetComponent<SpriteRenderer>().color = new Color(255, 255, 255);
             IsBeingHeld = true;
-            rb.velocity = Vector2.zero;
             passedTimeWhileHeld = 0;
+            posWhenHit = transform.localPosition.x;
             onHitEffect.Play();
         }
     }
@@ -82,8 +80,6 @@ public class MoveContinuousEvent : MonoBehaviour, IMoveEvent
     }
     public void ActivateEvent(float speed)
     {
-        moveSpeed = speed;
-        rb.velocity = Vector2.left * moveSpeed;
         sr.enabled = true;
         holdBar.enabled = true;
         sr.color = colorToSet;
@@ -91,7 +87,6 @@ public class MoveContinuousEvent : MonoBehaviour, IMoveEvent
 
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         ParticleSystem.MainModule particleMainModule = onHitEffect.main;
         particleMainModule.startColor = colorToSet;
@@ -101,8 +96,13 @@ public class MoveContinuousEvent : MonoBehaviour, IMoveEvent
     {
         if(IsBeingHeld && fillPercentage < 1)
         {
-            passedTimeWhileHeld += Time.deltaTime * 4;
+            passedTimeWhileHeld += Time.deltaTime * Constants.BASE_SPEED;
             fillPercentage = (passedTimeWhileHeld / durationInSeconds);
+
+            transform.localPosition = new Vector3(
+                posWhenHit + fillPercentage * durationInSeconds,
+                transform.localPosition.y);
+
             holdBar.transform.localPosition = new Vector3(
                 -fillPercentage * durationInSeconds, 
                 holdBar.transform.localPosition.y);
@@ -138,7 +138,6 @@ public class MoveContinuousEvent : MonoBehaviour, IMoveEvent
     public void StopHolding()
     {
         IsBeingHeld = false;
-        rb.velocity = moveSpeed * Vector2.left;
         if(fillPercentage < 1)
         {
             isReleasedTooEarly = true;

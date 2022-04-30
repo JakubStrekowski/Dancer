@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 6899819803166079326}
   - component: {fileID: 5223482220261440753}
   - component: {fileID: 6437141067434393422}
-  - component: {fileID: 4571753162606827889}
   - component: {fileID: -3655929896509013062}
   m_Layer: 3
   m_Name: MoveContinuousEvent
@@ -101,27 +100,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   holdBar: {fileID: 7255779730456322115}
   onHitEffect: {fileID: 1443485246230132862}
---- !u!50 &4571753162606827889
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3874231391359583477}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &-3655929896509013062
 BoxCollider2D:
   m_ObjectHideFlags: 0

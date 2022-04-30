@@ -7,7 +7,6 @@ using MIDIparser.Models;
 public class MoveFactory : MonoBehaviour
 {
     private readonly float[] eventYPositions = { 7.6f, 6.9f, 6.2f, 5.5f };
-    private readonly float EVENT_STARTPOS_X = 14f;
 
     private Color[] moveColors = { 
         ArgbColor.ConvertFromBytes(255, 185, 255, 255),
@@ -16,46 +15,57 @@ public class MoveFactory : MonoBehaviour
         ArgbColor.ConvertFromBytes(255, 255, 173, 0)
     };
 
-    public GameObject uiAnchor;
-    public GameObject moveContinuousEventBase;
-    public GameObject moveInstantEventBase;
+    public GameObject movesAnchor;
+
+    [SerializeField]
+    private GameObject moveContinuousEventBase;
+    [SerializeField]
+    private GameObject moveInstantEventBase;
 
     public List<GameObject> GenerateGameMovesFromXml(
-        DancerEvents dancerEvents, float ticksPerSpeed)
+        DancerEvents dancerEvents, float ticksPerSpeed, float startTime = 0f)
     {
         List<GameObject> createdMoveEvents = new List<GameObject>();
         foreach(MusicMovementEvent movementEvent in dancerEvents.movementEvents)
         {
+            if (startTime > movementEvent.StartTime / ticksPerSpeed)
+            {
+                continue;
+            }
+
             MoveTypeEnum moveTypeEnum;
-            Vector3 eventPosition = new Vector3(EVENT_STARTPOS_X, 8.1f,0);
+            Vector3 eventPosition = new Vector3(
+                (movementEvent.StartTime / ticksPerSpeed) * Constants.BASE_SPEED, 
+                8.1f,
+                0);
             //if event is move contiuous
             if (movementEvent.EventTypeID > EventTypeEnum.ArrowDownInstant && 
                 movementEvent.EventTypeID < EventTypeEnum.ChangeBackground)
             {
-                GameObject newMoveEvent = 
-                    Instantiate(moveContinuousEventBase, uiAnchor.transform).gameObject;
+                GameObject newMoveEvent = Instantiate(
+                    moveContinuousEventBase, movesAnchor.transform).gameObject;
 
                 switch (movementEvent.EventTypeID)
                 {
                     case EventTypeEnum.ArrowUpDuration:    
-                        moveTypeEnum = MoveTypeEnum.Up; 
-                        eventPosition.y = eventYPositions[0];     
+                        moveTypeEnum = MoveTypeEnum.Up;
+                        eventPosition.y = eventYPositions[(int)moveTypeEnum];
                         break;
                     case EventTypeEnum.ArrowRightDuration: 
-                        moveTypeEnum = MoveTypeEnum.Right; 
-                        eventPosition.y = eventYPositions[1];  
+                        moveTypeEnum = MoveTypeEnum.Right;
+                        eventPosition.y = eventYPositions[(int)moveTypeEnum];
                         break;
                     case EventTypeEnum.ArrowLeftDuration:  
-                        moveTypeEnum = MoveTypeEnum.Left; 
-                        eventPosition.y = eventYPositions[2];   
+                        moveTypeEnum = MoveTypeEnum.Left;
+                        eventPosition.y = eventYPositions[(int)moveTypeEnum];
                         break;
                     case EventTypeEnum.ArrowDownDuration:  
-                        moveTypeEnum = MoveTypeEnum.Down; 
-                        eventPosition.y = eventYPositions[3];   
+                        moveTypeEnum = MoveTypeEnum.Down;
+                        eventPosition.y = eventYPositions[(int)moveTypeEnum];
                         break;
                     default: 
-                        moveTypeEnum = MoveTypeEnum.Down; 
-                        eventPosition.y = eventYPositions[3]; 
+                        moveTypeEnum = MoveTypeEnum.Down;
+                        eventPosition.y = eventYPositions[(int)moveTypeEnum];
                         break;
                 }
 
@@ -73,28 +83,29 @@ public class MoveFactory : MonoBehaviour
             else if (movementEvent.EventTypeID <= EventTypeEnum.ArrowDownInstant)
             {
                 GameObject newMoveEvent = 
-                    Instantiate(moveInstantEventBase, uiAnchor.transform).gameObject;
+                    Instantiate(moveInstantEventBase, movesAnchor.transform).gameObject;
 
                 switch (movementEvent.EventTypeID)
                 {
                     case EventTypeEnum.ArrowUpInstant:    
                         moveTypeEnum = MoveTypeEnum.Up; 
-                        eventPosition.y = eventYPositions[0];   
+                        eventPosition.y = eventYPositions[(int)moveTypeEnum];   
                         break;
                     case EventTypeEnum.ArrowRightInstant: 
-                        moveTypeEnum = MoveTypeEnum.Right; 
-                        eventPosition.y = eventYPositions[1]; 
+                        moveTypeEnum = MoveTypeEnum.Right;
+                        eventPosition.y = eventYPositions[(int)moveTypeEnum];
                         break;
                     case EventTypeEnum.ArrowLeftInstant:  
-                        moveTypeEnum = MoveTypeEnum.Left; 
-                        eventPosition.y = eventYPositions[2];  
+                        moveTypeEnum = MoveTypeEnum.Left;
+                        eventPosition.y = eventYPositions[(int)moveTypeEnum];
                         break;
                     case EventTypeEnum.ArrowDownInstant:  
-                        moveTypeEnum = MoveTypeEnum.Down; 
-                        eventPosition.y = eventYPositions[3];  
+                        moveTypeEnum = MoveTypeEnum.Down;
+                        eventPosition.y = eventYPositions[(int)moveTypeEnum];
                         break;
                     default: 
-                        moveTypeEnum = MoveTypeEnum.Down; 
+                        moveTypeEnum = MoveTypeEnum.Down;
+                        eventPosition.y = eventYPositions[(int)moveTypeEnum];
                         break;
                 }
 
@@ -112,8 +123,8 @@ public class MoveFactory : MonoBehaviour
         return createdMoveEvents;
     }
 
-    public void SetMoveColor(int colorID, Color color)
+    public void SetMoveColor(MoveTypeEnum moveTypeEnum, Color color)
     {
-        moveColors[colorID] = color;
+        moveColors[(int)moveTypeEnum] = color;
     }
 }

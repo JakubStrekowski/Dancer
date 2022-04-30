@@ -82,6 +82,11 @@ public class LoadCustomSongs : MonoBehaviour
 
     public void OnCustomSongSave()
     {
+        if (GameMaster.Instance.musicLoader.DancerSongParsed is null)
+        {
+            return;
+        }
+
         if (currentLoadStage == ESongLoadStages.readyToOperate)
         {
             DancerSong newSong = GameMaster.Instance.musicLoader.DancerSongParsed;
@@ -116,7 +121,7 @@ public class LoadCustomSongs : MonoBehaviour
 
             foreach (VisualEventBase effect in spriteEffects)
             {
-                if (File.Exists(newSongDirectory + '/' + effect.paramsList[0]))
+                if (!File.Exists(newSongDirectory + '/' + effect.paramsList[0]))
                 {
                     Sprite itemBGSprite = GameMaster.Instance.GetSpriteFromPalette(effect.paramsList[0]);
                     Texture2D itemBGTex = itemBGSprite.texture;

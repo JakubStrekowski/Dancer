@@ -21,6 +21,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private UILogicManager uILogicManager;
 
+    [SerializeField]
+    private MoveEventsBoard movesBoard;
+
     private AudioClip currentSong;
     private float timeToReachChecker = 5f;
     private float tickPerSecond = 1680f;
@@ -52,18 +55,22 @@ public class GameManager : MonoBehaviour
         NoteChecker.hitCorrectDelegate += AddOneCorrect;
     }
 
-    void OnEnable()
+    //void OnEnable()
+    //{
+    //    currentMusicTime = 0.0f;
+    //    ReinitAndPlay();
+    //}
+
+    public void ResumeFromProgress()
     {
-        ReinitAndPlay();
+        songState = ESongStates.Loading;
+
+        currentMusicTime = uILogicManager.songProgress.value;
+        ReinitAndPlay(currentMusicTime);
     }
 
-    private void OnDisable()
+    public void StopPlaying()
     {
-        foreach(GameObject moveEventObject in moveEvents)
-        {
-            Destroy(moveEventObject);
-        }
-
         effectsFactory.DeleteAllVisualSprites();
 
         songState = ESongStates.AwaitingToStart;
@@ -71,6 +78,21 @@ public class GameManager : MonoBehaviour
         audioSrc.Stop();
         songWasPlayed = false;
     }
+
+    //private void OnDisable()
+    //{
+    //    foreach(GameObject moveEventObject in moveEvents)
+    //    {
+    //        Destroy(moveEventObject);
+    //    }
+    //
+    //    effectsFactory.DeleteAllVisualSprites();
+    //
+    //    songState = ESongStates.AwaitingToStart;
+    //
+    //    audioSrc.Stop();
+    //    songWasPlayed = false;
+    //}
 
     void FixedUpdate()
     {
@@ -83,7 +105,8 @@ public class GameManager : MonoBehaviour
             case ESongStates.ReadyToPlay:
                 {
                     audioSrc.clip = currentSong;
-                    currentMusicTime = 0;
+                    audioSrc.time = currentMusicTime > timeToReachChecker ?
+                        currentMusicTime - timeToReachChecker : 0.0f;
                     songState = ESongStates.Playing;
                     return;
                 }
@@ -189,27 +212,31 @@ public class GameManager : MonoBehaviour
         uILogicManager.UpdateMissesUI(correctCount, mistakeCount, totalMoveEvents);
     }
 
-    public void ReinitAndPlay()
+    public void ReinitAndPlay(float fromTime = 0.0f)
     {
+
         moveSpeed = Constants.BASE_SPEED * speedDiffficulty;
         timeToReachChecker = Constants.DISTANCE_TO_CHECKER / moveSpeed;
         //TODO set another stage in loader
         //Set colors of move events
-        moveFactory.SetMoveColor(0, 
+        moveFactory.SetMoveColor(MoveTypeEnum.Up, 
             GameMaster.Instance.musicLoader.DancerSongParsed.upArrowColor.ToUnityColor());
-        moveFactory.SetMoveColor(1, 
+        moveFactory.SetMoveColor(MoveTypeEnum.Right, 
             GameMaster.Instance.musicLoader.DancerSongParsed.rightArrowColor.ToUnityColor());
-        moveFactory.SetMoveColor(2, 
+        moveFactory.SetMoveColor(MoveTypeEnum.Left, 
             GameMaster.Instance.musicLoader.DancerSongParsed.leftArrowColor.ToUnityColor());
-        moveFactory.SetMoveColor(3, 
+        moveFactory.SetMoveColor(MoveTypeEnum.Down, 
             GameMaster.Instance.musicLoader.DancerSongParsed.downArrowColor.ToUnityColor());
 
         //instantiate all move events
-        tickPerSecond = GameMaster.Instance.musicLoader.DancerSongParsed.ticksPerSecond;
-        moveEvents = moveFactory.GenerateGameMovesFromXml(
-            GameMaster.Instance.musicLoader.DancerSongParsed.dancerEvents, 
-            tickPerSecond * speedDiffficulty);
-
+        if (fromTime == 0)
+        {
+            movesBoard.ClearAllMoves();
+            tickPerSecond = GameMaster.Instance.musicLoader.DancerSongParsed.ticksPerSecond;
+            moveEvents = moveFactory.GenerateGameMovesFromXml(
+                GameMaster.Instance.musicLoader.DancerSongParsed.dancerEvents,
+                tickPerSecond * speedDiffficulty, currentMusicTime);
+        }
         //instantiate all visual events
         visualEvents = effectsFactory.GenerateVisualEffectObjects(
             GameMaster.Instance.musicLoader.DancerSongParsed.dancerEvents,

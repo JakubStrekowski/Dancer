@@ -6,21 +6,16 @@ public class MoveInstantEvent : MonoBehaviour, IMoveEvent
 {
     private readonly float DESTROY_DELAY = 5.0f;
 
-    private float moveSpeed = 10f;
-    private Rigidbody2D rb;
     private SpriteRenderer sr;
     private bool isCheckedCorrect = false;
     private Color colorToSet;
 
     public ParticleSystem onHitEffect;
-    public float MoveSpeed { get => moveSpeed; private set => moveSpeed = value; }
     public float BeginTime { get; private set; }
     public MoveTypeEnum MoveType { get; private set; }
 
     public void ActivateEvent(float speed)
     {
-        moveSpeed = speed;
-        rb.velocity = Vector2.left * moveSpeed;
         sr.enabled = true;
         sr.color = colorToSet;
     }
@@ -73,7 +68,6 @@ public class MoveInstantEvent : MonoBehaviour, IMoveEvent
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         ParticleSystem.MainModule particleMainModule = onHitEffect.main;
         particleMainModule.startColor = colorToSet;

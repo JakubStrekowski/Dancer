@@ -13,16 +13,73 @@ public enum EEditorStates
 
 public class EditorStateManager : MonoBehaviour
 {
+    [SerializeField]
+    private GameManager gameManager;
+
+    private EditorUIManager editorUIManager;
     private EEditorStates editorState;
 
-    private void OnEditorStateChanged()
+    private void Awake()
     {
-
+        editorUIManager = GetComponent<EditorUIManager>();
     }
 
     public void SetEditorState(int state)
     {
+        OnEditorStateLeave();
         editorState = (EEditorStates)state;
-        OnEditorStateChanged();
+        OnEditorStateEnter();
+    }
+
+    private void OnEditorStateEnter()
+    {
+        switch (editorState)
+        {
+            case EEditorStates.basic:
+                break;
+            case EEditorStates.editMoves:
+                break;
+            case EEditorStates.editMovesPlay:
+                break;
+            case EEditorStates.editEvents:
+                break;
+            case EEditorStates.test:
+                StartSongTest();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void OnEditorStateLeave()
+    {
+        switch (editorState)
+        {
+            case EEditorStates.basic:
+                break;
+            case EEditorStates.editMoves:
+                break;
+            case EEditorStates.editMovesPlay:
+                break;
+            case EEditorStates.editEvents:
+                break;
+            case EEditorStates.test:
+                EndSongTest();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void StartSongTest()
+    {
+        gameManager.ResumeFromProgress();
+        editorUIManager.OnTestModeStart();
+    }
+
+    private void EndSongTest()
+    {
+        gameManager.StopPlaying();
+        editorUIManager.OnTestModeEnd();
     }
 }

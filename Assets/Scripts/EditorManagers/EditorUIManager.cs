@@ -92,6 +92,12 @@ public class EditorUIManager : MonoBehaviour
     [SerializeField]
     private GameObject editStagePanel;
 
+    [SerializeField]
+    private GameObject stagePanel;
+
+    [SerializeField]
+    private GameObject toolbar;
+
     private MusicLoader loader;
     private string MUSIC_PATH;
 
@@ -270,6 +276,17 @@ public class EditorUIManager : MonoBehaviour
     public Sprite GetPreviewPath()
     {
         return songImagePreview.sprite;
+    }
+
+    public void OnTestModeStart()
+    {
+        toolbar.SetActive(false);
+        stagePanel.SetActive(false);
+    }
+    public void OnTestModeEnd()
+    {
+        toolbar.SetActive(true);
+        stagePanel.SetActive(true);
     }
 
     private void DownloadImage(string url)

@@ -193,6 +193,7 @@ public class EffectsFactory : MonoBehaviour
         {
             GameObject.Destroy(createdObject.gameObject);
         }
+        visualObjects.Clear();
     }
 
     private void DownloadImage(string url, GameObject visualEffect)
