@@ -67,6 +67,11 @@ public class PaletteManager : MonoBehaviour
         StartCoroutine(ShowLoadDialogCoroutine());
     }
 
+    public Sprite GetByName(string imageName)
+    {
+        return spriteCollection[imageName];
+    }
+
     IEnumerator ShowLoadDialogCoroutine()
     {
         yield return FileBrowser.WaitForLoadDialog(FileBrowser.PickMode.Files, true,

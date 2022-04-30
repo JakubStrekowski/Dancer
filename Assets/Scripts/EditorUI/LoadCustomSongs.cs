@@ -86,21 +86,44 @@ public class LoadCustomSongs : MonoBehaviour
         {
             DancerSong newSong = GameMaster.Instance.musicLoader.DancerSongParsed;
 
-            System.IO.Directory.CreateDirectory(MUSIC_PATH + newSong.title);
+            string newSongDirectory = MUSIC_PATH + newSong.title;
 
-            System.IO.TextWriter writer = new StreamWriter(
-                MUSIC_PATH + newSong.title + "/" + newSong.title + ".xml");
+            if (Directory.Exists(newSongDirectory))
+            {
+                Directory.Delete(newSongDirectory, false);
+            }
 
-            // string filename = newSong.musicFilePath.Split('\\').Last();
-            // string imageFileName = newSong.imagePreviewPath.Split('\\').Last();
+            Directory.CreateDirectory(newSongDirectory);
 
+            TextWriter writer = new StreamWriter(
+               newSongDirectory + "/" + newSong.title + ".xml");
 
-            /* TODO
-             * - create palette class to hold all imported images
-             * - save imported images to save directory
-             * - save preview image to save directory
-             * - save music file to save directory
-             */
+            string filename = newSong.musicFilePath.Split('\\').Last();
+
+            File.Copy(GameMaster.Instance.GetEditorMusicPath(),
+                newSongDirectory + '/' + filename, true);
+
+            string imageFileName = newSong.imagePreviewPath.Split('\\').Last();
+
+            Sprite previewSprite = GameMaster.Instance.GetEditorImagePreview();
+            Texture2D previewTex = previewSprite.texture;
+            byte[] previewBytes = previewTex.EncodeToPNG();
+            File.WriteAllBytes(newSongDirectory + '/' + newSong.imagePreviewPath, previewBytes);
+
+            List<VisualEventBase> spriteEffects = newSong.dancerEvents.visualEvents.Where(x =>
+                x.eventType == VisualEventTypeEnum.CreateObject || 
+                x.eventType == VisualEventTypeEnum.ChangeSprite).ToList();
+
+            foreach (VisualEventBase effect in spriteEffects)
+            {
+                if (File.Exists(newSongDirectory + '/' + effect.paramsList[0]))
+                {
+                    Sprite itemBGSprite = GameMaster.Instance.GetSpriteFromPalette(effect.paramsList[0]);
+                    Texture2D itemBGTex = itemBGSprite.texture;
+                    byte[] itemBGBytes = itemBGTex.EncodeToPNG();
+                    File.WriteAllBytes(newSongDirectory + '/' + effect.paramsList[0], itemBGBytes);
+                }
+            }
 
             XmlSerializer xml = new XmlSerializer(typeof(DancerSong));
             xml.Serialize(writer, newSong);

@@ -34,8 +34,10 @@ public class GameMaster : MonoBehaviour
                 (int)ESceneIndexes.playSongSceneIndex) //loaded level without main menu
             {
                 selectedSongFile = "AVGVSTA - Together Again";
-                musicLoader = new MusicLoader();
-                musicLoader.musicPath = Application.dataPath + "/Resources/PredefinedMusic/";
+                musicLoader = new MusicLoader
+                {
+                    musicPath = Application.dataPath + "/Resources/PredefinedMusic/"
+                };
                 musicLoader.LoadMusicMoves(selectedSongFile);
                 GetAudioClip();
                 return;
@@ -83,5 +85,22 @@ public class GameMaster : MonoBehaviour
         GameObject.Find("EditorManager").GetComponent<PaletteManager>().
             PopulateFromLoadedSong(musicLoader.DancerSongParsed);
         GameObject.Find("CustomGamesPanel").SetActive(false);
+    }
+
+    public string GetEditorMusicPath()
+    {
+        return GameObject.Find("EditorManager").
+            GetComponent<EditorUIManager>().GetMusicPath();
+    }
+    public Sprite GetEditorImagePreview()
+    { 
+        return GameObject.Find("EditorManager").
+            GetComponent<EditorUIManager>().GetPreviewPath();
+    }
+
+    public Sprite GetSpriteFromPalette(string imageName)
+    {
+        return GameObject.Find("EditorManager").
+            GetComponent<PaletteManager>().GetByName(imageName);
     }
 }

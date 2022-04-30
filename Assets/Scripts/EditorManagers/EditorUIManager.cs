@@ -96,7 +96,6 @@ public class EditorUIManager : MonoBehaviour
     private string MUSIC_PATH;
 
 
-
     private void Start()
     {
         loader = GameMaster.Instance.musicLoader;
@@ -163,7 +162,7 @@ public class EditorUIManager : MonoBehaviour
 
         infoInputFields[(int)EEditorTextInfoUIObjs.title].text = currentSong.title;
         infoInputFields[(int)EEditorTextInfoUIObjs.description].text = currentSong.additionaldesc;
-        infoTexts.text = currentSong.musicFilePath;
+        infoTexts.text = MUSIC_PATH + '/' + currentSong.title + '/' + currentSong.musicFilePath;
         DownloadImage(MUSIC_PATH + '/' + currentSong.title + '/' + currentSong.imagePreviewPath);
     }
 
@@ -264,6 +263,15 @@ public class EditorUIManager : MonoBehaviour
         editStagePanel.SetActive(!editStagePanel.activeSelf);
     }
 
+    public string GetMusicPath()
+    {
+        return infoTexts.text;
+    }
+    public Sprite GetPreviewPath()
+    {
+        return songImagePreview.sprite;
+    }
+
     private void DownloadImage(string url)
     {
         StartCoroutine(loader.ImageRequest(url, (UnityWebRequest www) =>
@@ -285,7 +293,6 @@ public class EditorUIManager : MonoBehaviour
                         texture.width, 
                         texture.height), 
                     new Vector2(0.5f, 0.5f));
-
             }
         }));
     }
