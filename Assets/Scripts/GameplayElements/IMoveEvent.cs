@@ -11,6 +11,7 @@ public interface IMoveEvent
     public void SetObjectVals(
         float beginTime, float duration, MoveTypeEnum moveType, 
         float ticksPerSpeed, Color color);
+    public void SetColor(Color newColor);
     public void ActivateEvent(float speed);
     public MoveTypeEnum GetEventTypeID();
 

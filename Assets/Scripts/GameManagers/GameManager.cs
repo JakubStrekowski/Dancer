@@ -36,9 +36,13 @@ public class GameManager : MonoBehaviour
     private float speedDiffficulty = 1.0f; //scaling BASE_SPEED to make lever harder
     public float moveSpeed = 10;
 
+    //gameplay counters
     private int mistakeCount = 0;
     private int correctCount = 0;
     private int totalMoveEvents = 0;
+
+    private int currentMoveId = 0;
+    private int currentVisualFxId = 0;
 
     private float timeStampToFinish;
 
@@ -55,44 +59,79 @@ public class GameManager : MonoBehaviour
         NoteChecker.hitCorrectDelegate += AddOneCorrect;
     }
 
-    //void OnEnable()
-    //{
-    //    currentMusicTime = 0.0f;
-    //    ReinitAndPlay();
-    //}
-
     public void ResumeFromProgress()
     {
         songState = ESongStates.Loading;
 
         currentMusicTime = uILogicManager.songProgress.value;
-        ReinitAndPlay(currentMusicTime);
+        Resume();
     }
 
     public void StopPlaying()
     {
-        effectsFactory.DeleteAllVisualSprites();
-
         songState = ESongStates.AwaitingToStart;
 
         audioSrc.Stop();
         songWasPlayed = false;
     }
+    public void CreateEvents()
+    {
+        //instantiate all move events
+        movesBoard.ClearAllMoves();
+        tickPerSecond = GameMaster.Instance.musicLoader.DancerSongParsed.ticksPerSecond;
+        moveEvents = moveFactory.GenerateGameMovesFromXml(
+            GameMaster.Instance.musicLoader.DancerSongParsed.dancerEvents,
+            tickPerSecond * speedDiffficulty, currentMusicTime);
 
-    //private void OnDisable()
-    //{
-    //    foreach(GameObject moveEventObject in moveEvents)
-    //    {
-    //        Destroy(moveEventObject);
-    //    }
-    //
-    //    effectsFactory.DeleteAllVisualSprites();
-    //
-    //    songState = ESongStates.AwaitingToStart;
-    //
-    //    audioSrc.Stop();
-    //    songWasPlayed = false;
-    //}
+        //instantiate all visual events
+        effectsFactory.DeleteAllVisualSprites();
+        visualEvents = effectsFactory.GenerateVisualEffectObjects(
+            GameMaster.Instance.musicLoader.DancerSongParsed.dancerEvents,
+            tickPerSecond * speedDiffficulty);
+    }
+
+    public void RefreshGameUI()
+    {
+        //Set colors of move events
+        moveFactory.SetMoveColor(MoveTypeEnum.Up,
+            GameMaster.Instance.musicLoader.DancerSongParsed.upArrowColor.ToUnityColor());
+        moveFactory.SetMoveColor(MoveTypeEnum.Right,
+            GameMaster.Instance.musicLoader.DancerSongParsed.rightArrowColor.ToUnityColor());
+        moveFactory.SetMoveColor(MoveTypeEnum.Left,
+            GameMaster.Instance.musicLoader.DancerSongParsed.leftArrowColor.ToUnityColor());
+        moveFactory.SetMoveColor(MoveTypeEnum.Down,
+            GameMaster.Instance.musicLoader.DancerSongParsed.downArrowColor.ToUnityColor());
+
+        //set ui colors
+        ArgbColor newColor = GameMaster.Instance.musicLoader.DancerSongParsed.upArrowColor;
+        uiFxManager.SetArrowColor(MoveTypeEnum.Up, ArgbColor.ConvertFromBytes(newColor));
+        newColor = GameMaster.Instance.musicLoader.DancerSongParsed.rightArrowColor;
+        uiFxManager.SetArrowColor(MoveTypeEnum.Right, ArgbColor.ConvertFromBytes(newColor));
+        newColor = GameMaster.Instance.musicLoader.DancerSongParsed.leftArrowColor;
+        uiFxManager.SetArrowColor(MoveTypeEnum.Left, ArgbColor.ConvertFromBytes(newColor));
+        newColor = GameMaster.Instance.musicLoader.DancerSongParsed.downArrowColor;
+        uiFxManager.SetArrowColor(MoveTypeEnum.Down, ArgbColor.ConvertFromBytes(newColor));
+
+        newColor = GameMaster.Instance.musicLoader.DancerSongParsed.backgroundColor;
+        uiFxManager.SetBackgroundColor(ArgbColor.ConvertFromBytes(newColor));
+        newColor = GameMaster.Instance.musicLoader.DancerSongParsed.uiColor;
+        uiFxManager.SetPanelUiColor(ArgbColor.ConvertFromBytes(newColor));
+        newColor = GameMaster.Instance.musicLoader.DancerSongParsed.uiTextColor;
+        uiFxManager.SetTextColor(ArgbColor.ConvertFromBytes(newColor));
+
+        //prepare mistake counts and update ui
+        mistakeCount = 0;
+        correctCount = 0;
+        totalMoveEvents =
+            GameMaster.Instance.musicLoader.DancerSongParsed.dancerEvents.movementEvents.Count;
+        uILogicManager.UpdateMissesUI(correctCount, mistakeCount, totalMoveEvents);
+        uILogicManager.UpdateTitle(GameMaster.Instance.musicLoader.DancerSongParsed.title);
+        uILogicManager.SetMaxValue((moveEvents[moveEvents.Count - 1]
+            .GetComponent("IMoveEvent") as IMoveEvent)
+            .GetBeginTime() / tickPerSecond + timeToReachChecker);
+
+        RefreshMovesColors();
+    }
 
     void FixedUpdate()
     {
@@ -133,13 +172,15 @@ public class GameManager : MonoBehaviour
                     //setting move events active when they reach (time - time for them to reach note checker)
                     if (moveEvents.Count != 0)
                     {
-                        while(((moveEvents[0].GetComponent("IMoveEvent") as IMoveEvent)
-                            .GetBeginTime() / tickPerSecond) < currentMusicTime)
+                        for (; currentMoveId < moveEvents.Count; currentMoveId++)
                         {
-                            (moveEvents[0].GetComponent("IMoveEvent") as IMoveEvent)
-                                .ActivateEvent(moveSpeed);
-                            moveEvents.RemoveAt(0);
-                            if (moveEvents.Count == 0) break;
+                            if (((moveEvents[currentMoveId].GetComponent("IMoveEvent") as IMoveEvent)
+                            .GetBeginTime() / tickPerSecond) < currentMusicTime)
+                            {
+                                (moveEvents[currentMoveId].GetComponent("IMoveEvent") as IMoveEvent)
+                                    .ActivateEvent(moveSpeed);
+                            }
+                            else break;
                         }
                     }
 
@@ -212,64 +253,77 @@ public class GameManager : MonoBehaviour
         uILogicManager.UpdateMissesUI(correctCount, mistakeCount, totalMoveEvents);
     }
 
-    public void ReinitAndPlay(float fromTime = 0.0f)
+    private void ReinitAndPlay()
     {
 
         moveSpeed = Constants.BASE_SPEED * speedDiffficulty;
         timeToReachChecker = Constants.DISTANCE_TO_CHECKER / moveSpeed;
-        //TODO set another stage in loader
-        //Set colors of move events
-        moveFactory.SetMoveColor(MoveTypeEnum.Up, 
-            GameMaster.Instance.musicLoader.DancerSongParsed.upArrowColor.ToUnityColor());
-        moveFactory.SetMoveColor(MoveTypeEnum.Right, 
-            GameMaster.Instance.musicLoader.DancerSongParsed.rightArrowColor.ToUnityColor());
-        moveFactory.SetMoveColor(MoveTypeEnum.Left, 
-            GameMaster.Instance.musicLoader.DancerSongParsed.leftArrowColor.ToUnityColor());
-        moveFactory.SetMoveColor(MoveTypeEnum.Down, 
-            GameMaster.Instance.musicLoader.DancerSongParsed.downArrowColor.ToUnityColor());
 
-        //instantiate all move events
-        if (fromTime == 0)
-        {
-            movesBoard.ClearAllMoves();
-            tickPerSecond = GameMaster.Instance.musicLoader.DancerSongParsed.ticksPerSecond;
-            moveEvents = moveFactory.GenerateGameMovesFromXml(
-                GameMaster.Instance.musicLoader.DancerSongParsed.dancerEvents,
-                tickPerSecond * speedDiffficulty, currentMusicTime);
-        }
-        //instantiate all visual events
-        visualEvents = effectsFactory.GenerateVisualEffectObjects(
-            GameMaster.Instance.musicLoader.DancerSongParsed.dancerEvents,
-            tickPerSecond * speedDiffficulty);
-        //prepare mistake counts and update ui
-        mistakeCount = 0;
-        correctCount = 0;
-        totalMoveEvents = 
-            GameMaster.Instance.musicLoader.DancerSongParsed.dancerEvents.movementEvents.Count;
-        uILogicManager.UpdateMissesUI(correctCount, mistakeCount, totalMoveEvents);
-        uILogicManager.UpdateTitle(GameMaster.Instance.musicLoader.DancerSongParsed.title);
-        uILogicManager.SetMaxValue((moveEvents[moveEvents.Count - 1]
-            .GetComponent("IMoveEvent") as IMoveEvent)
-            .GetBeginTime() / tickPerSecond + timeToReachChecker);
+        RefreshGameUI();
+        CreateEvents();
 
-        //set ui colors
-        ArgbColor newColor = GameMaster.Instance.musicLoader.DancerSongParsed.upArrowColor;
-        uiFxManager.SetArrowColor(MoveTypeEnum.Up, ArgbColor.ConvertFromBytes(newColor));
-        newColor = GameMaster.Instance.musicLoader.DancerSongParsed.rightArrowColor;
-        uiFxManager.SetArrowColor(MoveTypeEnum.Right, ArgbColor.ConvertFromBytes(newColor));
-        newColor = GameMaster.Instance.musicLoader.DancerSongParsed.leftArrowColor;
-        uiFxManager.SetArrowColor(MoveTypeEnum.Left, ArgbColor.ConvertFromBytes(newColor));
-        newColor = GameMaster.Instance.musicLoader.DancerSongParsed.downArrowColor;
-        uiFxManager.SetArrowColor(MoveTypeEnum.Down, ArgbColor.ConvertFromBytes(newColor));
-
-        newColor = GameMaster.Instance.musicLoader.DancerSongParsed.backgroundColor;
-        uiFxManager.SetBackgroundColor(ArgbColor.ConvertFromBytes(newColor));
-        newColor = GameMaster.Instance.musicLoader.DancerSongParsed.uiColor;
-        uiFxManager.SetPanelUiColor(ArgbColor.ConvertFromBytes(newColor));
-        newColor = GameMaster.Instance.musicLoader.DancerSongParsed.uiTextColor;
-        uiFxManager.SetTextColor(ArgbColor.ConvertFromBytes(newColor));
-
+        currentMoveId = 0;
 
         StartCoroutine(CheckSongMovesLoaded());
+    }
+    private void Resume()
+    {
+
+        moveSpeed = Constants.BASE_SPEED * speedDiffficulty;
+        timeToReachChecker = Constants.DISTANCE_TO_CHECKER / moveSpeed;
+
+        RefreshGameUI();
+
+        StartCoroutine(CheckSongMovesLoaded());
+    }
+
+    private void CalculateCurrentMoveId()
+    {
+        if (moveEvents.Count != 0)
+        {
+            for (currentMoveId = 0; currentMoveId < moveEvents.Count; currentMoveId++)
+            {
+                if (((moveEvents[currentMoveId].GetComponent("IMoveEvent") as IMoveEvent)
+                .GetBeginTime() / tickPerSecond) >= currentMusicTime)
+                {
+                    break;
+                }
+            }
+        }
+    }
+
+    private void RefreshMovesColors()
+    {
+        if (moveEvents != null)
+        {
+            foreach (var moveEvent in moveEvents)
+            {
+                switch (moveEvent.GetComponent<IMoveEvent>().GetEventTypeID())
+                {
+                    case MoveTypeEnum.Up:
+                        moveEvent.GetComponent<IMoveEvent>().SetColor(
+                            GameMaster.Instance.musicLoader.DancerSongParsed.
+                                upArrowColor.ToUnityColor());
+                        break;
+                    case MoveTypeEnum.Right:
+                        moveEvent.GetComponent<IMoveEvent>().SetColor(
+                            GameMaster.Instance.musicLoader.DancerSongParsed.
+                                rightArrowColor.ToUnityColor());
+                        break;
+                    case MoveTypeEnum.Left:
+                        moveEvent.GetComponent<IMoveEvent>().SetColor(
+                            GameMaster.Instance.musicLoader.DancerSongParsed.
+                                leftArrowColor.ToUnityColor());
+                        break;
+                    case MoveTypeEnum.Down:
+                        moveEvent.GetComponent<IMoveEvent>().SetColor(
+                            GameMaster.Instance.musicLoader.DancerSongParsed.
+                                downArrowColor.ToUnityColor());
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
     }
 }

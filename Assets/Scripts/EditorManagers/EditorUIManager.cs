@@ -61,6 +61,9 @@ public class EditorUIManager : MonoBehaviour
     private EEditorToolEventMode toolEventMode;
 
     [SerializeField]
+    private GameManager gameManager;
+
+    [SerializeField]
     private Button[] paletteButtons;
 
     #region SongInfoPanel
@@ -192,6 +195,8 @@ public class EditorUIManager : MonoBehaviour
 
         uiColorPreview.color = colorsPreview[(int)EEditorInfoColors.UiBackground].color;
         uiTextPreview.color = colorsPreview[(int)EEditorInfoColors.UiText].color;
+
+        gameManager.RefreshGameUI();
     }
 
     public void SetCurrentlyEditedColor(int value)
@@ -248,6 +253,8 @@ public class EditorUIManager : MonoBehaviour
             default:
                 break;
         }
+
+        gameManager.RefreshGameUI();
     }
 
     public void OnTitleChange()

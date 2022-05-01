@@ -189,9 +189,11 @@ public class EffectsFactory : MonoBehaviour
 
     public void DeleteAllVisualSprites()
     {
+        if (visualObjects == null) return;
+
         foreach(VisualEffectSprite createdObject in visualObjects)
         {
-            GameObject.Destroy(createdObject.gameObject);
+            Destroy(createdObject.gameObject);
         }
         visualObjects.Clear();
     }

@@ -24,6 +24,11 @@ public class EditorStateManager : MonoBehaviour
         editorUIManager = GetComponent<EditorUIManager>();
     }
 
+    public void OnLevelLoaded()
+    {
+        gameManager.CreateEvents();
+    }
+
     public void SetEditorState(int state)
     {
         OnEditorStateLeave();

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MoveInstantEvent : MonoBehaviour, IMoveEvent
 {
-    private readonly float DESTROY_DELAY = 5.0f;
+    private readonly float DISABLE_DELAY = 5.0f;
 
     private SpriteRenderer sr;
     private bool isCheckedCorrect = false;
@@ -53,7 +53,7 @@ public class MoveInstantEvent : MonoBehaviour, IMoveEvent
         }
 
         //TODO here I can add some custom effects
-        StartCoroutine(nameof(DestroyAfterTime));
+        StartCoroutine(nameof(DisableAfterTime));
     }
 
     public void SetObjectVals(
@@ -73,10 +73,10 @@ public class MoveInstantEvent : MonoBehaviour, IMoveEvent
         particleMainModule.startColor = colorToSet;
     }
 
-    private IEnumerator DestroyAfterTime()
+    private IEnumerator DisableAfterTime()
     {
-        yield return new WaitForSeconds(DESTROY_DELAY);
-        Destroy(gameObject); // this is for 2 second delay
+        yield return new WaitForSeconds(DISABLE_DELAY);
+        sr.enabled = false;
     }
 
     public bool isEventHeldDown()
@@ -87,5 +87,14 @@ public class MoveInstantEvent : MonoBehaviour, IMoveEvent
     public void StopHolding()
     {
         return;
+    }
+
+    public void SetColor(Color newColor)
+    {
+        sr = GetComponent<SpriteRenderer>();
+        colorToSet = newColor;
+        sr.color = colorToSet;
+        ParticleSystem.MainModule particleMainModule = onHitEffect.main;
+        particleMainModule.startColor = colorToSet;
     }
 }

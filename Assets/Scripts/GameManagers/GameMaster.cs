@@ -77,7 +77,8 @@ public class GameMaster : MonoBehaviour
         selectedSongFile = song;
         musicLoader.LoadMusicMoves(selectedSongFile);
         GetAudioClip();
-        //TODO refactor
+        GameObject.Find("EditorManager").GetComponent<EditorStateManager>().
+            OnLevelLoaded();
         GameObject.Find("EditorManager").GetComponent<EditorUIManager>().
             RefreshEditorTexts(); 
         GameObject.Find("EditorManager").GetComponent<EditorUIManager>().

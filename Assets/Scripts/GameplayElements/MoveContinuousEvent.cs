@@ -15,7 +15,7 @@ public class MoveContinuousEvent : MonoBehaviour, IMoveEvent
     [SerializeField]
     private SpriteRenderer holdBar;
 
-    private readonly float DESTROY_DELAY = 5.0f;
+    private readonly float DISABLE_DELAY = 5.0f;
 
     private float fillPercentage = 0;
     private SpriteRenderer sr;
@@ -61,7 +61,7 @@ public class MoveContinuousEvent : MonoBehaviour, IMoveEvent
             NoteChecker.OnButtonMistake();
         }
         //TODO here I can add some custom effects
-        StartCoroutine(nameof(DestroyAfterTime));
+        StartCoroutine(nameof(DisableAfterTime));
     }
 
     public void SetObjectVals(
@@ -115,10 +115,12 @@ public class MoveContinuousEvent : MonoBehaviour, IMoveEvent
         }
     }
 
-    private IEnumerator DestroyAfterTime()
+    private IEnumerator DisableAfterTime()
     {
-        yield return new WaitForSeconds(DESTROY_DELAY);
-        Destroy(gameObject); // this is for 2 second delay
+        yield return new WaitForSeconds(DISABLE_DELAY);
+
+        sr.enabled = false;
+        holdBar.enabled = false;
     }
 
     public MoveTypeEnum GetEventTypeID()
@@ -149,4 +151,12 @@ public class MoveContinuousEvent : MonoBehaviour, IMoveEvent
         return isReleasedTooEarly;
     }
 
+    public void SetColor(Color newColor)
+    {
+        sr = GetComponent<SpriteRenderer>();
+        colorToSet = newColor;
+        sr.color = colorToSet;
+        ParticleSystem.MainModule particleMainModule = onHitEffect.main;
+        particleMainModule.startColor = colorToSet;
+    }
 }
