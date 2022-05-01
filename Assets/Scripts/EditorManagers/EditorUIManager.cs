@@ -101,6 +101,12 @@ public class EditorUIManager : MonoBehaviour
     [SerializeField]
     private GameObject toolbar;
 
+    [SerializeField]
+    private Image toolbarEventModeImage;
+
+    [SerializeField]
+    private Sprite[] linArcIcons;
+
     private MusicLoader loader;
     private string MUSIC_PATH;
 
@@ -156,12 +162,12 @@ public class EditorUIManager : MonoBehaviour
         if (toolEventMode == EEditorToolEventMode.linear)
         {
             toolEventMode = EEditorToolEventMode.arc;
-            paletteButtons[(int)EEditorButton.linArc].GetComponentInChildren<Text>().text = "Li";
+            toolbarEventModeImage.sprite = linArcIcons[(int)EEditorToolEventMode.arc];
         }
         else if (toolEventMode == EEditorToolEventMode.arc)
         {
             toolEventMode = EEditorToolEventMode.linear;
-            paletteButtons[(int)EEditorButton.linArc].GetComponentInChildren<Text>().text = "Ar";
+            toolbarEventModeImage.sprite = linArcIcons[(int)EEditorToolEventMode.linear];
         }
     }
 
