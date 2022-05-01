@@ -25,7 +25,7 @@ public class MoveContinuousEvent : MonoBehaviour, IMoveEvent
 
     private float durationInSeconds;
     private float passedTimeWhileHeld;
-    private float posWhenHit = 0;
+    private float originalPosX = 0;
 
     public ParticleSystem onHitEffect;
     public bool IsBeingHeld { get; set; }
@@ -45,7 +45,6 @@ public class MoveContinuousEvent : MonoBehaviour, IMoveEvent
             GetComponent<SpriteRenderer>().color = new Color(255, 255, 255);
             IsBeingHeld = true;
             passedTimeWhileHeld = 0;
-            posWhenHit = transform.localPosition.x;
             onHitEffect.Play();
         }
     }
@@ -78,11 +77,34 @@ public class MoveContinuousEvent : MonoBehaviour, IMoveEvent
         durationInSeconds = 1f * duration / ticksPerSpeed;
         colorToSet = color;
     }
-    public void ActivateEvent(float speed)
+    public void SetActivateEvent(bool value)
     {
-        sr.enabled = true;
-        holdBar.enabled = true;
-        sr.color = colorToSet;
+        if (value == true)
+        {
+            originalPosX = transform.localPosition.x;
+        }
+        else
+        {
+            StopCoroutine(nameof(DisableAfterTime));
+
+            fillPercentage = 0;
+            isCheckedCorrect = false;
+            isReleasedTooEarly = false;
+
+            sr.color = colorToSet;
+            ParticleSystem.MainModule particleMainModule = onHitEffect.main;
+            particleMainModule.startColor = colorToSet;
+
+            holdBar.transform.localPosition = Vector3.zero;
+            transform.localPosition = new Vector3(
+                originalPosX,
+                transform.localPosition.y,
+                transform.localPosition.z);
+        }
+
+        sr.enabled = value;
+        holdBar.enabled = value;
+
     }
 
     void Start()
@@ -100,7 +122,7 @@ public class MoveContinuousEvent : MonoBehaviour, IMoveEvent
             fillPercentage = (passedTimeWhileHeld / durationInSeconds);
 
             transform.localPosition = new Vector3(
-                posWhenHit + fillPercentage * durationInSeconds,
+                originalPosX + fillPercentage * durationInSeconds,
                 transform.localPosition.y);
 
             holdBar.transform.localPosition = new Vector3(

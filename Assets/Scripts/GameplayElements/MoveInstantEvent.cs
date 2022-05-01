@@ -14,10 +14,18 @@ public class MoveInstantEvent : MonoBehaviour, IMoveEvent
     public float BeginTime { get; private set; }
     public MoveTypeEnum MoveType { get; private set; }
 
-    public void ActivateEvent(float speed)
+    public void SetActivateEvent(bool value)
     {
-        sr.enabled = true;
-        sr.color = colorToSet;
+        if (value == false)
+        {
+            StopCoroutine(nameof(DisableAfterTime));
+            isCheckedCorrect = false;
+            sr.color = colorToSet;
+            ParticleSystem.MainModule particleMainModule = onHitEffect.main;
+            particleMainModule.startColor = colorToSet;
+        }
+
+        sr.enabled = value;
     }
 
     public float GetBeginTime()

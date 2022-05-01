@@ -12,7 +12,7 @@ public interface IMoveEvent
         float beginTime, float duration, MoveTypeEnum moveType, 
         float ticksPerSpeed, Color color);
     public void SetColor(Color newColor);
-    public void ActivateEvent(float speed);
+    public void SetActivateEvent(bool value);
     public MoveTypeEnum GetEventTypeID();
 
     public bool isEventHeldDown();

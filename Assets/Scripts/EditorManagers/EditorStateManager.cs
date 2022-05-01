@@ -29,6 +29,11 @@ public class EditorStateManager : MonoBehaviour
         gameManager.CreateEvents();
     }
 
+    public void ResetTestModeTime()
+    {
+        gameManager.SetSongProgress(0f);
+    }
+
     public void SetEditorState(int state)
     {
         OnEditorStateLeave();

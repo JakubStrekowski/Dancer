@@ -64,6 +64,7 @@ public class GameManager : MonoBehaviour
         songState = ESongStates.Loading;
 
         currentMusicTime = uILogicManager.songProgress.value;
+        uILogicManager.UpdateProgress(currentMusicTime);
         Resume();
     }
 
@@ -133,6 +134,27 @@ public class GameManager : MonoBehaviour
         RefreshMovesColors();
     }
 
+    public void SetSongProgress(float time)
+    {
+        currentMusicTime = time;
+        uILogicManager.UpdateProgress(currentMusicTime);
+
+        mistakeCount = 0;
+        correctCount = 0;
+        uILogicManager.UpdateMissesUI(correctCount, mistakeCount, totalMoveEvents);
+
+        if (songState == ESongStates.Playing)
+        {
+            songState = ESongStates.ReadyToPlay;
+            ResetMoveStates();
+            audioSrc.Stop();
+        }
+        else
+        {
+            songState = ESongStates.AwaitingToStart;
+        }
+    }
+
     void FixedUpdate()
     {
         switch(songState)
@@ -146,6 +168,7 @@ public class GameManager : MonoBehaviour
                     audioSrc.clip = currentSong;
                     audioSrc.time = currentMusicTime > timeToReachChecker ?
                         currentMusicTime - timeToReachChecker : 0.0f;
+                    CalculateCurrentMoveId();
                     songState = ESongStates.Playing;
                     return;
                 }
@@ -153,9 +176,11 @@ public class GameManager : MonoBehaviour
                 {
                     currentMusicTime += Time.deltaTime;
 
-                    if (currentMusicTime > timeToReachChecker && audioSrc.isPlaying == false)
+                    if (currentMusicTime > timeToReachChecker && 
+                        audioSrc.isPlaying == false)
                     {
-                        if(songWasPlayed) //finishing song condiion
+                        if (songWasPlayed &&
+                            currentMusicTime > audioSrc.clip.length) //finishing song condiion
                         {
                             songState = ESongStates.Finished;
                             timeStampToFinish = 
@@ -178,7 +203,7 @@ public class GameManager : MonoBehaviour
                             .GetBeginTime() / tickPerSecond) < currentMusicTime)
                             {
                                 (moveEvents[currentMoveId].GetComponent("IMoveEvent") as IMoveEvent)
-                                    .ActivateEvent(moveSpeed);
+                                    .SetActivateEvent(true);
                             }
                             else break;
                         }
@@ -272,9 +297,18 @@ public class GameManager : MonoBehaviour
         moveSpeed = Constants.BASE_SPEED * speedDiffficulty;
         timeToReachChecker = Constants.DISTANCE_TO_CHECKER / moveSpeed;
 
-        RefreshGameUI();
+        RefreshGameUI(); 
 
         StartCoroutine(CheckSongMovesLoaded());
+    }
+
+    private void ResetMoveStates()
+    {
+        for (int i = 0; i < moveEvents.Count; i++)
+        {
+            (moveEvents[i].GetComponent("IMoveEvent") as IMoveEvent).
+                SetActivateEvent(false);
+        }
     }
 
     private void CalculateCurrentMoveId()
