@@ -11,6 +11,8 @@ public class MoveEventsBoard : MonoBehaviour
     private readonly float CAMERA_POS_Y = 3f;
     private readonly float CAMERA_POS_Z = -10f;
 
+    private readonly float REVERSED_POS_X = 54f;
+
     [SerializeField]
     private Slider songProgress;
     [SerializeField]
@@ -28,15 +30,21 @@ public class MoveEventsBoard : MonoBehaviour
 
     public void OnProgressUpdate()
     {
-        if (stateManager != null)
+        if (stateManager is null)
         {
-            if (stateManager.EditorState == EEditorStates.editMovesPlay)
-            {
-                gameplayCamera.transform.position = new Vector3(
-                    INITIAL_POS_X -songProgress.value * Constants.BASE_SPEED,
-                    CAMERA_POS_Y,
-                    CAMERA_POS_Z);
-            }
+            gameplayCamera.transform.position = new Vector3(
+                -INITIAL_POS_X + songProgress.value * Constants.BASE_SPEED,
+                CAMERA_POS_Y,
+                CAMERA_POS_Z);
+            return;
+        }
+
+        if (stateManager.EditorState == EEditorStates.editMovesPlay)
+        {
+            gameplayCamera.transform.position = new Vector3(
+                REVERSED_POS_X - songProgress.value * Constants.BASE_SPEED,
+                CAMERA_POS_Y,
+                CAMERA_POS_Z);
         }
         else
         {
@@ -53,5 +61,13 @@ public class MoveEventsBoard : MonoBehaviour
         {
             Destroy(transform.GetChild(i).gameObject);
         }
+    }
+
+    public void FlipObject(bool mirrored)
+    {
+        transform.localScale = new Vector3(
+                    mirrored? -1 : 1,
+                    1,
+                    1);
     }
 }

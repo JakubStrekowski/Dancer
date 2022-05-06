@@ -57,14 +57,9 @@ public enum EEditorInfoColors
 
 public class EditorUIManager : MonoBehaviour
 {
-    private EEditorToolState toolState;
-    private EEditorToolEventMode toolEventMode;
 
     [SerializeField]
     private GameManager gameManager;
-
-    [SerializeField]
-    private Button[] paletteButtons;
 
     #region SongInfoPanel
     //TODO move to another sctipt
@@ -92,11 +87,20 @@ public class EditorUIManager : MonoBehaviour
     private TextMeshProUGUI uiTextPreview;
     #endregion
 
+    #region EditorStages
     [SerializeField]
     private GameObject editStagePanel;
 
     [SerializeField]
     private GameObject stagePanel;
+    #endregion
+
+    #region Toolbar
+    private EEditorToolState toolState;
+    private EEditorToolEventMode toolEventMode;
+
+    [SerializeField]
+    private Button[] paletteButtons;
 
     [SerializeField]
     private GameObject toolbar;
@@ -106,10 +110,19 @@ public class EditorUIManager : MonoBehaviour
 
     [SerializeField]
     private Sprite[] linArcIcons;
+    #endregion
 
     private MusicLoader loader;
     private string MUSIC_PATH;
 
+    #region PlayModeChanges
+    [SerializeField]
+    private GameObject noteChecker;
+    [SerializeField]
+    private GameObject noteCreator;
+    [SerializeField]
+    private MoveEventsBoard eventsBoard;
+    #endregion
 
     private void Start()
     {
@@ -300,6 +313,19 @@ public class EditorUIManager : MonoBehaviour
     {
         toolbar.SetActive(true);
         stagePanel.SetActive(true);
+    }
+
+    public void OnCreateMovesPlayStart()
+    {
+        noteChecker.SetActive(false);
+        noteCreator.SetActive(true);
+        eventsBoard.FlipObject(true);
+    }
+    public void OnCreateMovesPlayEnd()
+    {
+        noteChecker.SetActive(true);
+        noteCreator.SetActive(false);
+        eventsBoard.FlipObject(false);
     }
 
     private void DownloadImage(string url)

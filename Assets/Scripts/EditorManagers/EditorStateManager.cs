@@ -42,6 +42,39 @@ public class EditorStateManager : MonoBehaviour
         OnEditorStateEnter();
     }
 
+    public void BeginTest()
+    {
+        switch (EditorState)
+        {
+            default:
+            case EEditorStates.basic:
+            case EEditorStates.test:
+                SetEditorState((int)EEditorStates.test);
+                break;
+            case EEditorStates.editMoves:
+            case EEditorStates.editMovesPlay:
+            case EEditorStates.editEvents:
+                SetEditorState((int)EEditorStates.editMovesPlay);
+                break;
+        }
+    }
+    public void StopTest()
+    {
+        switch (EditorState)
+        {
+            default:
+            case EEditorStates.basic:
+            case EEditorStates.test:
+                SetEditorState((int)EEditorStates.basic);
+                break;
+            case EEditorStates.editMoves:
+            case EEditorStates.editEvents:
+            case EEditorStates.editMovesPlay:
+                SetEditorState((int)EEditorStates.editMoves);
+                break;
+        }
+    }
+
     private void OnEditorStateEnter()
     {
         switch (EditorState)
@@ -51,6 +84,7 @@ public class EditorStateManager : MonoBehaviour
             case EEditorStates.editMoves:
                 break;
             case EEditorStates.editMovesPlay:
+                StartEditMovesPlay();
                 break;
             case EEditorStates.editEvents:
                 break;
@@ -71,6 +105,7 @@ public class EditorStateManager : MonoBehaviour
             case EEditorStates.editMoves:
                 break;
             case EEditorStates.editMovesPlay:
+                EndEditMovesPlay();
                 break;
             case EEditorStates.editEvents:
                 break;
@@ -92,5 +127,17 @@ public class EditorStateManager : MonoBehaviour
     {
         gameManager.StopPlaying();
         editorUIManager.OnTestModeEnd();
+    }
+
+    private void StartEditMovesPlay()
+    {
+        gameManager.ResumeFromProgress();
+        editorUIManager.OnCreateMovesPlayStart();
+    }
+
+    private void EndEditMovesPlay()
+    {
+        gameManager.StopPlaying();
+        editorUIManager.OnCreateMovesPlayEnd();
     }
 }
