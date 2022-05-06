@@ -17,7 +17,8 @@ public class EditorStateManager : MonoBehaviour
     private GameManager gameManager;
 
     private EditorUIManager editorUIManager;
-    private EEditorStates editorState;
+    [HideInInspector]
+    public EEditorStates EditorState { get; private set; }
 
     private void Awake()
     {
@@ -37,13 +38,13 @@ public class EditorStateManager : MonoBehaviour
     public void SetEditorState(int state)
     {
         OnEditorStateLeave();
-        editorState = (EEditorStates)state;
+        EditorState = (EEditorStates)state;
         OnEditorStateEnter();
     }
 
     private void OnEditorStateEnter()
     {
-        switch (editorState)
+        switch (EditorState)
         {
             case EEditorStates.basic:
                 break;
@@ -63,7 +64,7 @@ public class EditorStateManager : MonoBehaviour
 
     private void OnEditorStateLeave()
     {
-        switch (editorState)
+        switch (EditorState)
         {
             case EEditorStates.basic:
                 break;

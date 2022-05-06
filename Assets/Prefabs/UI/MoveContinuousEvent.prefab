@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5223482220261440753}
   - component: {fileID: 6437141067434393422}
   - component: {fileID: -3655929896509013062}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: MoveContinuousEvent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -136,7 +136,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3221579886439517364}
   - component: {fileID: 7255779730456322115}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: holdBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -219,7 +219,7 @@ GameObject:
   - component: {fileID: 667955300870724231}
   - component: {fileID: 1443485246230132862}
   - component: {fileID: 6708728812839493961}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: OnHitParticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}

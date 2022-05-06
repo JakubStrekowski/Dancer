@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1611249180097865077}
   - component: {fileID: 5326126443846628113}
   - component: {fileID: 7968607415806036563}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: OnHitParticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4874,7 +4874,7 @@ GameObject:
   - component: {fileID: 6932688876116589779}
   - component: {fileID: -8291940735181565172}
   - component: {fileID: 7281148016501900184}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: MoveInstantEvent
   m_TagString: Untagged
   m_Icon: {fileID: 0}

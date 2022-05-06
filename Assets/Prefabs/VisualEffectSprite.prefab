@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7654797956837960316}
   - component: {fileID: 7654797956837960315}
   - component: {fileID: 7654797956837960317}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: VisualEffectSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
